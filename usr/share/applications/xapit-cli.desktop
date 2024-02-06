@@ -1,5 +1,5 @@
 [Desktop Entry]
-Terminal=false
+Terminal=true
 Type=Application
 Categories=System;
 StartupNotify=false
