@@ -1,5 +1,5 @@
 pkgname='xlapit-cli'
-pkgver=r4.24f02f0
+pkgver=r7.7f037ea
 pkgrel=1
 pkgdesc='XeroLinux Post Installation CLI Toolkit'
 arch=("any")
