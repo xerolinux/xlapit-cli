@@ -13,6 +13,8 @@ pkgver() {
 }
 
 prepare() {
+	rustup default || rustup default stable
+
 	cp -r ../../xero-cli "$srcdir/cli"
 	cp -r ../../xero-scripts/scripts "$srcdir"
 	cp -r ../../extra "$srcdir"
