@@ -1,0 +1,9 @@
+[Desktop Entry]
+Terminal=true
+Type=Application
+Categories=System;
+StartupNotify=false
+Name=XeroLinux Post Installation Toolkit
+Exec=/usr/bin/xero-cli
+Icon=/usr/share/pixmaps/xerolinux.png
+Comment=A tool for easy Post-Install Actions.

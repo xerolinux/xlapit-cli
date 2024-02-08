@@ -1,21 +1,12 @@
 # XeroLinux Arch Post Install Toolkit
 
-This is the repository that contains package source code.
+This repository contains all the source code for XeroCLI, and all the scripts that go with it.
 
-## Dear Contributors:
 
-To update the contents of this repository, please do the following:
 
-**- Install Rust**  (select option 2)
+## The PKGBUILD:
+
+This repository also contains the PKGBUILD for the final package, to build the package, `cd` into `pkg`, and run this command:
 ```bash
-sudo pacman -S rustup cargo
-rustup default stable
+makepkg -cf
 ```
-
-**- Compile Binary & Pull down Scripts**
-```bash
-cd contents
-./update_contents.sh
-cd ..
-```
-For ideas you might have please use the issues tab to suggest them. Will discuss them there. Thanks ;)

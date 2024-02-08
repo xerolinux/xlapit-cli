@@ -1,0 +1,44 @@
+pkgname='xlapit-cli'
+pkgver=r4.24f02f0
+pkgrel=1
+pkgdesc='XeroLinux Post Installation CLI Toolkit'
+arch=("any")
+license=('GPL')
+makedepends=('rustup')
+depends=('wget' 'curl' 'git')
+
+pkgver() {
+	cd ..
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+	cp -r ../../xero-cli "$srcdir/cli"
+	cp -r ../../xero-scripts/scripts "$srcdir"
+	cp -r ../../extra "$srcdir"
+}
+
+build() {
+	cd "$srcdir"
+
+	cd cli
+	cargo build --release
+	cd ..
+
+	mv ./cli/target/release/xero-cli .
+
+	rm -rf ./cli
+}
+
+package() {
+	cd "$srcdir"
+
+	mkdir -p "$pkgdir/usr/share/xero-scripts"
+	mkdir -p "$pkgdir/usr/share/applications"
+	mkdir -p "$pkgdir/usr/share/pixmaps"
+
+	install -Dm755 ./xero-cli "$pkgdir/usr/bin/xero-cli"
+	mv ./scripts/*.sh "$pkgdir/usr/share/xero-scripts"
+	mv ./extra/xapit-cli.desktop "$pkgdir/usr/share/applications"
+	mv ./extra/xerolinux.png "$pkgdir/usr/share/pixmaps"
+}
