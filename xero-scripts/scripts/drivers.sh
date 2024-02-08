@@ -17,9 +17,9 @@ echo
 echo "################## GPU / Printing ##################"
 echo
 echo "g. GPU Drivers (Forum Link)."
-echo "p. Printing Essential Tools."
-echo "h. HP Drivers and Tools (AUR)."
-echo "e. Epson Drivers and Tools (AUR)."
+echo "p. Printer Drivers (From AUR)."
+echo "m. Samba Tools (XeroLinux Repo)."
+echo "k. Scanner Drivers (XeroLinux Repo)."
 echo
 echo "################# Game Controllers #################"
 echo
@@ -40,7 +40,6 @@ case $CHOICE in
       echo
       sleep 2
       xdg-open "https://forum.xerolinux.xyz/thread-364.html"  > /dev/null 2>&1
-      sleep 3
       echo
       clear && sh $0
       ;;
@@ -53,7 +52,7 @@ case $CHOICE in
       sleep 3
       echo
       echo "Please wait while packages install... "
-      sudo pacman -S --needed --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds > /dev/null 2>&1
+      $AUR_HELPER -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin epson-inkjet-printer-escpr epson-inkjet-printer-escpr2
       echo
       sudo systemctl enable --now avahi-daemon cups.socket
       echo
@@ -66,14 +65,14 @@ case $CHOICE in
             clear && sh $0
       ;;
 
-    h )
+    m )
       echo
       echo "###########################################"
-      echo "        Installing HP Drivers/Tools        "
+      echo "           Installing Samba Tools          "
       echo "###########################################"
       sleep 3
       echo
-      $AUR_HELPER -S --needed python-pyqt5 hplip hplip-plugin
+      sudo pacman -S --needed samba-support
       sleep 3
       echo
       echo "#######################################"
@@ -82,14 +81,14 @@ case $CHOICE in
             clear && sh $0
       ;;
 
-    e )
+    k )
       echo
       echo "############################################"
-      echo "       Installing Epson Drivers/Tools       "
+      echo "          Installing Scanner Tools          "
       echo "############################################"
       sleep 3
       echo
-      $AUR_HELPER -S --needed epson-inkjet-printer-escpr epson-inkjet-printer-escpr2 epson-inkjet-printer-201310w epson-inkjet-printer-201204w imagescan
+      sudo pacman -S --needed scanner-support
       sleep 3
       echo
       echo "#######################################"
@@ -134,7 +133,7 @@ case $CHOICE in
       echo "#  Installing Xbox One Wireless Gamepad Driver  #"
       echo "#################################################"
       echo
-      $aur_helper -S --noconfirm aur/xpadneo-dkms
+      $aur_helper -S --noconfirm aur/xone-dkms-git
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -144,7 +143,7 @@ case $CHOICE in
       ;;
     
     q )
-      clear && exit
+      clear && exec ~/.local/bin/xero-cli
 
       ;;
 

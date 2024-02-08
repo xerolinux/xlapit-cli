@@ -16,7 +16,6 @@ echo "Hello $USER, Please Select What To Do."
 echo
 echo "############ Initial Setup Section ############"
 echo
-echo "x. Activate XeroLinux Repo (Req. for some pkgs)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
 echo "t. Enable fast multithreaded package compilation."
 echo "m. Update Arch Mirrorlist, for faster download speeds."
@@ -35,23 +34,6 @@ while :; do
 read CHOICE
 
 case $CHOICE in
-
-    x )
-      echo
-      echo "###########################################"
-      echo "             Adding & Xero Repo            "
-      echo "###########################################"
-      sleep 3
-      sudo cp /etc/pacman.conf /etc/pacman.conf.backup && \
-      echo -e '\n[xerolinux]\nSigLevel = Optional TrustAll\nServer = https://repos.xerolinux.xyz/$repo/$arch' | sudo tee -a /etc/pacman.conf
-      echo
-      sudo pacman -Syy
-      sleep 3
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-            clear && sh $0
-      ;;
 
     f )
       echo

@@ -47,7 +47,7 @@ case $CHOICE in
       echo
       echo "Installing PipeWire packages..."
       echo
-      sudo pacman -S --needed gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good gst-plugin-pipewire libdvdcss alsa-utils wireplumber alsa-firmware  pipewire-jack pavucontrol lib32-pipewire-jack pipewire libpipewire  pipewire-alsa pipewire-pulse pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf  realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers mesa-utils
+      sudo pacman -S --needed gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware  pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
       sleep 3
       echo
       echo "Installing Bluetooth packages..."
@@ -69,10 +69,7 @@ case $CHOICE in
       echo
       echo "Please wait while packages install... "
       echo
-      $AUR_HELPER -S piper xf86-input-void xf86-input-evdev iio-sensor-proxy xf86-input-libinput xf86-input-synaptics xf86-input-elographics gestures libinput-gestures
-      echo
-      sudo gpasswd -a $USER input
-      libinput-gestures-setup autostart
+      sudo pacman -S solaar xf86-input-void xf86-input-evdev iio-sensor-proxy xf86-input-libinput xf86-input-synaptics xf86-input-elographics
       sleep 3
       echo
       echo "#######################################"
@@ -89,7 +86,7 @@ case $CHOICE in
       echo
       echo "Please wait while packages install... "
       echo
-      $AUR_HELPER -S downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras neofetch pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex bash make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc git yad zip xdo inxi meld lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr wget python-pip python-cffi python-numpy python-docopt python-pyaudio
+      $AUR_HELPER -S downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras neofetch pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex bash make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc git yad zip xdo inxi meld lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr wget python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
       sleep 3
       echo
       echo "#######################################"
@@ -162,7 +159,7 @@ case $CHOICE in
       ;;
 
     q )
-      clear && exit
+      clear && exec ~/.local/bin/xero-cli
 
       ;;
 
