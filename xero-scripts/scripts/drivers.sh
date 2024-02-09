@@ -143,7 +143,7 @@ case $CHOICE in
       ;;
     
     q )
-      clear && exec ~/.local/bin/xero-cli
+      clear && exit
 
       ;;
 
