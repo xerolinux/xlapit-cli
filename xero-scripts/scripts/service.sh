@@ -23,6 +23,9 @@ echo "6. Activate Flatpak Theming (Required If used)."
 echo "7. Activate OS-Prober for Dual-Booting with other OS."
 echo "8. Install/Activate Power Daemon for Laptops/Desktops."
 echo
+echo "m. Update Arch Mirrorlist, for faster download speeds."
+echo "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
+echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
 
@@ -150,6 +153,59 @@ case $CHOICE in
 
       ;;
     
+    m )
+      echo
+      echo "##########################################"
+      echo "     Updating Mirrors To Fastest Ones     "
+      echo "##########################################"
+	  sleep 3
+	  echo
+	  sudo pacman -S --noconfirm reflector
+	  sudo reflector --verbose -phttps -f10 -l10 --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syy
+	  sleep 3
+	  echo
+      echo "#######################################"
+      echo "    Done ! Updating should go faster   "
+      echo "#######################################"
+            clear && sh $0
+      ;;
+
+    g )
+      echo
+      echo "#################################"
+      echo "#   Fixing Pacman Databases..   #"
+      echo "#################################"
+      sleep 2
+      echo
+      echo "Step 1 - Deleting Existing Keys.. "
+      echo "##################################"
+      echo
+      sudo rm -r /etc/pacman.d/gnupg/*
+      sleep 2
+      echo
+      echo "Step 2 - Populating Keys.."
+      echo "##########################"
+      echo
+      sudo pacman-key --init && sudo pacman-key --populate
+      sleep 2
+      echo
+      echo "Step 3 - Adding Ubuntu keyserver.."
+      echo "##################################"
+      echo
+      echo "keyserver hkp://keyserver.ubuntu.com:80" | sudo tee --append /etc/pacman.d/gnupg/gpg.conf
+      echo
+      echo "Step 4 - Updating ArchLinux Keyring.."
+      echo "#####################################"
+      echo
+      sudo pacman -Syy --noconfirm archlinux-keyring
+      sleep 3
+      echo
+      echo "#######################################"
+      echo "    Done ! Try Update now & Report     "
+      echo "#######################################"
+            clear && sh $0
+      ;;
+
     q )
       clear && exec xero-cli
 
