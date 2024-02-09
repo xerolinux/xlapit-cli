@@ -16,13 +16,15 @@ echo "Hello $USER, Please Select What To Do."
 echo
 echo "############ Initial Setup Section ############"
 echo
+echo "b. Install Web Browser of choice."
+echo "d. Activate/Set Pacman Parallel Downloads (10)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
 echo "t. Enable fast multithreaded package compilation."
 echo
 echo "########## GUI Package Managers ##########"
 echo
-echo "o. Install OctoPi GUI."
-echo "p. Install Pamac-All GUI."
+echo "o. OctoPi GUI."
+echo "p. Pamac-All GUI."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -32,6 +34,36 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    b )
+      echo
+      echo "##########################################"
+      echo "            Which Web Browser ?           "
+      echo "##########################################"
+      sleep 3
+      echo
+      select browser in "Brave" "Firefox" "Vivaldi"; do case $browser in Brave) $AUR_HELPER -S --noconfirm brave-bin && break ;; Firefox) sudo pacman -S --noconfirm firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      sleep 3
+      echo "#######################################"
+      echo "                 Done !                "
+      echo "#######################################"
+      clear && sh $0
+
+      ;;
+
+    d )
+      echo
+      sleep 3
+      echo
+      sudo sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
+      echo
+      sleep 3
+      echo "#######################################"
+      echo "                 Done !                "
+      echo "#######################################"
+      clear && sh $0
+
+      ;;
 
     f )
       echo
@@ -45,7 +77,8 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      clear && sh $0
+
       ;;
 
     t )
@@ -77,7 +110,8 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      clear && sh $0
+
       ;;
 
     o )
@@ -91,7 +125,8 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      clear && sh $0
+
       ;;
 
     p )
@@ -105,7 +140,8 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      clear && sh $0
+
       ;;
 
     q )
