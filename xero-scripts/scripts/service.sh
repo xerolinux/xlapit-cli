@@ -17,11 +17,10 @@ echo
 echo "1. Install & Activate Firewald."
 echo "2. Clear Pacman Cache (Free Space)."
 echo "3. Restart PipeWire/PipeWire-Pulse."
-echo "4. Launch Grub Theme Installer TUI."
-echo "5. Unlock Pacman DB (In case of DB error)."
-echo "6. Activate Flatpak Theming (Required If used)."
-echo "7. Activate OS-Prober for Dual-Booting with other OS."
-echo "8. Install/Activate Power Daemon for Laptops/Desktops."
+echo "4. Unlock Pacman DB (In case of DB error)."
+echo "5. Activate Flatpak Theming (Required If used)."
+echo "6. Activate OS-Prober for Dual-Booting with other OS."
+echo "7. Install/Activate Power Daemon for Laptops/Desktops."
 echo
 echo "m. Update Arch Mirrorlist, for faster download speeds."
 echo "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
@@ -78,16 +77,7 @@ case $CHOICE in
       ;;
 
 
-    4)
-      echo
-	  sleep 2
-	  cd ~ && git clone https://github.com/xerolinux/xero-grubs && cd ~/xero-grubs/ && sudo sh install.sh
-	  sleep 2
-      clear && sh $0
-
-      ;;
-
-    5 )
+    4 )
       echo
 	  sleep 2
 	  sudo rm /var/lib/pacman/db.lck
@@ -97,7 +87,7 @@ case $CHOICE in
       ;;
 
 
-    6 )
+    5 )
       echo
 	  sleep 2
 	  echo "#####################################"
@@ -118,7 +108,7 @@ case $CHOICE in
       ;;
 
 
-    7 )
+    6 )
       echo
 	  sleep 2
 	  echo "#####################################"
@@ -139,7 +129,7 @@ case $CHOICE in
 
       ;;
         
-    8 )
+    7 )
       echo
 	  sleep 2
       sudo pacman -S --needed --noconfirm power-profiles-daemon

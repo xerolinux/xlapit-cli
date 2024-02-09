@@ -14,16 +14,16 @@ tput sgr0
 echo
 echo "Hello $USER, please select what to do..."
 echo
-echo "################# Shell / Prompt #################"
+echo "################# Shell / Others #################"
 echo
 echo "z. Install ZSH+OMZ+Powerlevel10k."
+echo "g. Launch Grub Theme Installer TUI."
 echo "s. Install and Apply Starship Bash Prompt."
 echo
 echo "################# Plasma Stuffs #################"
 echo
 echo "#################################################"
 echo "#          Rices Currently Unavailable.         #"
-echo "#      In Process Of Migrating to Plasma 6      #"
 echo "#################################################"
 echo
 echo "p. Install missing Plasma Packages."
@@ -71,6 +71,15 @@ case $CHOICE in
       echo "     Done ! Now Logout & back in     "
       echo "#####################################"
       clear && sh $0
+      ;;
+
+    g )
+      echo
+	  sleep 2
+	  cd ~ && git clone https://github.com/xerolinux/xero-grubs && cd ~/xero-grubs/ && sudo sh install.sh
+	  sleep 2
+      clear && sh $0
+
       ;;
 
     s )
