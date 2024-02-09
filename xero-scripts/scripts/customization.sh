@@ -91,6 +91,7 @@ case $CHOICE in
       sudo pacman -S starship
       mkdir -p ~/.config/starship && cd ~/.config/starship
       wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/starship.toml
+      echo 'eval "$(starship init bash)"' >> ~/.bashrc
       sleep 3
       echo "#######################################"
       echo "                 Done !                "
