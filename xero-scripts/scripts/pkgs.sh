@@ -159,7 +159,7 @@ case $CHOICE in
       ;;
 
     q )
-      clear && exit
+      clear && exec xero-cli
 
       ;;
 

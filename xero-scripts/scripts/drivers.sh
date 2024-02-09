@@ -103,7 +103,7 @@ case $CHOICE in
       echo "#          Installing DualShock 4 Driver        #"
       echo "#################################################"
       echo
-      $aur_helper -S --noconfirm aur/ds4drv aur/game-devices-udev
+      $AUR_HELPER -S --noconfirm ds4drv game-devices-udev
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -118,7 +118,7 @@ case $CHOICE in
       echo "#  Installing PS-5 DualSense controller Driver  #"
       echo "#################################################"
       echo
-      $aur_helper -S --noconfirm aur/dualsensectl
+      $AUR_HELPER -S --noconfirm dualsensectl
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -133,7 +133,7 @@ case $CHOICE in
       echo "#  Installing Xbox One Wireless Gamepad Driver  #"
       echo "#################################################"
       echo
-      $aur_helper -S --noconfirm aur/xone-dkms-git
+      $AUR_HELPER -S --noconfirm xone-dkms-git
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -143,7 +143,7 @@ case $CHOICE in
       ;;
     
     q )
-      clear && exit
+      clear && exec xero-cli
 
       ;;
 

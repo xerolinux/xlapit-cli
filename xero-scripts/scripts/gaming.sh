@@ -63,7 +63,7 @@ case $CHOICE in
       echo "#           Installing Lutris Launcher          #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm lutris wine-staging
+      sudo pacman -S --noconfirm lutris wine-support
       echo
       echo "Applying vm-max-map-count patch for better performance..."
       echo
@@ -182,7 +182,7 @@ case $CHOICE in
       ;;
 
     q )
-      clear && exit
+      clear && exec xero-cli
 
       ;;
 
