@@ -145,7 +145,7 @@ case $CHOICE in
       ;;
     
     q )
-      clear && exec xero-cli
+      clear && xero-cli
 
       ;;
 
