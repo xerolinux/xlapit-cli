@@ -56,8 +56,7 @@ case $CHOICE in
       echo
       sleep 3
       echo
-      sudo sed -i '/^\s*#\s*\[multilib\]/s/^#//' /etc/pacman.conf
-      sudo sed -i '/^\s*#\s*Include\s*=\s*\/etc\/pacman.d\/mirrorlist/s/^#//' /etc/pacman.conf
+      sudo sed -i '/^\s*#\s*\[multilib\]/,/^$/ s/^#//' /etc/pacman.conf
       echo
       sleep 3
       echo "#######################################"
