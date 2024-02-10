@@ -55,8 +55,9 @@ case $CHOICE in
     m )
       echo
       sleep 3
-      echo
-      sudo sed -i '/^\s*#\s*\[multilib\]/,/^$/ s/^#//' /etc/pacman.conf && sudo pacman -Syy
+      echo "Activating multilib repository..."
+      sudo sed -i '/^\s*#\s*\[multilib\]/,/^$/ s/^#//' /etc/pacman.conf
+      sudo pacman -Syy
       echo
       sleep 3
       echo "#######################################"
