@@ -17,7 +17,7 @@ echo
 echo "################# Game Launchers #################"
 echo
 echo "s. Steam (Native)."
-echo "l. Lutris (Native)."
+echo "l. Lutris (Flathub)."
 echo "h. Heroic (Flathub)."
 echo "b. Bottles (Flathub)."
 echo
@@ -63,9 +63,7 @@ case $CHOICE in
       echo "#           Installing Lutris Launcher          #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm lutris wine-meta
-      echo
-      echo "Applying vm-max-map-count patch for better performance..."
+      flatpak install net.lutris.Lutris
       echo
       echo "vm.max_map_count=2147483642" | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null
       echo
@@ -190,6 +188,7 @@ case $CHOICE in
       echo "#################################"
       echo "    Choose the correct number    "
       echo "#################################"
+
       ;;
 esac
 done
