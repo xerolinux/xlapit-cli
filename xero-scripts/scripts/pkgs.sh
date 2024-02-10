@@ -17,8 +17,7 @@ echo
 echo "################# Various Extra Pkgs #################"
 echo
 echo "a. PipeWire/Bluetooth Packages."
-echo "b. Extra Input and Trackpad Tools."
-echo "c. Recommended Tools (AUR & Native)."
+echo "b. Recommended Tools (AUR & Native)."
 echo
 echo "################### Virtualization ###################"
 echo
@@ -47,12 +46,12 @@ case $CHOICE in
       echo
       echo "Installing PipeWire packages..."
       echo
-      sudo pacman -S --needed gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware  pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
+      sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware  pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
       sleep 3
       echo
       echo "Installing Bluetooth packages..."
       echo
-      sudo pacman -S --needed bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
+      sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
       sudo systemctl enable --now  bluetooth.service
       echo
       echo "#######################################"
@@ -63,30 +62,13 @@ case $CHOICE in
 
     b )
       echo
-      echo "########################################"
-      echo "      Installing Input Essentials       "
-      echo "########################################"
-      echo
-      echo "Please wait while packages install... "
-      echo
-      sudo pacman -S solaar xf86-input-void xf86-input-evdev iio-sensor-proxy xf86-input-libinput xf86-input-synaptics xf86-input-elographics
-      sleep 3
-      echo
-      echo "#######################################"
-      echo "           Done Plz Reboot !           "
-      echo "#######################################"
-            clear && sh $0
-      ;;
-
-    c )
-      echo
       echo "##########################################"
       echo "       Installing Recommended tools       "
       echo "##########################################"
       echo
       echo "Please wait while packages install might take a while... "
       echo
-      $AUR_HELPER -S downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras neofetch pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex bash make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc git yad zip xdo inxi meld lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr wget python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
+      $AUR_HELPER -S --noconfirm downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras neofetch pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex bash make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc git yad zip xdo inxi meld lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr wget python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
       sleep 3
       echo
       echo "#######################################"
@@ -98,7 +80,7 @@ case $CHOICE in
     v )
       echo
       sleep 2
-      sudo pacman -S virtualbox-meta
+      sudo pacman -S --noconfirm virtualbox-meta
       sleep 2
       echo
       echo "#################################"
@@ -111,7 +93,7 @@ case $CHOICE in
 
     k )
       sleep 2
-      sudo pacman -S virt-manager-meta
+      sudo pacman -S --noconfirm virt-manager-meta
       sleep 3
       echo
       echo "####################################"

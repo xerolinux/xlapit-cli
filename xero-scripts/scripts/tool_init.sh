@@ -17,6 +17,7 @@ echo
 echo "############ Initial Setup Section ############"
 echo
 echo "b. Install Web Browser of choice."
+echo "m. Activate multilib repository if not done."
 echo "d. Activate/Set Pacman Parallel Downloads (10)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
 echo "t. Enable fast multithreaded package compilation."
@@ -51,6 +52,21 @@ case $CHOICE in
 
       ;;
 
+    m )
+      echo
+      sleep 3
+      echo
+      sudo sed -i '/^\s*#\s*\[multilib\]/s/^#//' /etc/pacman.conf
+      sudo sed -i '/^\s*#\s*Include\s*=\s*\/etc\/pacman.d\/mirrorlist/s/^#//' /etc/pacman.conf
+      echo
+      sleep 3
+      echo "#######################################"
+      echo "                 Done !                "
+      echo "#######################################"
+      clear && sh $0
+
+      ;;
+
     d )
       echo
       sleep 3
@@ -75,7 +91,7 @@ case $CHOICE in
       sudo pacman -S --noconfirm flatpak
       sleep 3
       echo "#######################################"
-      echo "                 Done !                "
+      echo "           Done Plz Reboot !           "
       echo "#######################################"
       clear && sh $0
 

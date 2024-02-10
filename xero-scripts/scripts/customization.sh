@@ -18,7 +18,6 @@ echo "################# Shell / Others #################"
 echo
 echo "f. Install Fish Shell."
 echo "z. Install ZSH+OMZ+Powerlevel10k."
-echo "g. Launch Grub Theme Installer TUI."
 echo "s. Install and Apply Starship Bash Prompt."
 echo
 echo "################# Plasma Stuffs #################"
@@ -67,13 +66,38 @@ case $CHOICE in
 
       ;;
 
-    g )
+    z )
       echo
-	  sleep 2
-	  cd ~ && git clone https://github.com/xerolinux/xero-grubs && cd ~/xero-grubs/ && sudo sh install.sh
-	  sleep 2
+      echo "######################################"
+      echo "Setting up ZSH With p10k & OMZ Plugins"
+      echo "######################################"
+      sleep 2
+      echo "Step 1 - Grabing Necessary Fonts"
+      echo "################################"
+      sudo pacman -S --needed --noconfirm zsh grml-zsh-config neofetch
+      $AUR_HELPER -S --noconfirm ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts zsh-theme-powerlevel10k
+      sleep 2
+      echo "Step 2 - Grabing OhMyZsh & Plugins"
+      echo "##################################"
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+      git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+      git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+      sleep 2
+      echo "Step 3 - Grabing PowerLevel10k Theme"
+      echo "#####################################"
+      git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+      cd $HOME/ && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.p10k.zsh \
+      && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.zshrc \
+      &&& mkdir ~/.config/neofetch && cd ~/.config/neofetch && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/config.conf
+      sleep 2
+      echo "Step 4 - Setting Default Shell to ZSH"
+      echo "#####################################"
+      sudo chsh $USER -s /bin/zsh
+      echo "#####################################"
+      echo "     Done ! Now Logout & back in     "
+      echo "#####################################"
       clear && sh $0
-
       ;;
 
     s )
@@ -82,7 +106,7 @@ case $CHOICE in
       echo "              Starship Prompt              "
       echo "###########################################"
       sleep 3
-      sudo pacman -S starship
+      sudo pacman -S --noconfirm starship
       mkdir -p ~/.config/starship && cd ~/.config/starship
       wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/starship.toml
       echo 'eval "$(starship init bash)"' >> ~/.bashrc

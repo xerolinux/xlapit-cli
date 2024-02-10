@@ -63,7 +63,7 @@ case $CHOICE in
       echo "#           Installing Lutris Launcher          #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm lutris wine-support
+      sudo pacman -S --noconfirm lutris wine-meta
       echo
       echo "Applying vm-max-map-count patch for better performance..."
       echo
@@ -157,7 +157,7 @@ case $CHOICE in
       echo "#               Installing DXVK-bin             #"
       echo "#################################################"
       echo
-      $AUR_HELPER dxvk-bin
+      $AUR_HELPER -S --noconfirm dxvk-bin
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -172,7 +172,7 @@ case $CHOICE in
       echo "#                Installing nvdxvk              #"
       echo "#################################################"
       echo
-      $AUR_HELPER dxvk-nvapi-mingw
+      $AUR_HELPER -S --noconfirm dxvk-nvapi-mingw
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"

@@ -88,7 +88,7 @@ case $CHOICE in
       echo "############################################"
       sleep 3
       echo
-      sudo pacman -S --needed scanner-support
+      sudo pacman -S --noconfirm scanner-support
       sleep 3
       echo
       echo "#######################################"
