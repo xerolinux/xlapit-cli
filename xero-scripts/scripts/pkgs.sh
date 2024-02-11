@@ -24,8 +24,9 @@ echo
 echo "v. VirtualBox (Xero Repo)."
 echo "k. Virt-Manager (Xero Repo)."
 echo
-echo "##################### OBS-Studio #####################"
+echo "################### OBS / KDEnLive ###################"
 echo
+echo "d. Install KDEnLive (Native)."
 echo "o. Install OBS-Studio + Plugins (Flathub)."
 echo "l. Activate v4l2loopback for OBS-VirtualCam."
 echo
@@ -102,6 +103,20 @@ case $CHOICE in
       echo "  sudo virsh net-autostart default  "
       echo "####################################"
       sleep 10
+      clear && sh $0
+
+      ;;
+
+    d )
+      echo
+      sleep 2
+      sudo pacman -S --noconfirm kdenlive
+      sleep 2
+      echo
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
       clear && sh $0
 
       ;;

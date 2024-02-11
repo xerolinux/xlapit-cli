@@ -90,7 +90,7 @@ case $CHOICE in
       echo "#####################################"
       git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
       cd $HOME/ && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.p10k.zsh \
-      && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.zshrc \
+      && rm ~/.zshrc && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.zshrc \
       && mkdir ~/.config/neofetch && cd ~/.config/neofetch && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/config.conf
       sleep 2
       echo "Step 4 - Setting Default Shell to ZSH"

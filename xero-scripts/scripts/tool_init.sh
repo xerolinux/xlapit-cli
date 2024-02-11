@@ -25,6 +25,7 @@ echo
 echo "########## GUI Package Managers ##########"
 echo
 echo "o. OctoPi GUI."
+echo "s. PacSeek TUI."
 echo "p. Pamac-All GUI."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
@@ -136,10 +137,26 @@ case $CHOICE in
       echo "             Installing Octopi            "
       echo "##########################################"
       sleep 3
-      $AUR_HELPER -S octopi alpm_octopi_utils octopi-notifier-noknotify
+      $AUR_HELPER -S --noconfirm octopi alpm_octopi_utils octopi-notifier-noknotify
       sleep 3
       echo "#######################################"
       echo "                 Done !                "
+      echo "#######################################"
+      clear && sh $0
+
+      ;;
+
+    s )
+      echo
+      echo "##########################################"
+      echo "               PacSeek T.U.I              "
+      echo "##########################################"
+      sleep 3
+      echo
+      $AUR_HELPER -S --noconfirm pacseek-bin
+      sleep 3
+      echo "#######################################"
+      echo "           Done Plz Reboot !           "
       echo "#######################################"
       clear && sh $0
 
@@ -151,7 +168,7 @@ case $CHOICE in
       echo "            Installing Pamac-All          "
       echo "##########################################"
       sleep 3
-      $AUR_HELPER -S pamac-all pamac-cli libpamac-full
+      $AUR_HELPER -S --noconfirm pamac-all pamac-cli libpamac-full
       sleep 3
       echo "#######################################"
       echo "                 Done !                "
