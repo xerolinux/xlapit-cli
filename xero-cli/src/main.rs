@@ -164,14 +164,8 @@ fn app() -> ExitCode {
         // Select option.
         let mut selected: Option<usize> = None;
         while selected == None {
-            let answer = prompt("Please select option (by number) (type \"q\" to quit)");
+            let answer = prompt("Please select option (by number). Close window to quit");
             let answer = answer.trim();
-
-            if answer == "q" {
-                piglog::info!("Quitting...");
-
-                return ExitCode::Success;
-            }
 
             match answer.parse::<usize>() {
                 Ok(o) => selected = Some(o),
