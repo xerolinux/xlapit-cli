@@ -14,7 +14,7 @@ tput sgr0
 echo
 echo "Hello $USER, please select what to do..."
 echo
-echo "################# Shell / Others #################"
+echo "################# Shell / Prompts ################"
 echo
 echo "f. Install Fish Shell."
 echo "z. Install ZSH+OMZ+Powerlevel10k."
@@ -24,11 +24,10 @@ echo
 echo "p. Install missing Plasma Packages."
 echo "m. Apply AppMenu Meta-Key Fix (Kwin/Rices)."
 echo
-echo "############### Hyprland Dots (web) ##############"
+echo "################## DE/WM Ricing ##################"
 echo
-echo "w. ML4W Dot Files."
-echo "j. JaKooLit Dot Files."
-echo "h. Prasanth Dot Files."
+echo "k. XeroLinux KDE Rices"
+echo "h. Hyprland Dot File / Rices"
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -135,29 +134,27 @@ case $CHOICE in
 
       ;;
 
-    w )
+    k )
       echo
-      sleep 2
-      xdg-open "https://gitlab.com/stephan-raabe/dotfiles"  > /dev/null 2>&1
-      echo
+      echo "#################################"
+      echo " KDE Rices Currently Unavailable "
+      echo "#################################"
+      sleep 4
       clear && sh $0
-
-      ;;
-
-    j )
-      echo
-      sleep 2
-      xdg-open "https://github.com/JaKooLit/Arch-Hyprland"  > /dev/null 2>&1
-      echo
-      clear && sh $0
-
       ;;
 
     h )
       echo
-      sleep 2
-      xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file"  > /dev/null 2>&1
+      echo "##########################################"
+      echo "           Select Hyprland Dots           "
+      echo "##########################################"
       echo
+      select browser in "ML4W" "JaKooLit" "Prasanth"; do case $browser in ML4W) xdg-open "https://gitlab.com/stephan-raabe/dotfiles"  > /dev/null 2>&1 && break ;; JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland"  > /dev/null 2>&1 && break ;; Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file"  > /dev/null 2>&1 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      echo
+      echo "#######################################"
+      echo "                 Done !                "
+      echo "#######################################"
+      sleep 3
       clear && sh $0
 
       ;;
