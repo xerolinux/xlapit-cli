@@ -18,7 +18,6 @@ echo "################# Shell / Others #################"
 echo
 echo "f. Install Fish Shell."
 echo "z. Install ZSH+OMZ+Powerlevel10k."
-echo "s. Install and Apply Starship Bash Prompt."
 echo
 echo "################## Plasma Stuffs #################"
 echo
@@ -28,6 +27,7 @@ echo
 echo "############### Hyprland Dots (web) ##############"
 echo
 echo "w. ML4W Dot Files."
+echo "j. JaKooLit Dot Files."
 echo "h. Prasanth Dot Files."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
@@ -104,23 +104,6 @@ case $CHOICE in
       clear && sh $0
       ;;
 
-    s )
-      echo
-      echo "###########################################"
-      echo "              Starship Prompt              "
-      echo "###########################################"
-      sleep 3
-      sudo pacman -S --noconfirm starship
-      mkdir -p ~/.config/starship && cd ~/.config/starship
-      wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/starship.toml
-      echo 'eval "$(starship init bash)"' >> ~/.bashrc
-      sleep 3
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      clear && sh $0
-      ;;
-
     p )
       echo
 	  sleep 2
@@ -156,6 +139,15 @@ case $CHOICE in
       echo
       sleep 2
       xdg-open "https://gitlab.com/stephan-raabe/dotfiles"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+
+      ;;
+
+    j )
+      echo
+      sleep 2
+      xdg-open "https://github.com/JaKooLit/Arch-Hyprland"  > /dev/null 2>&1
       echo
       clear && sh $0
 
