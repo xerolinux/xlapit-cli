@@ -1,6 +1,6 @@
 [package]
 name = "xero-cli"
-authors = ["Jackson Novak <jacksonnovak@proton.me>"]
+authors = ["Jackson Novak <jacksonnovak@proton.me>" "DarkXero <info@techxero.com>"]
 version = "0.1.0"
 edition = "2021"
 
