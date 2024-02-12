@@ -27,8 +27,6 @@ enum Script {
     Gaming,
 }
 
-console::set_title("XeroLinux Arch Toolkit").unwrap();
-
 impl Script {
     pub fn script_name(&self) -> String {
         return match *self {
