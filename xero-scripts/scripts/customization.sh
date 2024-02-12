@@ -63,6 +63,7 @@ case $CHOICE in
       echo
       echo "Done Please Log-out n back in !"
       echo "###############################"
+      sleep 6
       clear && sh $0
 
 
@@ -99,6 +100,7 @@ case $CHOICE in
       echo "#####################################"
       echo "     Done ! Now Logout & back in     "
       echo "#####################################"
+      sleep 6
       clear && sh $0
       ;;
 

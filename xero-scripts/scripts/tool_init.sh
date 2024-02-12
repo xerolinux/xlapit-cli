@@ -45,10 +45,11 @@ case $CHOICE in
       sleep 3
       echo
       select browser in "Brave" "Firefox" "Vivaldi"; do case $browser in Brave) $AUR_HELPER -S --noconfirm brave-bin && break ;; Firefox) sudo pacman -S --noconfirm firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
-      sleep 3
+      echo
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -60,10 +61,10 @@ case $CHOICE in
       sudo sed -i '/^\s*#\s*\[multilib\]/,/^$/ s/^#//' /etc/pacman.conf
       sudo pacman -Syy
       echo
-      sleep 3
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
+      sleep 6
       clear && sh $0
 
       ;;
@@ -73,11 +74,12 @@ case $CHOICE in
       sleep 3
       echo
       sudo sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
+      sudo pacman -Syy
       echo
-      sleep 3
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
+      sleep 6
       clear && sh $0
 
       ;;
@@ -90,10 +92,10 @@ case $CHOICE in
       sleep 3
       echo
       sudo pacman -S --noconfirm flatpak
-      sleep 3
       echo "#######################################"
       echo "           Done Plz Reboot !           "
       echo "#######################################"
+      sleep 6
       clear && sh $0
 
       ;;
@@ -122,11 +124,11 @@ case $CHOICE in
         echo
         echo "No change."
       fi
-      sleep 3
       echo
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
+      sleep 6
       clear && sh $0
 
       ;;
@@ -138,10 +140,11 @@ case $CHOICE in
       echo "##########################################"
       sleep 3
       $AUR_HELPER -S --noconfirm octopi alpm_octopi_utils octopi-notifier-noknotify
-      sleep 3
+      echo
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
+      sleep 6
       clear && sh $0
 
       ;;
@@ -154,10 +157,11 @@ case $CHOICE in
       sleep 3
       echo
       $AUR_HELPER -S --noconfirm pacseek-bin
-      sleep 3
+      echo
       echo "#######################################"
       echo "           Done Plz Reboot !           "
       echo "#######################################"
+      sleep 6
       clear && sh $0
 
       ;;
@@ -169,10 +173,11 @@ case $CHOICE in
       echo "##########################################"
       sleep 3
       $AUR_HELPER -S --noconfirm pamac-all pamac-cli libpamac-full
-      sleep 3
+      echo
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
+      sleep 6
       clear && sh $0
 
       ;;

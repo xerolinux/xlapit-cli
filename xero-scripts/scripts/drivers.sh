@@ -12,7 +12,7 @@ echo "#                               Device Drivers                            
 echo "##############################################################################"
 tput sgr0
 echo
-echo "Hello $USER, Please Select What Drivers to install."
+echo "Hello $USER, Please Select What Drivers to install. multilib repo needed."
 echo
 echo "################## GPU / Printing ##################"
 echo

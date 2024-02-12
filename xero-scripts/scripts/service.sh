@@ -157,7 +157,7 @@ case $CHOICE in
       echo "#######################################"
       echo "    Done ! Updating should go faster   "
       echo "#######################################"
-            clear && sh $0
+      clear && sh $0
       ;;
 
     g )
@@ -188,12 +188,12 @@ case $CHOICE in
       echo "#####################################"
       echo
       sudo pacman -Syy --noconfirm archlinux-keyring
-      sleep 3
       echo
       echo "#######################################"
       echo "    Done ! Try Update now & Report     "
       echo "#######################################"
-            clear && sh $0
+      sleep 6
+      clear && sh $0
       ;;
 
     q )

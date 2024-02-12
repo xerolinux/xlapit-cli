@@ -12,7 +12,7 @@ echo "#             The Gaming Essentials.            #"
 echo "#################################################"
 tput sgr0
 echo
-echo "Hello $USER, what would you like to install ?"
+echo "Hello $USER, what would you like to install ? (multilib required)"
 echo
 echo "################# Game Launchers #################"
 echo
@@ -53,6 +53,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -70,6 +71,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -85,6 +87,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -100,6 +103,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -115,6 +119,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -130,6 +135,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -145,6 +151,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -160,6 +167,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -175,6 +183,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
