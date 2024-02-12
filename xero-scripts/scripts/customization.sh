@@ -20,15 +20,15 @@ echo "f. Install Fish Shell."
 echo "z. Install ZSH+OMZ+Powerlevel10k."
 echo "s. Install and Apply Starship Bash Prompt."
 echo
-echo "################# Plasma Stuffs #################"
-echo
-echo "#################################################"
-echo "#          Rices Currently Unavailable.         #"
-echo "#################################################"
+echo "################## Plasma Stuffs #################"
 echo
 echo "p. Install missing Plasma Packages."
 echo "m. Apply AppMenu Meta-Key Fix (Kwin/Rices)."
-echo "w. Apply xWayland Screen/Window Sharing Fix."
+echo
+echo "############### Hyprland Dots (web) ##############"
+echo
+echo "w. ML4W Dot Files."
+echo "h. Prasanth Dot Files."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -154,15 +154,18 @@ case $CHOICE in
 
     w )
       echo
-	  sleep 2
-	  echo "Installing XWayland Bridge..."
-	  echo
-      sleep 3
-      sudo pacman -S --noconfirm xwaylandvideobridge
+      sleep 2
+      xdg-open "https://gitlab.com/stephan-raabe/dotfiles"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+
+      ;;
+
+    h )
       echo
       sleep 2
-      echo "All done, please reboot for good measure !"
-	  sleep 3
+      xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file"  > /dev/null 2>&1
+      echo
       clear && sh $0
 
       ;;

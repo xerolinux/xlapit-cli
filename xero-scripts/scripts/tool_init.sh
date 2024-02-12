@@ -12,11 +12,12 @@ echo "#                           Initial System Setup                          
 echo "############################################################################"
 tput sgr0
 echo
-echo "Hello $USER, Please Select What To Do."
+echo "Hello $USER, Please Select What To Do. (multilib Repo req.)"
 echo
 echo "############ Initial Setup Section ############"
 echo
-echo "b. Install Web Browser of choice."
+echo "a. PipeWire/Bluetooth Packages."
+echo "b. Web Browser (Brave/Firefox/Vivaldi)."
 echo "m. Activate multilib repository if not done."
 echo "d. Activate/Set Pacman Parallel Downloads (10)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
@@ -36,6 +37,28 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    a )
+      echo
+      echo "###########################################"
+      echo "        Installing Audio/Bluetooth         "
+      echo "###########################################"
+      echo
+      echo "Installing PipeWire packages..."
+      echo
+      sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
+      sleep 3
+      echo
+      echo "Installing Bluetooth packages..."
+      echo
+      sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
+      sudo systemctl enable --now  bluetooth.service
+      echo
+      echo "#######################################"
+      echo "                 Done !                "
+      echo "#######################################"
+            clear && sh $0
+      ;;
 
     b )
       echo

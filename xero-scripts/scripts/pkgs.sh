@@ -16,7 +16,7 @@ echo "Hello $USER, this will install extra packages, some require Xero Repo & mu
 echo
 echo "################# Various Extra Pkgs #################"
 echo
-echo "a. PipeWire/Bluetooth Packages."
+echo "a. LibreOffice (Fresh Version)."
 echo "b. Recommended Tools (AUR & Native)."
 echo
 echo "################### Virtualization ###################"
@@ -41,24 +41,18 @@ case $CHOICE in
 
     a )
       echo
-      echo "###########################################"
-      echo "        Installing Audio/Bluetooth         "
-      echo "###########################################"
+      sleep 2
+      sudo pacman -S --noconfirm libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
+      sleep 2
       echo
-      echo "Installing PipeWire packages..."
+      $AUR_HELPER -S --noconfirm ttf-gentium-basic hsqldb2-java libreoffice-extension-languagetool
       echo
-      sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
+      echo "#################################"
+      echo "        Done, Plz Reboot !       "
+      echo "#################################"
       sleep 3
-      echo
-      echo "Installing Bluetooth packages..."
-      echo
-      sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
-      sudo systemctl enable --now  bluetooth.service
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-            clear && sh $0
+      clear && sh $0
+
       ;;
 
     b )
