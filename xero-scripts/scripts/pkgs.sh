@@ -88,6 +88,7 @@ case $CHOICE in
 
     k )
       sleep 2
+      sudo pacman -Rdd --noconfirm iptables
       sudo pacman -S --noconfirm virt-manager-meta
       sleep 3
       echo
