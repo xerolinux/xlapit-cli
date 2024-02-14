@@ -57,7 +57,8 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      sleep 3
+      clear && sh $0
       ;;
 
     b )
@@ -65,9 +66,8 @@ case $CHOICE in
       echo "##########################################"
       echo "            Which Web Browser ?           "
       echo "##########################################"
-      sleep 3
       echo
-      select browser in "Brave" "Firefox" "Vivaldi"; do case $browser in Brave) $AUR_HELPER -S --noconfirm brave-bin && break ;; Firefox) sudo pacman -S --noconfirm firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select browser in "Brave" "Firefox" "Vivaldi" "Back"; do case $browser in Brave) $AUR_HELPER -S --noconfirm brave-bin && break ;; Firefox) sudo pacman -S --noconfirm firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3 or 4." ;; esac done
       echo
       echo "#######################################"
       echo "                 Done !                "
@@ -102,7 +102,7 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;
@@ -115,10 +115,11 @@ case $CHOICE in
       sleep 3
       echo
       sudo pacman -S --noconfirm flatpak
+      echo
       echo "#######################################"
       echo "           Done Plz Reboot !           "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;
@@ -151,7 +152,7 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;
@@ -167,7 +168,7 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;
@@ -184,7 +185,7 @@ case $CHOICE in
       echo "#######################################"
       echo "           Done Plz Reboot !           "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;
@@ -200,7 +201,7 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;

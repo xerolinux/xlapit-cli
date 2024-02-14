@@ -26,7 +26,7 @@ echo "k. Virt-Manager (Xero Repo)."
 echo
 echo "################### OBS / KDEnLive ###################"
 echo
-echo "d. Install KDEnLive (Native)."
+echo "d. Install KDEnLive Video Editor."
 echo "o. Install OBS-Studio + Plugins (Flathub)."
 echo "l. Activate v4l2loopback for OBS-VirtualCam."
 echo
@@ -104,8 +104,14 @@ case $CHOICE in
 
     d )
       echo
+      echo "#################################################"
+      echo "#           Installing KDEnLive Editor          #"
+      echo "#################################################"
+      echo
       sleep 2
-      sudo pacman -S --noconfirm kdenlive
+      echo "Native or Flatpak ?"
+      echo
+      select lutris in "Native" "Flatpak" "Back"; do case $lutris in Native) sudo pacman -S --noconfirm kdenlive && break ;; Flatpak) flatpak install org.kde.kdenlive && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       sleep 2
       echo
       echo "#################################"
