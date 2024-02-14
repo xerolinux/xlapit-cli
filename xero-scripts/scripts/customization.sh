@@ -149,7 +149,7 @@ case $CHOICE in
       echo "           Select Hyprland Dots           "
       echo "##########################################"
       echo
-      select browser in "ML4W" "JaKooLit" "Prasanth"; do case $browser in ML4W) xdg-open "https://gitlab.com/stephan-raabe/dotfiles"  > /dev/null 2>&1 && break ;; JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland"  > /dev/null 2>&1 && break ;; Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file"  > /dev/null 2>&1 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select dots in "ML4W" "JaKooLit" "Prasanth"; do case $dots in ML4W) xdg-open "https://gitlab.com/stephan-raabe/dotfiles"  > /dev/null 2>&1 && break ;; JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland"  > /dev/null 2>&1 && break ;; Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file"  > /dev/null 2>&1 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#######################################"
       echo "                 Done !                "

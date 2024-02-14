@@ -17,7 +17,7 @@ echo
 echo "################## GPU / Printing ##################"
 echo
 echo "g. GPU Drivers (Forum Link)."
-echo "p. Printer Drivers (From AUR)."
+echo "p. Printer Drivers (Native/AUR)."
 echo "m. Samba Tools (XeroLinux Repo)."
 echo "k. Scanner Drivers (XeroLinux Repo)."
 echo
@@ -49,10 +49,10 @@ case $CHOICE in
       echo "###########################################"
       echo "      Installing Printing Essentials       "
       echo "###########################################"
-      sleep 3
       echo
-      echo "Please wait while packages install... "
-      $AUR_HELPER -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin epson-inkjet-printer-escpr epson-inkjet-printer-escpr2
+      echo "Please select which printer you have."
+      echo
+      select printer in "HP" "Epson" "Generic"; do case $printer in HP) $AUR_HELPER -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin && break ;; Epson) $AUR_HELPER -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 epson-inkjet-printer-escpr epson-inkjet-printer-escpr2 && break ;; Generic) sudo pacman -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       sudo systemctl enable --now avahi-daemon cups.socket
       echo
@@ -62,7 +62,8 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      sleep 3
+      clear && sh $0
       ;;
 
     m )
@@ -73,12 +74,12 @@ case $CHOICE in
       sleep 3
       echo
       sudo pacman -S --needed samba-support
-      sleep 3
       echo
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      sleep 3
+      clear && sh $0
       ;;
 
     k )
@@ -89,12 +90,12 @@ case $CHOICE in
       sleep 3
       echo
       sudo pacman -S --noconfirm scanner-support
-      sleep 3
       echo
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      sleep 3
+      clear && sh $0
       ;;
 
     d )
@@ -108,6 +109,7 @@ case $CHOICE in
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -118,11 +120,12 @@ case $CHOICE in
       echo "#  Installing PS-5 DualSense controller Driver  #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm dualsensectl
+      $AUR_HELPER -S --noconfirm dualsensectl game-devices-udev
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
@@ -133,11 +136,12 @@ case $CHOICE in
       echo "#  Installing Xbox One Wireless Gamepad Driver  #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm xone-dkms-git
+      $AUR_HELPER -S --noconfirm xone-dkms game-devices-udev
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
       echo "#################################################"
+      sleep 3
       clear && sh $0
 
       ;;
