@@ -16,6 +16,7 @@ echo "Hello $USER, what would you like to do today ?"
 echo
 echo "################## Distrobox & Docker Setup ##################"
 echo
+echo "p. Install Podman/Desktop."
 echo "d. Install/Configure Docker."
 echo "b. Install/Configure Distrobox."
 echo
@@ -37,6 +38,17 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    p )
+      echo
+      sleep 2
+      echo "Installing Podman & Podman-Desktop..."
+      echo
+      sudo pacman -S --noconfirm podman && flatpak install io.podman_desktop.PodmanDesktop
+      echo
+      clear && sh $0
+
+      ;;
 
     d )
       echo
