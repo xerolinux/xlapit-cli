@@ -24,7 +24,7 @@ echo
 echo "################### Game Tools ###################"
 echo
 echo "1.  Mangohud (Native)."
-echo "2.  Goverlay (Flathub)."
+echo "2.  Goverlay (Native)."
 echo "3.  Protonup-qt (Flathub)."
 echo "4.  Vulkan Compatibility Layer (AMD)."
 echo "5.  Vulkan Compatibility Layer (nVidia)."
