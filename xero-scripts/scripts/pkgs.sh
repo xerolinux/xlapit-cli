@@ -16,17 +16,16 @@ echo "Hello $USER, this will install extra packages, some require Xero Repo & mu
 echo
 echo "################# Various Extra Pkgs #################"
 echo
-echo "a. LibreOffice (Fresh Version)."
-echo "b. Recommended Tools (AUR & Native)."
-echo
-echo "################### Virtualization ###################"
-echo
-echo "v. VirtualBox (Xero Repo)."
-echo "k. Virt-Manager (Xero Repo)."
+echo "a. LibreOffice."
+echo "s. System Tools."
+echo "p. Photography Tools."
+echo "m. Music/Media Tools."
+echo "w. Social-Media Tools."
+echo "v. Virtualization Tools."
 echo
 echo "################### OBS / KDEnLive ###################"
 echo
-echo "d. Install KDEnLive Video Editor."
+echo "k. Install KDEnLive Video Editor."
 echo "o. Install OBS-Studio + Plugins (Flathub)."
 echo "l. Activate v4l2loopback for OBS-VirtualCam."
 echo
@@ -55,7 +54,7 @@ case $CHOICE in
 
       ;;
 
-    b )
+    s )
       echo
       echo "##########################################"
       echo "       Installing Recommended tools       "
@@ -72,14 +71,72 @@ case $CHOICE in
             clear && sh $0
       ;;
     
-    v )
+    p )
       echo
-      sleep 2
-      sudo pacman -S --noconfirm virtualbox-meta
-      sleep 2
+      echo "#################################################"
+      echo "#               Photography Tools               #"
+      echo "#################################################"
+      echo
+      echo "Select What you want to install"
+      echo
+      select pt in "GiMP" "Krita" "Back"; do case $pt in GiMP) sudo pacman -S --noconfirm gimp && break ;; Krita) sudo pacman -S --noconfirm krita && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################"
-      echo "        Done, Plz Reboot !       "
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
+    m )
+      echo
+      echo "#################################################"
+      echo "#               Music/Media Tools               #"
+      echo "#################################################"
+      echo
+      echo "Select What you want to install"
+      echo
+      select mt in "MPV" "Spotify" "Strawberry" "Back"; do case $mt in MPV) sudo pacman -S --noconfirm mpv mpv-mpris && break ;; Spotify) flatpak install com.spotify.Client && break ;; Strawberry) flatpak install org.strawberrymusicplayer.strawberry && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3 or 4." ;; esac done
+      echo
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
+    w )
+      echo
+      echo "#################################################"
+      echo "#              Social-Media Tools               #"
+      echo "#################################################"
+      echo
+      echo "Select What you want to install"
+      echo
+      select sm in "Discord" "Ferdium" "WebCord" "Tokodon" "Back"; do case $sm in Discord) flatpak install com.discordapp.Discord && break ;; Ferdium) flatpak install org.ferdium.Ferdium && break ;; WebCord) $AUR_HELPER -S --noconfirm webcord-bin && break ;; Tokodon) flatpak install org.kde.tokodon && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      echo
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
+    v )
+      echo
+      echo "#################################################"
+      echo "#              Virtualization Tools             #"
+      echo "#################################################"
+      echo
+      echo "Select Preferred VM Tool"
+      echo
+      select vm in "VirtualBox" "VirtManager" "Back"; do case $vm in VirtualBox) sudo pacman -S --noconfirm virtualbox-meta && break ;; VirtManager) sudo pacman -Rdd --noconfirm iptables && sudo pacman -S --noconfirm virt-manager-meta && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      echo
+      echo "#################################"
+      echo "              Done !             "
       echo "#################################"
       sleep 3
       clear && sh $0
@@ -87,31 +144,14 @@ case $CHOICE in
       ;;
 
     k )
-      sleep 2
-      sudo pacman -Rdd --noconfirm iptables
-      sudo pacman -S --noconfirm virt-manager-meta
-      sleep 3
-      echo
-      echo "####################################"
-      echo "       Done, Plz Reboot & Run       "
-      echo "    sudo virsh net-start default    "
-      echo "  sudo virsh net-autostart default  "
-      echo "####################################"
-      sleep 10
-      clear && sh $0
-
-      ;;
-
-    d )
       echo
       echo "#################################################"
       echo "#           Installing KDEnLive Editor          #"
       echo "#################################################"
       echo
-      sleep 2
       echo "Native or Flatpak ?"
       echo
-      select lutris in "Native" "Flatpak" "Back"; do case $lutris in Native) sudo pacman -S --noconfirm kdenlive && break ;; Flatpak) flatpak install org.kde.kdenlive && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select kdenlive in "Native" "Flatpak" "Back"; do case $kdenlive in Native) sudo pacman -S --noconfirm kdenlive && break ;; Flatpak) flatpak install org.kde.kdenlive && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       sleep 2
       echo
       echo "#################################"
