@@ -14,14 +14,14 @@ If you can Contribute your knowledge improving the toolkit taking it above and b
 
 ### How to get it
 
-First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you the user. I will never force anything on you.
+First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you the user. I will never force anything on you. just run this simple curl command to get started.
 
-It's just a simple Terminal curl command that you run which will prompt you before injecting as in adding the XeroLinux repository, where from it will then prompt you, should you agree, as to which AUR helper you prefer, then proceed to do so then install and launch the toolkit.. Again only if you agree..
-
-Curl Command :
 ```
 bash -c "$(curl -fsSL https://get.xerolinux.xyz/)"
 ```
+
+It will prompt you before injecting as in adding the XeroLinux repository, where from it will then prompt you, should you agree, as to which AUR helper you prefer, then proceed to do so then install and launch the toolkit.. Again only if you agree..
+
 ![](https://i.imgur.com/ZnxxpW2.png)
 
 ### Things to note
