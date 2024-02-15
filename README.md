@@ -18,10 +18,6 @@ It will prompt you before injecting as in adding the XeroLinux repository, where
 
 It's crucial to clarify that this toolkit isn't intended for custom Arch-Based distros. While some elements might function, I can't ensure seamless compatibility due to potential conflicts arising from differing tweaks and repositories. To ensure optimal performance, it's strongly recommended for use on a clean Pure-Arch install executed through the **ArchInstall** script. Nor will it provide Arch or DE/WM installations.
 
-### The Wiki
+### How to Contribute
 
-For more information and details, please check the included [**Wiki**](https://github.com/xerolinux/xlapit-cli/wiki). It contains detailed information about each and every option this toolkit has. It will eveolve as we work on the tool.
-
-### Contribute
-
-If you can Contribute your knowledge improving the toolkit taking it above and beyond, making it the dafcto for every **Arch** user, it would be highly appreciated. Please see [**Here**](https://github.com/xerolinux/xlapit-cli/wiki/User-Contribution) for more information.
+If you can/want to Contribute your knowledge improving this toolkit taking it above and beyond, making it the defacto for every **Arch** user, please see [**Here**](https://github.com/xerolinux/xlapit-cli/wiki/User-Contribution) for more information.
