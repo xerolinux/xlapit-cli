@@ -1,6 +1,6 @@
 ### What it is
 
-This toolkit aims to be an all-in-one solution for post-installation, expediting your Arch setup. It's offered as *use at your own risk* type of thing, without any support. You will have to rely on yourself and your own knowledge and ability to do research when it comes to the provided tools and your setup. 
+This toolkit aims to be an all-in-one solution for post-installation, expediting your Arch setup. It's offered as *use at your own risk* type of thing, without any support. You will have to rely on yourself and your own knowledge and ability to do research when it comes to the provided tools and your setup. For more detailed info visit the [**Wiki**](https://github.com/xerolinux/xlapit-cli/wiki).
 
 ![XLAPiT](https://i.imgur.com/JuWceYE.png)
 
