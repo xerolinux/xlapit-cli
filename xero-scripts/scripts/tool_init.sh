@@ -180,7 +180,7 @@ case $CHOICE in
       echo "##########################################"
       sleep 3
       echo
-      $AUR_HELPER -S --noconfirm pacseek-bin
+      $AUR_HELPER -S --noconfirm pacseek-bin pacfinder
       echo
       echo "#######################################"
       echo "           Done Plz Reboot !           "
