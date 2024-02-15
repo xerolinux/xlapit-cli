@@ -2,9 +2,15 @@
 
 This toolkit aims to be an all-in-one solution for post-installation, expediting your Arch setup. It's offered as *use at your own risk* type of thing, without any support. You will have to rely on yourself and your own knowledge and ability to do research when it comes to the provided tools and your setup. Keep that in mind before venturing into the world of **Arch**.
 
-This repository contains all the source code for XeroCLI, and all the scripts that go with it. For more information and details, please check the included [**Wiki**](https://github.com/xerolinux/xlapit-cli/wiki). If you can [**contribute**](https://github.com/xerolinux/xlapit-cli/wiki/User-Contribution) to improve the toolkit it would be highly appreciated.
-
 ![XLAPiT](https://i.imgur.com/JuWceYE.png)
+
+### Wiki
+
+For more information and details, please check the included [**Wiki**](https://github.com/xerolinux/xlapit-cli/wiki). It contains detailed information about each and every option this toolkit has.
+
+### Contribute
+
+If you can Contribute your knowledge improving the toolkit taking it above and beyond, making it the dafcto for every **Arch** user, it would be highly appreciated. Please see [**Here**](https://github.com/xerolinux/xlapit-cli/wiki/User-Contribution) for more information.
 
 ### How to get it
 
