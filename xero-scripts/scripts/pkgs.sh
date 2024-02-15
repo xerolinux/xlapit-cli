@@ -18,6 +18,7 @@ echo "################# Various Extra Pkgs #################"
 echo
 echo "a. LibreOffice."
 echo "s. System Tools."
+echo "d. Development Tools."
 echo "p. Photography Tools."
 echo "m. Music/Media Tools."
 echo "w. Social-Media Tools."
@@ -62,15 +63,33 @@ case $CHOICE in
       echo
       echo "Please wait while packages install might take a while... "
       echo
-      $AUR_HELPER -S --noconfirm downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi meld lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
-      sleep 3
+      $AUR_HELPER -S --noconfirm downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
       echo
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
+      sleep 3
+      clear && sh $0
       ;;
     
+    d )
+      echo
+      echo "#################################################"
+      echo "#               Development Tools               #"
+      echo "#################################################"
+      echo
+      echo "Select What you want to install"
+      echo
+      select dt in "Github" "VSCodium" "Meld" "Zettlr" "Back"; do case $dt in Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      echo
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
     p )
       echo
       echo "#################################################"
