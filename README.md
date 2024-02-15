@@ -14,7 +14,7 @@ If you can Contribute your knowledge improving the toolkit taking it above and b
 
 ### How to get it
 
-First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you the user. I will never force anything on you. just run this simple curl command to get started.
+First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you the user. I will never force anything on you. Now just run this simple curl command to get started.
 
 ```
 bash -c "$(curl -fsSL https://get.xerolinux.xyz/)"
