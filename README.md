@@ -1,4 +1,4 @@
-# XeroLinux Arch Post Install Toolkit
+# XeroLinux Toolkit
 
 This toolkit aims to be an all-in-one solution for post-installation, expediting your Arch setup. It's offered as *use at your own risk* type of thing, without any support. You will have to rely on yourself and your own knowledge and ability to do research when it comes to the provided tools and your setup. Keep that in mind before venturing into the world of **Arch**.
 
@@ -14,9 +14,9 @@ bash -c "$(curl -fsSL https://get.xerolinux.xyz/)"
 
 It will prompt you before injecting as in adding the XeroLinux repository, where from it will then prompt you, should you agree, as to which AUR helper you prefer, then proceed to do so then install and launch the toolkit.. Again only if you agree..
 
-### Wiki
+### The Wiki
 
-For more information and details, please check the included [**Wiki**](https://github.com/xerolinux/xlapit-cli/wiki). It contains detailed information about each and every option this toolkit has.
+For more information and details, please check the included [**Wiki**](https://github.com/xerolinux/xlapit-cli/wiki). It contains detailed information about each and every option this toolkit has. It will eveolve as we work on the tool.
 
 ### Things to note
 
