@@ -80,7 +80,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select dt in "nVim" "Github" "VSCodium" "Meld" "Zettlr" "Back"; do case $dt in nVim) $AUR_HELPER -S --noconfirm nvchad-git && break ;; Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4, 5 or 6." ;; esac done
+      select dt in "neoVim" "Github" "VSCodium" "Meld" "Zettlr" "Back"; do case $dt in neoVim) sudo pacman -S --noconfirm neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter && break ;; Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4, 5 or 6." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
