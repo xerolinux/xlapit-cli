@@ -9,6 +9,9 @@
 # git commit --amend -m "more info"
 # git push --force origin
 
+# Easter Egg: Apparently I can still edit these files! :)
+# - OgloTheNerd (Oglo12)
+
 echo "Deleting the work folder if one exists"
 [ -d work ] && rm -rf work
 
