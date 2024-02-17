@@ -19,9 +19,9 @@ echo
 echo "a. LibreOffice."
 echo "s. System Tools."
 echo "d. Development Tools."
-echo "p. Photography Tools."
-echo "m. Music/Media Tools."
-echo "w. Social-Media Tools."
+echo "p. Photo and 3D Tools."
+echo "m. Music & Media Tools."
+echo "w. Social & Chat Tools."
 echo "v. Virtualization Tools."
 echo
 echo "################### OBS / KDEnLive ###################"
@@ -80,7 +80,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select dt in "Github" "VSCodium" "Meld" "Zettlr" "Back"; do case $dt in Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      select dt in "nVim" "Github" "VSCodium" "Meld" "Zettlr" "Back"; do case $dt in nVim) $AUR_HELPER -S --noconfirm nvchad-git && break ;; Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4, 5 or 6." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
@@ -98,7 +98,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select pt in "GiMP" "Krita" "Back"; do case $pt in GiMP) sudo pacman -S --noconfirm gimp && break ;; Krita) sudo pacman -S --noconfirm krita && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select pt in "GiMP" "Krita" "Blender" "GoDot" "Back"; do case $pt in GiMP) sudo pacman -S --noconfirm gimp && break ;; Krita) sudo pacman -S --noconfirm krita && break ;; Blender) sudo pacman -S --noconfirm blender && break ;; GoDot) sudo pacman -S --noconfirm godot && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
@@ -116,7 +116,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select mt in "MPV" "Spotify" "Strawberry" "Back"; do case $mt in MPV) sudo pacman -S --noconfirm mpv mpv-mpris && break ;; Spotify) flatpak install com.spotify.Client && break ;; Strawberry) flatpak install org.strawberrymusicplayer.strawberry && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3 or 4." ;; esac done
+      select mt in "MPV" "Spotify" "Tenacity" "Strawberry" "Back"; do case $mt in MPV) sudo pacman -S --noconfirm mpv mpv-mpris && break ;; Spotify) flatpak install com.spotify.Client && break ;; Tenacity) flatpak install org.tenacityaudio.Tenacity && break ;; Strawberry) flatpak install org.strawberrymusicplayer.strawberry && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
