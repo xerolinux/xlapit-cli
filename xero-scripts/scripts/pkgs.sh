@@ -12,7 +12,7 @@ echo "#                             Essential Pkg Installer                     
 echo "###################################################################################"
 tput sgr0
 echo
-echo "Hello $USER, this will install extra packages, some require Xero Repo & multilib."
+echo "Hello $USER, this will install extra packages. Press i for the Wiki."
 echo
 echo "################# Various Extra Pkgs #################"
 echo
@@ -39,13 +39,21 @@ read CHOICE
 
 case $CHOICE in
 
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
+
     a )
       echo
       sleep 2
-      sudo pacman -S --noconfirm libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
+      sudo pacman -S --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
       sleep 2
       echo
-      $AUR_HELPER -S --noconfirm ttf-gentium-basic hsqldb2-java libreoffice-extension-languagetool
+      $AUR_HELPER -S --noconfirm --needed ttf-gentium-basic hsqldb2-java libreoffice-extension-languagetool
       echo
       echo "#################################"
       echo "        Done, Plz Reboot !       "
@@ -63,7 +71,7 @@ case $CHOICE in
       echo
       echo "Please wait while packages install might take a while... "
       echo
-      $AUR_HELPER -S --noconfirm downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
+      $AUR_HELPER -S --noconfirm --needed downgrade yt-dlg mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-headers linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
       echo
       echo "#######################################"
       echo "                 Done !                "
@@ -80,7 +88,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select dt in "neoVim" "Github" "VSCodium" "Meld" "Zettlr" "Back"; do case $dt in neoVim) sudo pacman -S --noconfirm neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter && break ;; Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4, 5 or 6." ;; esac done
+      select dt in "neoVim" "Github" "VSCodium" "Meld" "Zettlr" "Eclipse" "IntelliJ" "Back"; do case $dt in neoVim) sudo pacman -S --noconfirm --needed neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter && break ;; Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm --needed meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Eclipse) flatpak install org.eclipse.Java && break ;; IntelliJ) flatpak install com.jetbrains.IntelliJ-IDEA-Community && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select correct number between 1 & 8." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
@@ -98,7 +106,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select pt in "GiMP" "Krita" "Blender" "GoDot" "Back"; do case $pt in GiMP) sudo pacman -S --noconfirm gimp && break ;; Krita) sudo pacman -S --noconfirm krita && break ;; Blender) sudo pacman -S --noconfirm blender && break ;; GoDot) sudo pacman -S --noconfirm godot && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      select pt in "GiMP" "Krita" "Blender" "GoDot" "Back"; do case $pt in GiMP) sudo pacman -S --noconfirm --needed gimp && break ;; Krita) sudo pacman -S --noconfirm --needed krita && break ;; Blender) sudo pacman -S --noconfirm --needed blender && break ;; GoDot) sudo pacman -S --noconfirm --needed godot && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
@@ -116,7 +124,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select mt in "MPV" "Spotify" "Tenacity" "Strawberry" "Back"; do case $mt in MPV) sudo pacman -S --noconfirm mpv mpv-mpris && break ;; Spotify) flatpak install com.spotify.Client && break ;; Tenacity) flatpak install org.tenacityaudio.Tenacity && break ;; Strawberry) flatpak install org.strawberrymusicplayer.strawberry && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      select mt in "MPV" "Spotify" "Tenacity" "Strawberry" "Back"; do case $mt in MPV) sudo pacman -S --noconfirm --needed mpv mpv-mpris && break ;; Spotify) flatpak install com.spotify.Client && break ;; Tenacity) flatpak install org.tenacityaudio.Tenacity && break ;; Strawberry) flatpak install org.strawberrymusicplayer.strawberry && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
@@ -134,7 +142,7 @@ case $CHOICE in
       echo
       echo "Select What you want to install"
       echo
-      select sm in "Discord" "Ferdium" "WebCord" "Tokodon" "Back"; do case $sm in Discord) flatpak install com.discordapp.Discord && break ;; Ferdium) flatpak install org.ferdium.Ferdium && break ;; WebCord) $AUR_HELPER -S --noconfirm webcord-bin && break ;; Tokodon) flatpak install org.kde.tokodon && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      select sm in "Discord" "Ferdium" "WebCord" "Tokodon" "Back"; do case $sm in Discord) flatpak install com.discordapp.Discord && break ;; Ferdium) flatpak install org.ferdium.Ferdium && break ;; WebCord) $AUR_HELPER -S --noconfirm --needed webcord-bin && break ;; Tokodon) flatpak install org.kde.tokodon && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
@@ -152,7 +160,7 @@ case $CHOICE in
       echo
       echo "Select Preferred VM Tool"
       echo
-      select vm in "VirtualBox" "VirtManager" "Back"; do case $vm in VirtualBox) sudo pacman -S --noconfirm virtualbox-meta && break ;; VirtManager) sudo pacman -Rdd --noconfirm iptables && sudo pacman -S --noconfirm virt-manager-meta && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select vm in "VirtualBox" "VirtManager" "Back"; do case $vm in VirtualBox) sudo pacman -S --noconfirm --needed virtualbox-meta && break ;; VirtManager) sudo pacman -Rdd --noconfirm iptables && sudo pacman -S --noconfirm --needed virt-manager-meta && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################"
       echo "              Done !             "
@@ -170,7 +178,7 @@ case $CHOICE in
       echo
       echo "Native or Flatpak ?"
       echo
-      select kdenlive in "Native" "Flatpak" "Back"; do case $kdenlive in Native) sudo pacman -S --noconfirm kdenlive && break ;; Flatpak) flatpak install org.kde.kdenlive && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select kdenlive in "Native" "Flatpak" "Back"; do case $kdenlive in Native) sudo pacman -S --noconfirm --needed kdenlive && break ;; Flatpak) flatpak install org.kde.kdenlive && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       sleep 2
       echo
       echo "#################################"
@@ -201,7 +209,7 @@ case $CHOICE in
       echo "          Setting up v4l2loopback         "
       echo "##########################################"
       sleep 3
-      sudo pacman -S --noconfirm v4l2loopback-dkms
+      sudo pacman -S --noconfirm --needed v4l2loopback-dkms
       sleep 3
       # Create or append to /etc/modules-load.d/v4l2loopback.conf
       echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null

@@ -44,7 +44,7 @@ case $CHOICE in
       echo "#            Installing Steam Launcher          #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm steam
+      sudo pacman -S --noconfirm --needed steam
       sleep 3
       echo
       echo "Applying Download Speed Enhancement Patch..."
@@ -66,7 +66,7 @@ case $CHOICE in
       echo
       echo "Native (Unofficial) or Flatpak (Official) ?"
       echo
-      select lutris in "Native" "Flatpak" "Back"; do case $lutris in Native) sudo pacman -S --noconfirm lutris wine-meta && break ;; Flatpak) flatpak install net.lutris.Lutris && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select lutris in "Native" "Flatpak" "Back"; do case $lutris in Native) sudo pacman -S --noconfirm --needed lutris wine-meta && break ;; Flatpak) flatpak install net.lutris.Lutris && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "vm.max_map_count=2147483642" | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null
       echo
@@ -86,7 +86,7 @@ case $CHOICE in
       echo
       echo "Native (Unofficial) or Flatpak (Official) ?"
       echo
-      select heroic in "Native" "Flatpak" "Back"; do case $heroic in Native) $AUR_HELPER -S --noconfirm heroic-games-launcher-bin wine-meta && break ;; Flatpak) flatpak install com.heroicgameslauncher.hgl && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select heroic in "Native" "Flatpak" "Back"; do case $heroic in Native) $AUR_HELPER -S --noconfirm --needed heroic-games-launcher-bin wine-meta && break ;; Flatpak) flatpak install com.heroicgameslauncher.hgl && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -104,7 +104,7 @@ case $CHOICE in
       echo
       echo "Native (Unofficial) or Flatpak (Official) ?"
       echo
-      select bottles in "Native" "Flatpak" "Back"; do case $bottles in Native) $AUR_HELPER -S --noconfirm bottles wine-meta && break ;; Flatpak) flatpak install com.usebottles.bottles && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select bottles in "Native" "Flatpak" "Back"; do case $bottles in Native) $AUR_HELPER -S --noconfirm --needed bottles wine-meta && break ;; Flatpak) flatpak install com.usebottles.bottles && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -120,7 +120,7 @@ case $CHOICE in
       echo "#               Installing Mangohud             #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm mangohud
+      sudo pacman -S --noconfirm --needed mangohud
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -136,7 +136,7 @@ case $CHOICE in
       echo "#               Installing Goverlay             #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm goverlay
+      sudo pacman -S --noconfirm --needed goverlay
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -154,7 +154,7 @@ case $CHOICE in
       echo
       echo "Native (Unofficial) or Flatpak (Official) ?"
       echo
-      select protonup in "Native" "Flatpak" "Back"; do case $protonup in Native) $AUR_HELPER -S --noconfirm protonup-qt wine-meta && break ;; Flatpak) flatpak install net.davidotek.pupgui2 && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select protonup in "Native" "Flatpak" "Back"; do case $protonup in Native) $AUR_HELPER -S --noconfirm --needed protonup-qt wine-meta && break ;; Flatpak) flatpak install net.davidotek.pupgui2 && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -170,7 +170,7 @@ case $CHOICE in
       echo "#               Installing DXVK-bin             #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm dxvk-bin
+      $AUR_HELPER -S --noconfirm --needed dxvk-bin
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -186,7 +186,7 @@ case $CHOICE in
       echo "#                Installing nvdxvk              #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm dxvk-nvapi-mingw
+      $AUR_HELPER -S --noconfirm --needed dxvk-nvapi-mingw
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"

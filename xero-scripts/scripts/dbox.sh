@@ -44,7 +44,7 @@ case $CHOICE in
       sleep 2
       echo "Installing Podman & Podman-Desktop..."
       echo
-      sudo pacman -S --noconfirm podman && flatpak install io.podman_desktop.PodmanDesktop
+      sudo pacman -S --noconfirm --needed podman && flatpak install io.podman_desktop.PodmanDesktop
       echo
       clear && sh $0
 
@@ -55,7 +55,7 @@ case $CHOICE in
       sleep 2
       echo "Installing & Srtting up Docker..."
       echo
-      sudo pacman -S --noconfirm docker docker-compose docker-buildx
+      sudo pacman -S --noconfirm --needed docker docker-compose docker-buildx
       sleep 2
       echo
       echo "Enabling Services & Adding you to group"
@@ -88,7 +88,7 @@ case $CHOICE in
       sleep 2
       echo "Installing Dostrobox..."
       echo
-      sudo pacman -S --noconfirm distrobox
+      sudo pacman -S --noconfirm --needed distrobox
       sleep 3
       echo
       clear && sh $0

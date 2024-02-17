@@ -52,7 +52,7 @@ case $CHOICE in
       echo
       echo "Please select which printer you have."
       echo
-      select printer in "HP" "Epson" "Generic"; do case $printer in HP) $AUR_HELPER -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin && break ;; Epson) $AUR_HELPER -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 epson-inkjet-printer-escpr epson-inkjet-printer-escpr2 && break ;; Generic) sudo pacman -S --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      select printer in "HP" "Epson" "Generic"; do case $printer in HP) $AUR_HELPER -S --noconfirm --needed ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin && break ;; Epson) $AUR_HELPER -S --noconfirm --needed ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 epson-inkjet-printer-escpr epson-inkjet-printer-escpr2 && break ;; Generic) sudo pacman -S --noconfirm --needed ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       sudo systemctl enable --now avahi-daemon cups.socket
       echo
@@ -89,7 +89,7 @@ case $CHOICE in
       echo "############################################"
       sleep 3
       echo
-      sudo pacman -S --noconfirm scanner-support
+      sudo pacman -S --noconfirm --needed scanner-support
       echo
       echo "#######################################"
       echo "                 Done !                "
@@ -104,7 +104,7 @@ case $CHOICE in
       echo "#          Installing DualShock 4 Driver        #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm ds4drv game-devices-udev
+      $AUR_HELPER -S --noconfirm --needed ds4drv game-devices-udev
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -120,7 +120,7 @@ case $CHOICE in
       echo "#  Installing PS-5 DualSense controller Driver  #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm dualsensectl game-devices-udev
+      $AUR_HELPER -S --noconfirm --needed dualsensectl game-devices-udev
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -136,7 +136,7 @@ case $CHOICE in
       echo "#  Installing Xbox One Wireless Gamepad Driver  #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm xone-dkms game-devices-udev
+      $AUR_HELPER -S --noconfirm --needed xone-dkms game-devices-udev
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"

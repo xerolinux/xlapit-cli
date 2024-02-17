@@ -115,7 +115,7 @@ case $CHOICE in
       echo "#   Activating OS-Prober in Grub.   #"
       echo "#####################################"
       sleep 3
-      sudo pacman -S --noconfirm os-prober
+      sudo pacman -S --noconfirm --needed os-prober
       sudo sed -i 's/#\s*GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/' '/etc/default/grub'
       sudo os-prober
       sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -150,7 +150,7 @@ case $CHOICE in
       echo "##########################################"
 	  sleep 3
 	  echo
-	  sudo pacman -S --noconfirm reflector
+	  sudo pacman -S --noconfirm --needed reflector
 	  sudo reflector --verbose -phttps -f10 -l10 --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syy
 	  sleep 3
 	  echo

@@ -67,7 +67,7 @@ case $CHOICE in
       echo "            Which Web Browser ?           "
       echo "##########################################"
       echo
-      select browser in "Brave" "Firefox" "Vivaldi" "Back"; do case $browser in Brave) $AUR_HELPER -S --noconfirm brave-bin && break ;; Firefox) sudo pacman -S --noconfirm firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3 or 4." ;; esac done
+      select browser in "Brave" "Firefox" "Vivaldi" "Back"; do case $browser in Brave) $AUR_HELPER -S --noconfirm --needed brave-bin && break ;; Firefox) sudo pacman -S --noconfirm --needed firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm --needed vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3 or 4." ;; esac done
       echo
       echo "#######################################"
       echo "                 Done !                "
@@ -114,7 +114,7 @@ case $CHOICE in
       echo "##########################################"
       sleep 3
       echo
-      sudo pacman -S --noconfirm flatpak
+      sudo pacman -S --noconfirm --needed flatpak
       echo
       echo "#######################################"
       echo "           Done Plz Reboot !           "
@@ -163,7 +163,7 @@ case $CHOICE in
       echo "             Installing Octopi            "
       echo "##########################################"
       sleep 3
-      $AUR_HELPER -S --noconfirm octopi alpm_octopi_utils octopi-notifier-noknotify
+      $AUR_HELPER -S --noconfirm --needed octopi alpm_octopi_utils octopi-notifier-noknotify
       echo
       echo "#######################################"
       echo "                 Done !                "
@@ -180,7 +180,7 @@ case $CHOICE in
       echo "##########################################"
       sleep 3
       echo
-      $AUR_HELPER -S --noconfirm pacseek-bin pacfinder
+      $AUR_HELPER -S --noconfirm --needed pacseek-bin pacfinder
       echo
       echo "#######################################"
       echo "           Done Plz Reboot !           "
@@ -196,7 +196,7 @@ case $CHOICE in
       echo "            Installing Pamac-All          "
       echo "##########################################"
       sleep 3
-      $AUR_HELPER -S --noconfirm pamac-all pamac-cli libpamac-full
+      $AUR_HELPER -S --noconfirm --needed pamac-all pamac-cli libpamac-full
       echo
       echo "#######################################"
       echo "                 Done !                "
