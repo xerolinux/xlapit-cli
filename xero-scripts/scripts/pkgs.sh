@@ -82,13 +82,64 @@ case $CHOICE in
     
     d )
       echo
-      echo "#################################################"
-      echo "#               Development Tools               #"
-      echo "#################################################"
-      echo
-      echo "Select What you want to install"
-      echo
-      select dt in "neoVim" "Github" "VSCodium" "Meld" "Zettlr" "Eclipse" "IntelliJ" "Back"; do case $dt in neoVim) sudo pacman -S --noconfirm --needed neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter && break ;; Github) flatpak install io.github.shiftey.Desktop && break ;; VSCodium) flatpak install com.vscodium.codium && break ;; Meld) sudo pacman -S --noconfirm --needed meld && break ;; Zettlr) flatpak install com.zettlr.Zettlr && break ;; Eclipse) flatpak install org.eclipse.Java && break ;; IntelliJ) flatpak install com.jetbrains.IntelliJ-IDEA-Community && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select correct number between 1 & 8." ;; esac done
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to install flatpak packages
+      install_flatpak_packages() {
+          flatpak install -y $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Development Apps to install:" 20 60 7 \
+          "neoVim" "Vim text editor" OFF \
+          "Github" "GitHub Desktop application" OFF \
+          "VSCodium" "Telemetry-less code editing" OFF \
+          "Meld" "Visual diff and merge tool" OFF \
+          "Zettlr" "Markdown editor" OFF \
+          "Eclipse" "Java bytecode compiler" OFF \
+          "IntelliJ" "IntelliJ IDEA IDE for Java" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      neoVim)
+                          install_pacman_packages neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
+                          ;;
+                      Github)
+                          install_flatpak_packages io.github.shiftey.Desktop
+                          ;;
+                      VSCodium)
+                          install_flatpak_packages com.vscodium.codium
+                          ;;
+                      Meld)
+                          install_pacman_packages meld
+                          ;;
+                      Zettlr)
+                          install_flatpak_packages com.zettlr.Zettlr
+                          ;;
+                      Eclipse)
+                          install_flatpak_packages org.eclipse.Java
+                          ;;
+                      IntelliJ)
+                          install_flatpak_packages com.jetbrains.IntelliJ-IDEA-Community
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
       echo "#################################"
       echo "              Done !             "
@@ -100,13 +151,47 @@ case $CHOICE in
 
     p )
       echo
-      echo "#################################################"
-      echo "#               Photography Tools               #"
-      echo "#################################################"
-      echo
-      echo "Select What you want to install"
-      echo
-      select pt in "GiMP" "Krita" "Blender" "GoDot" "Back"; do case $pt in GiMP) sudo pacman -S --noconfirm --needed gimp && break ;; Krita) sudo pacman -S --noconfirm --needed krita && break ;; Blender) sudo pacman -S --noconfirm --needed blender && break ;; GoDot) sudo pacman -S --noconfirm --needed godot && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Photography & 3D Apps to install :" 20 60 7 \
+          "GiMP" "GNU Image Manipulation Program" OFF \
+          "Krita" "Edit and paint images" OFF \
+          "Blender" "A 3D graphics creation suite" OFF \
+          "GoDot" "Cross-platform 3D game engine" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      GiMP)
+                          install_pacman_packages gimp
+                          ;;
+                      Krita)
+                          install_pacman_packages krita
+                          ;;
+                      Blender)
+                          install_pacman_packages blender
+                          ;;
+                      GoDot)
+                          install_pacman_packages godot
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
       echo "#################################"
       echo "              Done !             "
@@ -118,13 +203,52 @@ case $CHOICE in
 
     m )
       echo
-      echo "#################################################"
-      echo "#               Music/Media Tools               #"
-      echo "#################################################"
-      echo
-      echo "Select What you want to install"
-      echo
-      select mt in "MPV" "Spotify" "Tenacity" "Strawberry" "Back"; do case $mt in MPV) sudo pacman -S --noconfirm --needed mpv mpv-mpris && break ;; Spotify) flatpak install com.spotify.Client && break ;; Tenacity) flatpak install org.tenacityaudio.Tenacity && break ;; Strawberry) flatpak install org.strawberrymusicplayer.strawberry && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to install flatpak packages
+      install_flatpak_packages() {
+          flatpak install -y $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Music & Media Apps to install:" 20 60 7 \
+          "MPV" "An OpenSource media player" OFF \
+          "Spotify" "Online music streaming service" OFF \
+          "Tenacity" "Telemetry-less Audio editing" OFF \
+          "Strawberry" "A music player for collectors" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      MPV)
+                          install_pacman_packages mpv mpv-mpris
+                          ;;
+                      Spotify)
+                          install_flatpak_packages com.spotify.Client
+                          ;;
+                      Tenacity)
+                          install_flatpak_packages org.tenacityaudio.Tenacity
+                          ;;
+                      Strawberry)
+                          install_flatpak_packages org.strawberrymusicplayer.strawberry
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
       echo "#################################"
       echo "              Done !             "
@@ -136,13 +260,57 @@ case $CHOICE in
 
     w )
       echo
-      echo "#################################################"
-      echo "#              Social-Media Tools               #"
-      echo "#################################################"
-      echo
-      echo "Select What you want to install"
-      echo
-      select sm in "Discord" "Ferdium" "WebCord" "Tokodon" "Back"; do case $sm in Discord) flatpak install com.discordapp.Discord && break ;; Ferdium) flatpak install org.ferdium.Ferdium && break ;; WebCord) $AUR_HELPER -S --noconfirm --needed webcord-bin && break ;; Tokodon) flatpak install org.kde.tokodon && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3, 4 or 5." ;; esac done
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to install flatpak packages
+      install_flatpak_packages() {
+          flatpak install -y $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Music & Media Apps to install:" 20 60 7 \
+          "Discord" "All-in-one IM for gamers" OFF \
+          "Ferdium" "Organize many apps into one" OFF \
+          "WebCord" "Customizable Discord Fork" OFF \
+          "Tokodon" "A Mastodon client for Plasma" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      Discord)
+                          install_flatpak_packages com.discordapp.Discord
+                          ;;
+                      Ferdium)
+                          install_flatpak_packages org.ferdium.Ferdium
+                          ;;
+                      WebCord)
+                          install_aur_packages webcord-bin
+                          ;;
+                      Tokodon)
+                          install_flatpak_packages org.kde.tokodon
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
       echo "#################################"
       echo "              Done !             "
@@ -154,13 +322,40 @@ case $CHOICE in
 
     v )
       echo
-      echo "#################################################"
-      echo "#              Virtualization Tools             #"
-      echo "#################################################"
-      echo
-      echo "Select Preferred VM Tool"
-      echo
-      select vm in "VirtualBox" "VirtManager" "Back"; do case $vm in VirtualBox) sudo pacman -S --noconfirm --needed virtualbox-meta && break ;; VirtManager) sudo pacman -Rdd --noconfirm iptables && sudo pacman -S --noconfirm --needed virt-manager-meta && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Virtualization System to install :" 20 60 7 \
+          "VirtManager" "Manage QEMU virtual machines" OFF \
+          "VirtualBox" "Powerful x86 virtualization" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      VirtManager)
+                          sudo pacman -Rdd --noconfirm iptables \
+                          && install_pacman_packages virt-manager-meta
+                          ;;
+                      VirtualBox)
+                          install_pacman_packages virtualbox-meta
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
       echo "#################################"
       echo "              Done !             "
