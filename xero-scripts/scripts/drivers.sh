@@ -20,12 +20,7 @@ echo "g. GPU Drivers (Forum Link)."
 echo "p. Printer Drivers (Native/AUR)."
 echo "m. Samba Tools (XeroLinux Repo)."
 echo "k. Scanner Drivers (XeroLinux Repo)."
-echo
-echo "################# Game Controllers #################"
-echo
-echo "d. DualShock 4 Controller Driver (AUR)."
-echo "s. PS5 DualSense Controller Driver (AUR)."
-echo "x. Xbox One Wireless Gamepad Driver (AUR)."
+echo "c. Game Controller Drivers (PS4/5/XBox)."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -46,24 +41,59 @@ case $CHOICE in
 
     p )
       echo
-      echo "###########################################"
-      echo "      Installing Printing Essentials       "
-      echo "###########################################"
-      echo
-      echo "Please select which printer you have."
-      echo
-      select printer in "HP" "Epson" "Generic"; do case $printer in HP) $AUR_HELPER -S --noconfirm --needed ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin && break ;; Epson) $AUR_HELPER -S --noconfirm --needed ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 epson-inkjet-printer-escpr epson-inkjet-printer-escpr2 && break ;; Generic) sudo pacman -S --noconfirm --needed ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Printer Drivers to install:" 20 60 7 \
+          "HP" "HP Printer Driver/Tools" OFF \
+          "Epson" "Epson Printer Driver/Tools" OFF \
+          "Generic" "Generic Printer Drivers/Tools" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      HP)
+                          install_aur_packages ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin
+                          ;;
+                      Epson)
+                          install_aur_packages ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 epson-inkjet-printer-escpr epson-inkjet-printer-escpr2
+                          ;;
+                      Generic)
+                          install_pacman_packages ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
       sudo systemctl enable --now avahi-daemon cups.socket
       echo
       sudo groupadd lp && sudo groupadd cups && sudo usermod -aG sys,lp,cups $(whoami)
-      sleep 3
       echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
       sleep 3
       clear && sh $0
+
       ;;
 
     m )
@@ -98,49 +128,49 @@ case $CHOICE in
       clear && sh $0
       ;;
 
-    d )
+    c )
       echo
-      echo "#################################################"
-      echo "#          Installing DualShock 4 Driver        #"
-      echo "#################################################"
-      echo
-      $AUR_HELPER -S --noconfirm --needed ds4drv game-devices-udev
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
 
-      ;;
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Controller Driver to install:" 20 60 7 \
+          "DualShock4" "PS4 Controller Driver" OFF \
+          "DualSense" "PS5 DualSense Controller Driver" OFF \
+          "XBoxOne" "Xbox One Wireless Gamepad Driver" OFF 3>&1 1>&2 2>&3)
 
-    s )
-      echo
-      echo "#################################################"
-      echo "#  Installing PS-5 DualSense controller Driver  #"
-      echo "#################################################"
-      echo
-      $AUR_HELPER -S --noconfirm --needed dualsensectl game-devices-udev
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      DualShock4)
+                          install_aur_packages ds4drv game-devices-udev
+                          ;;
+                      DualSense)
+                          install_aur_packages dualsensectl game-devices-udev
+                          ;;
+                      XBoxOne)
+                          install_aur_packages xone-dkms game-devices-udev
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
 
-      ;;
-    
-    x )
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
-      echo "#################################################"
-      echo "#  Installing Xbox One Wireless Gamepad Driver  #"
-      echo "#################################################"
-      echo
-      $AUR_HELPER -S --noconfirm --needed xone-dkms game-devices-udev
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
       sleep 3
       clear && sh $0
 
