@@ -277,7 +277,7 @@ case $CHOICE in
 
       # Function to display package selection dialog
       package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select Music & Media Apps to install:" 20 60 7 \
+          PACKAGES=$(whiptail --checklist --separate-output "Select Social/Web Apps to install:" 20 60 7 \
           "Discord" "All-in-one IM for gamers" OFF \
           "Ferdium" "Organize many apps into one" OFF \
           "WebCord" "Customizable Discord Fork" OFF \
