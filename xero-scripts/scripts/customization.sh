@@ -27,7 +27,7 @@ echo
 echo "################## DE/WM Ricing ##################"
 echo
 echo "k. XeroLinux KDE Rices"
-echo "h. Hyprland Dot File / Rices"
+echo "h. Hyprland Dot Files/Rices"
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
