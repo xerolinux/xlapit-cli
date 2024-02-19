@@ -22,12 +22,7 @@ echo "m. Activate multilib repository if not done."
 echo "d. Activate/Set Pacman Parallel Downloads (10)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
 echo "t. Enable fast multithreaded package compilation."
-echo
-echo "########## GUI Package Managers ##########"
-echo
-echo "o. OctoPi GUI."
-echo "s. PacSeek TUI."
-echo "p. Pamac-All GUI."
+echo "p. Install GUI 3rd-Party GUI Package Manager (AUR)."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -63,15 +58,69 @@ case $CHOICE in
 
     b )
       echo
-      echo "##########################################"
-      echo "            Which Web Browser ?           "
-      echo "##########################################"
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to install flatpak packages
+      install_flatpak_packages() {
+          flatpak install -y $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Browser to install:" 20 60 7 \
+          "Brave" "The web browser from Brave" OFF \
+          "Firefox" "Fast, Private & Safe Web Browser" OFF \
+          "Vivaldi" "Feature-packed web browser" OFF \
+          "Mullvad" "Mass surveillance free browser" OFF \
+          "Floorp" "A Firefox-based Browser" OFF \
+          "LibreWolf" "LibreWolf Web Browser" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      Brave)
+                          install_aur_packages brave-bin
+                          ;;
+                      Firefox)
+                          install_pacman_packages firefox firefox-ublock-origin
+                          ;;
+                      Vivaldi)
+                          install_pacman_packages vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
+                          ;;
+                      Mullvad)
+                          install_aur_packages mullvad-browser-bin
+                          ;;
+                      Floorp)
+                          install_flatpak_packages flathub one.ablaze.floorp
+                          ;;
+                      LibreWolf)
+                          install_flatpak_packages io.gitlab.librewolf-community
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
-      select browser in "Brave" "Firefox" "Vivaldi" "Back"; do case $browser in Brave) $AUR_HELPER -S --noconfirm --needed brave-bin && break ;; Firefox) sudo pacman -S --noconfirm --needed firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm --needed vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3 or 4." ;; esac done
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
       sleep 3
       clear && sh $0
 
@@ -157,50 +206,58 @@ case $CHOICE in
 
       ;;
 
-    o )
-      echo
-      echo "##########################################"
-      echo "             Installing Octopi            "
-      echo "##########################################"
-      sleep 3
-      $AUR_HELPER -S --noconfirm --needed octopi alpm_octopi_utils octopi-notifier-noknotify
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    s )
-      echo
-      echo "##########################################"
-      echo "               PacSeek T.U.I              "
-      echo "##########################################"
-      sleep 3
-      echo
-      $AUR_HELPER -S --noconfirm --needed pacseek-bin pacfinder
-      echo
-      echo "#######################################"
-      echo "           Done Plz Reboot !           "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
     p )
       echo
-      echo "##########################################"
-      echo "            Installing Pamac-All          "
-      echo "##########################################"
-      sleep 3
-      $AUR_HELPER -S --noconfirm --needed pamac-all pamac-cli libpamac-full
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select GUI Package Manager to install:" 20 60 7 \
+          "OctoPi" "A powerful Pacman frontend using Qt" OFF \
+          "PacSeek" "TUI for installing AUR packages" OFF \
+          "PamacAll" "A GUI with AUR/Flatpak/Snap support" OFF \
+          "BauhGUI" "For AppImage, Flatpak, Snap, Arch/AUR" OFF \
+          "ArchUpdate" "An update notifier/applier (Arch/AUR)" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      OctoPi)
+                          install_aur_packages octopi alpm_octopi_utils octopi-notifier-noknotify
+                          ;;
+                      PacSeek)
+                          install_aur_packages pacseek-bin pacfinder
+                          ;;
+                      PamacAll)
+                          install_aur_packages pamac-all pamac-cli libpamac-full
+                          ;;
+                      BauhGUI)
+                          install_aur_packages bauh
+                          ;;
+                      ArchUpdate)
+                          install_aur_packages arch-update \
+                          && systemctl --user enable --now arch-update.timer
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
       sleep 3
       clear && sh $0
 
