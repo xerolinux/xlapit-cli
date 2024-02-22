@@ -21,6 +21,7 @@ echo "p. Printer Drivers (Native/AUR)."
 echo "m. Samba Tools (XeroLinux Repo)."
 echo "k. Scanner Drivers (XeroLinux Repo)."
 echo "c. Game Controller Drivers (PS4/5/XBox)."
+echo "d. DeckLink & StreamDeck Drivers/Tools (AUR)."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -176,6 +177,54 @@ case $CHOICE in
 
       ;;
     
+    d )
+      echo
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Tools to install (Might take a while) :" 20 60 7 \
+          "Decklink" "Drivers for DeckLink" OFF \
+          "DeckMaster" "App to control the Stream Deck" OFF \
+          "StreamDeckUI" "A Linux UI for the Stream Deck" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      Decklink)
+                          install_aur_packages decklink
+                          ;;
+                      DeckMaster)
+                          install_aur_packages deckmaster-bin
+                          ;;
+                      StreamDeckUI)
+                          install_aur_packages streamdeck-ui
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
+      echo
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
     q )
       clear && xero-cli -m
 

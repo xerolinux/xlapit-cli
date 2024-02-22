@@ -20,14 +20,13 @@ echo "a. LibreOffice."
 echo "s. System Tools."
 echo "d. Development Tools."
 echo "p. Photo and 3D Tools."
-echo "m. Music & Media Tools."
+echo "m. Music & Audio Tools."
 echo "w. Social & Chat Tools."
 echo "v. Virtualization Tools."
+echo "k. Video Tools & Software."
 echo
-echo "################### OBS / KDEnLive ###################"
+echo "####################### Extras #######################"
 echo
-echo "k. Install KDEnLive Video Editor."
-echo "o. Install OBS-Studio + Plugins (Flathub)."
 echo "l. Activate v4l2loopback for OBS-VirtualCam."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
@@ -161,13 +160,19 @@ case $CHOICE in
           sudo pacman -S --noconfirm --needed $@
       }
 
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
       # Function to display package selection dialog
       package_selection_dialog() {
           PACKAGES=$(whiptail --checklist --separate-output "Select Photography & 3D Apps to install :" 20 60 7 \
           "GiMP" "GNU Image Manipulation Program" OFF \
           "Krita" "Edit and paint images" OFF \
           "Blender" "A 3D graphics creation suite" OFF \
-          "GoDot" "Cross-platform 3D game engine" OFF 3>&1 1>&2 2>&3)
+          "GoDot" "Cross-platform 3D game engine" OFF \
+          "Unreal" "Advanced 3D Game-Engine" OFF 3>&1 1>&2 2>&3)
 
           # Check if user has selected any packages
           if [ -n "$PACKAGES" ]; then
@@ -184,6 +189,9 @@ case $CHOICE in
                           ;;
                       GoDot)
                           install_pacman_packages godot
+                          ;;
+                      Unreal)
+                          install_aur_packages unreal-engine-bin
                           ;;
                       *)
                           echo "Unknown package: $PACKAGE"
@@ -372,14 +380,69 @@ case $CHOICE in
 
     k )
       echo
-      echo "#################################################"
-      echo "#           Installing KDEnLive Editor          #"
-      echo "#################################################"
-      echo
-      echo "Native or Flatpak ?"
-      echo
-      select kdenlive in "Native" "Flatpak" "Back"; do case $kdenlive in Native) sudo pacman -S --noconfirm --needed kdenlive && break ;; Flatpak) flatpak install org.kde.kdenlive && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
-      sleep 2
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to install flatpak packages
+      install_flatpak_packages() {
+          flatpak install -y $@
+      }
+
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select App(s) to install (DaVinci-Reslove will take a while to compile, don't interrupt the process) :" 20 60 7 \
+          "KDEnLive" "A non-linear video editor" OFF \
+          "DaVinci" "Professional A/V post-production Soft" OFF \
+          "OBS-Studio" "Includes many Plugins (Flatpak)" OFF \
+          "Mystiq" "FFmpeg GUI front-end based on Qt5" OFF \
+          "MKVToolNix" "Matroska files creator and tools" OFF \
+          "MakeMKV" "DVD and Blu-ray to MKV converter" OFF \
+          "Avidemux" "Graphical tool to edit video" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      KDEnLive)
+                          install_pacman_packages kdenlive
+                          ;;
+                      DaVinci)
+                          install_aur_packages davinci-resolve
+                          ;;
+                      OBS-Studio)
+                          install_flatpak_packages com.obsproject.Studio com.obsproject.Studio.Plugin.OBSVkCapture com.obsproject.Studio.Plugin.Gstreamer com.obsproject.Studio.Plugin.TransitionTable  com.obsproject.Studio.Plugin.waveform com.obsproject.Studio.Plugin.InputOverlay com.obsproject.Studio.Plugin.SceneSwitcher com.obsproject.Studio.Plugin.MoveTransition com.obsproject.Studio.Plugin.ScaleToSound com.obsproject.Studio.Plugin.WebSocket com.obsproject.Studio.Plugin.DroidCam com.obsproject.Studio.Plugin.BackgroundRemoval com.obsproject.Studio.Plugin.GStreamerVaapi com.obsproject.Studio.Plugin.VerticalCanvas org.freedesktop.Platform.VulkanLayer.OBSVkCapture
+                          ;;
+                      Mystiq)
+                          install_aur_packages mystiq
+                          ;;
+                      MKVToolNix)
+                          install_flatpak_packages org.bunkus.mkvtoolnix-gui
+                          ;;
+                      MakeMKV)
+                          install_flatpak_packages com.makemkv.MakeMKV
+                          ;;
+                      Avidemux)
+                          install_pacman_packages avidemux-qt
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
       echo "#################################"
       echo "              Done !             "
@@ -395,7 +458,7 @@ case $CHOICE in
       echo "           Installing OBS-Studio           "
       echo "###########################################"
       sleep 3
-      flatpak install com.obsproject.Studio com.obsproject.Studio.Plugin.OBSVkCapture com.obsproject.Studio.Plugin.Gstreamer com.obsproject.Studio.Plugin.TransitionTable  com.obsproject.Studio.Plugin.waveform com.obsproject.Studio.Plugin.InputOverlay com.obsproject.Studio.Plugin.SceneSwitcher com.obsproject.Studio.Plugin.MoveTransition com.obsproject.Studio.Plugin.ScaleToSound com.obsproject.Studio.Plugin.WebSocket com.obsproject.Studio.Plugin.DroidCam com.obsproject.Studio.Plugin.BackgroundRemoval com.obsproject.Studio.Plugin.GStreamerVaapi com.obsproject.Studio.Plugin.VerticalCanvas org.freedesktop.Platform.VulkanLayer.OBSVkCapture
+      flatpak install
       sleep 3
       echo "#######################################"
       echo "                 Done !                "
