@@ -17,7 +17,7 @@ echo
 echo "############ Initial Setup Section ############"
 echo
 echo "a. PipeWire/Bluetooth Packages."
-echo "b. Web Browser (Brave/Firefox/Vivaldi)."
+echo "b. Web Browser (Brave/Firefox/Vivaldi Etc.)."
 echo "m. Activate multilib repository if not done."
 echo "d. Activate/Set Pacman Parallel Downloads (10)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
