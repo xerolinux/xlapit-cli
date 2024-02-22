@@ -87,6 +87,11 @@ case $CHOICE in
           sudo pacman -S --noconfirm --needed $@
       }
 
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
       # Function to install flatpak packages
       install_flatpak_packages() {
           flatpak install -y $@
@@ -114,7 +119,7 @@ case $CHOICE in
                           install_flatpak_packages io.github.shiftey.Desktop
                           ;;
                       VSCodium)
-                          install_flatpak_packages com.vscodium.codium
+                          install_aur_packages vscodium-bin vscodium-bin-marketplace vscodium-bin-features
                           ;;
                       Meld)
                           install_pacman_packages meld
