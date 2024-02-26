@@ -8,7 +8,7 @@
 clear
 tput setaf 3
 echo "##############################################################"
-echo "#        XeroLinux Distrobox/Docker/Virt-Manager Tool        #"
+echo "#               XeroLinux Distrobox/Docker Tool              #"
 echo "##############################################################"
 tput sgr0
 echo

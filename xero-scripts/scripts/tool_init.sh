@@ -18,11 +18,11 @@ echo "############ Initial Setup Section ############"
 echo
 echo "a. PipeWire/Bluetooth Packages."
 echo "b. Web Browser (Brave/Firefox/Vivaldi Etc.)."
-echo "m. Activate multilib repository if not done."
+echo "m. Activate multilib repository (if not done)."
 echo "d. Activate/Set Pacman Parallel Downloads (10)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
 echo "t. Enable fast multithreaded package compilation."
-echo "p. Install GUI 3rd-Party GUI Package Manager (AUR)."
+echo "p. Install 3rd-Party GUI Package Manager(s) (AUR)."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -218,7 +218,7 @@ case $CHOICE in
           PACKAGES=$(whiptail --checklist --separate-output "Select GUI Package Manager to install:" 20 60 7 \
           "OctoPi" "A powerful Pacman frontend using Qt" OFF \
           "PacSeek" "TUI for installing AUR packages" OFF \
-          "PamacAll" "A GUI with AUR/Flatpak/Snap support" OFF \
+          "Pamac-All" "A GUI with AUR/Flatpak/Snap support" OFF \
           "BauhGUI" "For AppImage, Flatpak, Snap, Arch/AUR" OFF \
           "ArchUpdate" "An update notifier/applier (Arch/AUR)" OFF 3>&1 1>&2 2>&3)
 
@@ -232,7 +232,7 @@ case $CHOICE in
                       PacSeek)
                           install_aur_packages pacseek-bin pacfinder
                           ;;
-                      PamacAll)
+                      Pamac-All)
                           install_aur_packages pamac-all pamac-cli libpamac-full
                           ;;
                       BauhGUI)

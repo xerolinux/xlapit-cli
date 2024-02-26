@@ -22,11 +22,11 @@ echo
 echo "################## Plasma Stuffs #################"
 echo
 echo "p. Install missing Plasma Packages."
-echo "m. Apply AppMenu Meta-Key Fix (Kwin/Rices)."
+echo "m. Apply AppMenu Meta-Key Fix (Kwin/Rice)."
 echo
 echo "################## DE/WM Ricing ##################"
 echo
-echo "k. XeroLinux KDE Rices"
+echo "k. XeroLinux KDE Rice"
 echo "h. Hyprland Dot Files/Rices"
 echo
 echo "Type Your Selection. Or type q to return to main menu."
@@ -109,7 +109,7 @@ case $CHOICE in
 	  echo "Installing Missing Plasma Packages..."
 	  echo
       sleep 3
-      $AUR_HELPER -S --noconfirm --needed flatpak-kcm systemd-kcm kdeplasma-addons keditbookmarks kgpg kwalletmanager print-manager yakuake tesseract-data-eus dolphin-plugins gwenview kamera okular spectacle svgpart plasmatube dwayland egl-wayland qt6-wayland glfw-wayland lib32-wayland wayland-protocols kwayland-integration plasma-wayland-session plasma-wayland-protocols
+      $AUR_HELPER -S --noconfirm --needed flatpak-kcm systemd-kcm kdeplasma-addons keditbookmarks kgpg print-manager yakuake tesseract-data-eus dolphin-plugins gwenview kamera okular spectacle svgpart plasmatube dwayland egl-wayland qt6-wayland glfw-wayland lib32-wayland wayland-protocols kwayland-integration plasma-wayland-session plasma-wayland-protocols kpipewire kdecoration ksshaskpass plasma-browser-integration kf5 kde-system
       echo
       sleep 2
       echo "All done, please reboot for good measure !"
