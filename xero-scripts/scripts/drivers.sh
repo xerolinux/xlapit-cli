@@ -148,13 +148,28 @@ case $CHOICE in
               for PACKAGE in $PACKAGES; do
                   case $PACKAGE in
                       DualShock4)
-                          install_aur_packages ds4drv game-devices-udev
+                          install_aur_packages ds4drv game-devices-udev \
+                          && echo "" \
+                          && echo "_:: Please follow guide on Github for configuration ::_" \
+                          && sleep 3 \
+                          && xdg-open "https://github.com/chrippa/ds4drv"  > /dev/null 2>&1 \
+                          && sleep 6
                           ;;
                       DualSense)
-                          install_aur_packages dualsensectl game-devices-udev
+                          install_aur_packages dualsensectl game-devices-udev \
+                          && echo "" \
+                          && echo "_:: Please follow guide on Github for configuration ::_" \
+                          && sleep 3 \
+                          && xdg-open "https://github.com/nowrep/dualsensectl"  > /dev/null 2>&1 \
+                          && sleep 6
                           ;;
                       XBoxOne)
-                          install_aur_packages xone-dkms game-devices-udev
+                          install_aur_packages xone-dkms game-devices-udev \
+                          && echo "" \
+                          && echo "_:: Please follow guide on Github for configuration ::_" \
+                          && sleep 3 \
+                          && xdg-open "https://github.com/medusalix/xone"  > /dev/null 2>&1 \
+                          && sleep 6
                           ;;
                       *)
                           echo "Unknown package: $PACKAGE"
@@ -199,10 +214,20 @@ case $CHOICE in
                           install_aur_packages decklink
                           ;;
                       DeckMaster)
-                          install_aur_packages deckmaster-bin
+                          install_aur_packages deckmaster-bin \
+                          && echo "" \
+                          && echo "_:: Please follow guide on Github for configuration ::_" \
+                          && sleep 3 \
+                          && xdg-open "https://github.com/muesli/deckmaster"  > /dev/null 2>&1 \
+                          && sleep 6
                           ;;
                       StreamDeckUI)
-                          install_aur_packages streamdeck-ui
+                          install_aur_packages streamdeck-ui \
+                          && echo "" \
+                          && echo "_:: Please follow guide on Github for configuration ::_" \
+                          && sleep 3 \
+                          && xdg-open "https://streamdeck-linux-gui.github.io/streamdeck-linux-gui"  > /dev/null 2>&1 \
+                          && sleep 6
                           ;;
                       *)
                           echo "Unknown package: $PACKAGE"

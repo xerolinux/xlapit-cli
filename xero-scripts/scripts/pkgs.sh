@@ -477,7 +477,7 @@ case $CHOICE in
       echo "          Setting up v4l2loopback         "
       echo "##########################################"
       sleep 3
-      sudo pacman -S --noconfirm --needed v4l2loopback-dkms
+      sudo pacman -S --noconfirm --needed v4l2loopback-dkms v4l2loopback-utils
       sleep 3
       # Create or append to /etc/modules-load.d/v4l2loopback.conf
       echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null
