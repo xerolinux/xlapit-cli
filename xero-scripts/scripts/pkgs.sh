@@ -165,6 +165,11 @@ case $CHOICE in
           $AUR_HELPER -S --noconfirm --needed $@
       }
 
+      # Function to install flatpak packages
+      install_flatpak_packages() {
+          flatpak install -y $@
+      }
+
       # Function to display package selection dialog
       package_selection_dialog() {
           PACKAGES=$(whiptail --checklist --separate-output "Select Photography & 3D Apps to install :" 20 60 7 \
@@ -182,7 +187,7 @@ case $CHOICE in
                           install_pacman_packages gimp
                           ;;
                       Krita)
-                          install_pacman_packages krita
+                          install_flatpak_packages flathub org.kde.krita
                           ;;
                       Blender)
                           install_pacman_packages blender
