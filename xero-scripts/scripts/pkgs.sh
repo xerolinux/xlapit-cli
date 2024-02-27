@@ -41,7 +41,7 @@ case $CHOICE in
     i )
       echo
       sleep 2
-      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features"  > /dev/null 2>&1
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#recommended-packages"  > /dev/null 2>&1
       echo
       clear && sh $0
       ;;

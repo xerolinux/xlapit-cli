@@ -12,7 +12,7 @@ echo "#               XeroLinux Distrobox/Docker Tool              #"
 echo "##############################################################"
 tput sgr0
 echo
-echo "Hello $USER, what would you like to do today ?"
+echo "Hello $USER, what would you like to do. Press i for the Wiki."
 echo
 echo "################## Distrobox & Docker Setup ##################"
 echo
@@ -38,6 +38,14 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#distrobox--docker"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
 
     p )
       echo

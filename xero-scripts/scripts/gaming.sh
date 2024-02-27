@@ -12,7 +12,7 @@ echo "#             The Gaming Essentials.            #"
 echo "#################################################"
 tput sgr0
 echo
-echo "Hello $USER, what would you like to install ? (multilib required)"
+echo "Hello $USER, what would you like to install ? Press i for the Wiki."
 echo
 echo "################# Game Launchers #################"
 echo
@@ -37,6 +37,14 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#game-launchers"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
 
     s )
       echo

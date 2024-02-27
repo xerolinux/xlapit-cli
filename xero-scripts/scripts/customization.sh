@@ -12,7 +12,7 @@ echo "#              System Customization             #"
 echo "#################################################"
 tput sgr0
 echo
-echo "Hello $USER, please select what to do..."
+echo "Hello $USER, please select what to do. Press i for the Wiki."
 echo
 echo "################# Shell / Prompts ################"
 echo
@@ -37,6 +37,14 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-customization"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
 
     f )
       echo

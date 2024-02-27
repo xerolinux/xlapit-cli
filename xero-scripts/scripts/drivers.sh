@@ -12,7 +12,7 @@ echo "#                               Device Drivers                            
 echo "##############################################################################"
 tput sgr0
 echo
-echo "Hello $USER, Please Select What Drivers to install. multilib repo needed."
+echo "Hello $USER, Please Select What Drivers to install. Press i for the Wiki."
 echo
 echo "################## GPU / Printing ##################"
 echo
@@ -31,6 +31,14 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-drivers"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
 
     g )
       echo

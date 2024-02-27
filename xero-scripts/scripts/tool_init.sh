@@ -12,7 +12,7 @@ echo "#                           Initial System Setup                          
 echo "############################################################################"
 tput sgr0
 echo
-echo "Hello $USER, Please Select What To Do. (multilib Repo req.)"
+echo "Hello $USER, Please Select What To Do. Press i for the Wiki."
 echo
 echo "############ Initial Setup Section ############"
 echo
@@ -32,6 +32,14 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-setup"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
 
     a )
       echo
