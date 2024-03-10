@@ -113,15 +113,60 @@ case $CHOICE in
 
     p )
       echo
-	  sleep 2
-	  echo "Installing Missing Plasma Packages..."
-	  echo
-      sleep 3
-      $AUR_HELPER -S --noconfirm --needed flatpak-kcm systemd-kcm kdeplasma-addons keditbookmarks kgpg print-manager yakuake tesseract-data-eus dolphin-plugins gwenview kamera okular spectacle svgpart plasmatube dwayland egl-wayland qt6-wayland glfw-wayland lib32-wayland wayland-protocols kwayland-integration plasma-wayland-session plasma-wayland-protocols kpipewire kdecoration ksshaskpass plasma-browser-integration kf5 kde-system
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select PKGs/Groups to install (selective) :" 20 60 7 \
+          "Frameworks" "KDE Framworks 6 Group" OFF \
+          "KSystem" "KDE System Group" OFF \
+          "KNetwork" "KDE Network Group" OFF \
+          "KGraphics" "KDE Graphics Group" OFF \
+          "KUtilities" "KDE Utilities Group" OFF \
+          "Kextras" "Extra KDE Tools" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      Frameworks)
+                          install_pacman_packages kf6
+                          ;;
+                      KSystem)
+                          install_pacman_packages kde-system
+                          ;;
+                      KNetwork)
+                          install_pacman_packages kde-network
+                          ;;
+                      KGraphics)
+                          install_pacman_packages kde-graphics
+                          ;;
+                      KUtilities)
+                          install_pacman_packages kde-utilities
+                          ;;
+                      Kextras)
+                          install_pacman_packages dolphin-plugins plasmatube audiotube ffmpegthumbs kirigami-gallery dwayland qt6-wayland lib32-wayland wayland-protocols kwayland-integration plasma-wayland-protocols kdecoration ksshaskpass kgpg
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
-      sleep 2
-      echo "All done, please reboot for good measure !"
-	  sleep 3
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
       clear && sh $0
 
       ;;

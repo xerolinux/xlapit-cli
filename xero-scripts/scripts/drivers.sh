@@ -17,7 +17,7 @@ echo
 echo "################## GPU / Printing ##################"
 echo
 echo "g. GPU Drivers (Forum Link)."
-echo "p. Printer Drivers (Native/AUR)."
+echo "p. Printer Drivers and Tools."
 echo "m. Samba Tools (XeroLinux Repo)."
 echo "k. Scanner Drivers (XeroLinux Repo)."
 echo "c. Game Controller Drivers (PS4/5/XBox)."
@@ -50,48 +50,7 @@ case $CHOICE in
 
     p )
       echo
-      # Function to install packages using pacman
-      install_pacman_packages() {
-          sudo pacman -S --noconfirm --needed $@
-      }
-
-      # Function to install packages using AUR Helper
-      install_aur_packages() {
-          $AUR_HELPER -S --noconfirm --needed $@
-      }
-
-      # Function to display package selection dialog
-      package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select Printer Drivers to install:" 20 60 7 \
-          "HP" "HP Printer Driver/Tools" OFF \
-          "Epson" "Epson Printer Driver/Tools" OFF \
-          "Generic" "Generic Printer Drivers/Tools" OFF 3>&1 1>&2 2>&3)
-
-          # Check if user has selected any packages
-          if [ -n "$PACKAGES" ]; then
-              for PACKAGE in $PACKAGES; do
-                  case $PACKAGE in
-                      HP)
-                          install_aur_packages ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 hplip hplip-plugin
-                          ;;
-                      Epson)
-                          install_aur_packages ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5 epson-inkjet-printer-escpr epson-inkjet-printer-escpr2
-                          ;;
-                      Generic)
-                          install_pacman_packages ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
-                          ;;
-                      *)
-                          echo "Unknown package: $PACKAGE"
-                          ;;
-                  esac
-              done
-          else
-              echo "No packages selected."
-          fi
-      }
-
-      # Call the package selection dialog function
-      package_selection_dialog
+      sudo pacman -S --needed --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
       echo
       sudo systemctl enable --now avahi-daemon cups.socket
       echo
