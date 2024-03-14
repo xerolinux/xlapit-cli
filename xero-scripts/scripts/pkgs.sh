@@ -17,6 +17,7 @@ echo
 echo "################# Various Extra Pkgs #################"
 echo
 echo "a. LibreOffice."
+echo "b. Web Browsers."
 echo "s. System Tools."
 echo "d. Development Tools."
 echo "p. Photo and 3D Tools."
@@ -56,6 +57,76 @@ case $CHOICE in
       echo
       echo "#################################"
       echo "        Done, Plz Reboot !       "
+      echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
+    b )
+      echo
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --noconfirm --needed $@
+      }
+
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to install flatpak packages
+      install_flatpak_packages() {
+          flatpak install -y $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select Browser(s) to install :" 20 60 7 \
+          "Brave" "The web browser from Brave" OFF \
+          "Firefox" "Fast, Private & Safe Web Browser" OFF \
+          "Vivaldi" "Feature-packed web browser" OFF \
+          "Mullvad" "Mass surveillance free browser" OFF \
+          "Floorp" "A Firefox-based Browser" OFF \
+          "LibreWolf" "LibreWolf Web Browser" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      Brave)
+                          install_aur_packages brave-bin
+                          ;;
+                      Firefox)
+                          install_pacman_packages firefox firefox-ublock-origin
+                          ;;
+                      Vivaldi)
+                          install_pacman_packages vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
+                          ;;
+                      Mullvad)
+                          install_aur_packages mullvad-browser-bin
+                          ;;
+                      Floorp)
+                          install_flatpak_packages flathub one.ablaze.floorp
+                          ;;
+                      LibreWolf)
+                          install_flatpak_packages io.gitlab.librewolf-community
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
+      echo
+      echo "#################################"
+      echo "              Done !             "
       echo "#################################"
       sleep 3
       clear && sh $0

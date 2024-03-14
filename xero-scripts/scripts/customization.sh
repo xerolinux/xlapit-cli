@@ -19,11 +19,6 @@ echo
 echo "f. Install Fish Shell."
 echo "z. Install ZSH+OMZ+Powerlevel10k."
 echo
-echo "################## Plasma Stuffs #################"
-echo
-echo "p. Install missing Plasma Packages."
-echo "m. Apply AppMenu Meta-Key Fix (Kwin/Rice)."
-echo
 echo "################## DE/WM Ricing ##################"
 echo
 echo "k. XeroLinux KDE Rice"
@@ -167,22 +162,6 @@ case $CHOICE in
       echo "              Done !             "
       echo "#################################"
       sleep 3
-      clear && sh $0
-
-      ;;
-
-    m )
-      echo
-	  sleep 2
-	  echo "Applying Meta-Key AppMenu fix..."
-      echo
-      kwriteconfig5 --file ~/.config/kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
-      sleep 3
-      echo "Relaunching Kwin..."
-      qdbus org.kde.KWin /KWin reconfigure
-      echo
-      echo "All done, should work now !"
-	  sleep 3
       clear && sh $0
 
       ;;
