@@ -18,9 +18,10 @@ echo "1. Install & Activate Firewald."
 echo "2. Clear Pacman Cache (Free Space)."
 echo "3. Restart PipeWire/PipeWire-Pulse."
 echo "4. Unlock Pacman DB (In case of DB error)."
-echo "5. Activate Flatpak Theming (Required If used)."
-echo "6. Activate OS-Prober for Dual-Booting with other OS."
-echo "7. Install/Activate Power Daemon for Laptops/Desktops."
+echo "5. Activate v4l2loopback for OBS-VirtualCam."
+echo "6. Activate Flatpak Theming (Required If used)."
+echo "7. Activate OS-Prober for Dual-Booting with other OS."
+echo "8. Install/Activate Power Daemon for Laptops/Desktops."
 echo
 echo "m. Update Arch Mirrorlist, for faster download speeds."
 echo "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
@@ -89,6 +90,27 @@ case $CHOICE in
 
     5 )
       echo
+      echo "##########################################"
+      echo "          Setting up v4l2loopback         "
+      echo "##########################################"
+      sleep 3
+      sudo pacman -S --noconfirm --needed v4l2loopback-dkms v4l2loopback-utils
+      sleep 3
+      # Create or append to /etc/modules-load.d/v4l2loopback.conf
+      echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null
+
+      # Create /etc/modprobe.d/v4l2loopback.conf with specified content
+      echo 'options v4l2loopback exclusive_caps=1 card_label="OBS Virtual Camera"' | sudo tee /etc/modprobe.d/v4l2loopback.conf > /dev/null
+
+      # Prompt user to reboot
+      echo "Please reboot your system for changes to take effect."
+      sleep 2
+      clear && sh $0
+
+      ;;
+
+    6 )
+      echo
 	  sleep 2
 	  echo "#####################################"
       echo "#    Activating Flatpak Theming.    #"
@@ -108,7 +130,7 @@ case $CHOICE in
       ;;
 
 
-    6 )
+    7 )
       echo
 	  sleep 2
 	  echo "#####################################"
@@ -129,7 +151,7 @@ case $CHOICE in
 
       ;;
         
-    7 )
+    8 )
       echo
 	  sleep 2
       sudo pacman -S --needed --noconfirm power-profiles-daemon

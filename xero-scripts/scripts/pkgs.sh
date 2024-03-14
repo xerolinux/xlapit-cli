@@ -16,19 +16,16 @@ echo "Hello $USER, this will install extra packages. Press i for the Wiki."
 echo
 echo "################# Various Extra Pkgs #################"
 echo
-echo "a. LibreOffice."
-echo "b. Web Browsers."
-echo "s. System Tools."
-echo "d. Development Tools."
-echo "p. Photo and 3D Tools."
-echo "m. Music & Audio Tools."
-echo "w. Social & Chat Tools."
-echo "v. Virtualization Tools."
-echo "k. Video Tools & Software."
-echo
-echo "####################### Extras #######################"
-echo
-echo "l. Activate v4l2loopback for OBS-VirtualCam."
+echo "1.  LibreOffice."
+echo "2.  Web Browsers."
+echo "3.  System Tools."
+echo "4.  Development Tools."
+echo "5.  Photo and 3D Tools."
+echo "6.  Music & Audio Tools."
+echo "7.  Social & Chat Tools."
+echo "8.  Virtualization Tools."
+echo "9.  Video Tools & Software."
+echo "10. Extra KDE Plasma Packages."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -47,7 +44,7 @@ case $CHOICE in
       clear && sh $0
       ;;
 
-    a )
+    1 )
       echo
       sleep 2
       sudo pacman -S --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
@@ -63,7 +60,7 @@ case $CHOICE in
 
       ;;
 
-    b )
+    2 )
       echo
       # Function to install packages using pacman
       install_pacman_packages() {
@@ -133,7 +130,7 @@ case $CHOICE in
 
       ;;
 
-    s )
+    3 )
       echo
       echo "##########################################"
       echo "       Installing Recommended tools       "
@@ -150,7 +147,7 @@ case $CHOICE in
       clear && sh $0
       ;;
     
-    d )
+    4 )
       echo
       # Function to install packages using pacman
       install_pacman_packages() {
@@ -224,7 +221,7 @@ case $CHOICE in
 
       ;;
 
-    p )
+    5 )
       echo
       # Function to install packages using pacman
       install_pacman_packages() {
@@ -290,7 +287,7 @@ case $CHOICE in
 
       ;;
 
-    m )
+    6 )
       echo
       # Function to install packages using pacman
       install_pacman_packages() {
@@ -347,7 +344,7 @@ case $CHOICE in
 
       ;;
 
-    w )
+    7 )
       echo
       # Function to install packages using pacman
       install_pacman_packages() {
@@ -409,7 +406,7 @@ case $CHOICE in
 
       ;;
 
-    v )
+    8 )
       echo
       # Function to install packages using pacman
       install_pacman_packages() {
@@ -454,7 +451,7 @@ case $CHOICE in
 
       ;;
 
-    k )
+    9 )
       echo
       # Function to install packages using pacman
       install_pacman_packages() {
@@ -528,38 +525,64 @@ case $CHOICE in
 
       ;;
 
-    o )
+    10 )
       echo
-      echo "###########################################"
-      echo "           Installing OBS-Studio           "
-      echo "###########################################"
-      sleep 3
-      flatpak install
-      sleep 3
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      clear && sh $0
-      ;;
+      # Function to install packages using pacman
+      install_pacman_packages() {
+          sudo pacman -S --needed $@
+      }
 
-    l )
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select PKGs/Groups to install (selective) :" 20 60 7 \
+          "Frameworks" "KDE Framworks 6 Group" OFF \
+          "KSystem" "KDE System Group" OFF \
+          "KNetwork" "KDE Network Group" OFF \
+          "KGraphics" "KDE Graphics Group" OFF \
+          "KUtilities" "KDE Utilities Group" OFF \
+          "Kextras" "Extra KDE Tools" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      Frameworks)
+                          install_pacman_packages kf6
+                          ;;
+                      KSystem)
+                          install_pacman_packages kde-system
+                          ;;
+                      KNetwork)
+                          install_pacman_packages kde-network
+                          ;;
+                      KGraphics)
+                          install_pacman_packages kde-graphics
+                          ;;
+                      KUtilities)
+                          install_pacman_packages kde-utilities
+                          ;;
+                      Kextras)
+                          install_pacman_packages dolphin-plugins plasmatube audiotube ffmpegthumbs kirigami-gallery dwayland qt6-wayland lib32-wayland wayland-protocols kwayland-integration plasma-wayland-protocols kdecoration ksshaskpass kgpg
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
-      echo "##########################################"
-      echo "          Setting up v4l2loopback         "
-      echo "##########################################"
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
       sleep 3
-      sudo pacman -S --noconfirm --needed v4l2loopback-dkms v4l2loopback-utils
-      sleep 3
-      # Create or append to /etc/modules-load.d/v4l2loopback.conf
-      echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null
-
-      # Create /etc/modprobe.d/v4l2loopback.conf with specified content
-      echo 'options v4l2loopback exclusive_caps=1 card_label="OBS Virtual Camera"' | sudo tee /etc/modprobe.d/v4l2loopback.conf > /dev/null
-
-      # Prompt user to reboot
-      echo "Please reboot your system for changes to take effect."
-      sleep 2
       clear && sh $0
+
       ;;
 
     q )
