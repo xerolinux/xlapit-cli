@@ -425,7 +425,10 @@ case $CHOICE in
                   case $PACKAGE in
                       VirtManager)
                           sudo pacman -Rdd --noconfirm iptables \
-                          && install_pacman_packages virt-manager-meta
+                          && install_pacman_packages virt-manager-meta vde2 ebtables dmidecode \
+                          && echo -e "options kvm-intel nested=1" | sudo tee -a /etc/modprobe.d/kvm-intel.conf \
+                          && sudo virsh net-define /etc/libvirt/qemu/networks/default.xml \
+                          && sudo virsh net-autostart default && sudo systemctl restart libvirtd.service
                           ;;
                       VirtualBox)
                           install_pacman_packages virtualbox-meta
@@ -444,7 +447,7 @@ case $CHOICE in
       package_selection_dialog
       echo
       echo "#################################"
-      echo "              Done !             "
+      echo "      Done ! Please Reboot.      "
       echo "#################################"
       sleep 3
       clear && sh $0
