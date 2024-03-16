@@ -38,13 +38,18 @@ case $CHOICE in
 
     1 )
       echo
-      cpu=$(cat /proc/cpuinfo | grep vendor_id | uniq | awk '{print $3}')
-      echo "Installing microcode for this cpu : " $cpu
+      cpu=$(cat /proc/cpuinfo | awk '/vendor_id/ {print $3}' | head -n 1)
+      echo "Installing microcode for : " $cpu
       echo
-      if [ $cpu == "GenuineIntel" ]; then
+      sleep 6
+      if [[ "$cpu" == "GenuineIntel" ]]; then
           sudo pacman -S --noconfirm --needed intel-ucode
-      else
+      elif [[ "$cpu" == "AuthenticAMD" ]]; then
           sudo pacman -S --noconfirm --needed amd-ucode
+      else
+      echo
+      echo "Unknown CPU : $cpu maybe a Virtual Machine ?"
+          sudo pacman -Rdd --noconfirm intel-ucode amd-ucode
       fi
       echo
       # HOOKS=(base udev microcode autodetect kms modconf block keyboard keymap consolefont filesystems fsck)
@@ -53,6 +58,8 @@ case $CHOICE in
       else
          echo "Adding microcode module..."
          sudo sed -i "s/^HOOKS=(base udev/HOOKS=(base udev microcode/g" /etc/mkinitcpio.conf;
+         sleep 3
+         echo
          sudo mkinitcpio -P
       fi
       echo
