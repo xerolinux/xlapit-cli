@@ -85,7 +85,8 @@ case $CHOICE in
           "Vivaldi" "Feature-packed web browser" OFF \
           "Mullvad" "Mass surveillance free browser" OFF \
           "Floorp" "A Firefox-based Browser" OFF \
-          "LibreWolf" "LibreWolf Web Browser" OFF 3>&1 1>&2 2>&3)
+          "LibreWolf" "LibreWolf Web Browser" OFF \
+          "Chromium" "Ungoogled Chromium Browser" OFF 3>&1 1>&2 2>&3)
 
           # Check if user has selected any packages
           if [ -n "$PACKAGES" ]; then
@@ -108,6 +109,9 @@ case $CHOICE in
                           ;;
                       LibreWolf)
                           install_flatpak_packages io.gitlab.librewolf-community
+                          ;;
+                      Chromium)
+                          install_flatpak_packages com.github.Eloston.UngoogledChromium
                           ;;
                       *)
                           echo "Unknown package: $PACKAGE"
