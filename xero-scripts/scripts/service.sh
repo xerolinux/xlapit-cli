@@ -14,14 +14,15 @@ tput sgr0
 echo
 echo "Hello $USER, what would you like to do today ?"
 echo
-echo "1. Install & Activate Firewald."
-echo "2. Clear Pacman Cache (Free Space)."
-echo "3. Restart PipeWire/PipeWire-Pulse."
-echo "4. Unlock Pacman DB (In case of DB error)."
-echo "5. Activate v4l2loopback for OBS-VirtualCam."
-echo "6. Activate Flatpak Theming (Required If used)."
-echo "7. Activate OS-Prober for Dual-Booting with other OS."
-echo "8. Install/Activate Power Daemon for Laptops/Desktops."
+echo "1. Add/Update Microcode Module."
+echo "2. Install & Activate Firewald."
+echo "3. Clear Pacman Cache (Free Space)."
+echo "4. Restart PipeWire/PipeWire-Pulse."
+echo "5. Unlock Pacman DB (In case of DB error)."
+echo "6. Activate v4l2loopback for OBS-VirtualCam."
+echo "7. Activate Flatpak Theming (Required If used)."
+echo "8. Activate OS-Prober for Dual-Booting with other OS."
+echo "9. Install/Activate Power Daemon for Laptops/Desktops."
 echo
 echo "m. Update Arch Mirrorlist, for faster download speeds."
 echo "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
@@ -37,17 +38,48 @@ case $CHOICE in
 
     1 )
       echo
-	  sleep 2
-      sudo pacman -S --needed --noconfirm firewalld python-pyqt5 python-capng
+      cpu=$(cat /proc/cpuinfo | grep vendor_id | uniq | awk '{print $3}')
+      echo "Installing microcode for this cpu : " $cpu
       echo
-      sudo systemctl enable --now firewalld.service
-      sleep 2
+      if [ $cpu == "GenuineIntel" ]; then
+          sudo pacman -S --noconfirm --needed intel-ucode
+      else
+          sudo pacman -S --noconfirm --needed amd-ucode
+      fi
       echo
+      # HOOKS=(base udev microcode autodetect kms modconf block keyboard keymap consolefont filesystems fsck)
+      if grep -q microcode /etc/mkinitcpio.conf; then
+         echo "Microcode is already in, Skipping...."
+      else
+         echo "Adding microcode module..."
+         sudo sed -i "s/^HOOKS=(base udev/HOOKS=(base udev microcode/g" /etc/mkinitcpio.conf;
+         sudo mkinitcpio -P
+      fi
+      echo
+	  echo "#################################"
+      echo "        All Done, Reboot         "
+      echo "#################################"
+      sleep 3
       clear && sh $0
 
       ;;
 
     2 )
+      echo
+	  sleep 2
+      sudo pacman -S --needed --noconfirm firewalld python-pyqt5 python-capng
+      echo
+      sudo systemctl enable --now firewalld.service
+      echo
+      echo "#################################"
+      echo "        All Done, Enjoy!         "
+      echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
+    3 )
       echo
 	  sleep 2
       sudo pacman -Scc
@@ -58,7 +90,7 @@ case $CHOICE in
       ;;
 
 
-    3 )
+    4 )
       echo
 	  sleep 2
 	  echo "#################################"
@@ -70,7 +102,7 @@ case $CHOICE in
       sleep 1.5
       echo
       echo "#################################"
-      echo "        All Done, Try now       "
+      echo "        All Done, Try now        "
       echo "#################################"
 	  sleep 2
       clear && sh $0
@@ -78,7 +110,7 @@ case $CHOICE in
       ;;
 
 
-    4 )
+    5 )
       echo
 	  sleep 2
 	  sudo rm /var/lib/pacman/db.lck
@@ -88,7 +120,7 @@ case $CHOICE in
       ;;
 
 
-    5 )
+    6 )
       echo
       echo "##########################################"
       echo "          Setting up v4l2loopback         "
@@ -109,7 +141,7 @@ case $CHOICE in
 
       ;;
 
-    6 )
+    7 )
       echo
 	  sleep 2
 	  echo "#####################################"
@@ -130,7 +162,7 @@ case $CHOICE in
       ;;
 
 
-    7 )
+    8 )
       echo
 	  sleep 2
 	  echo "#####################################"
@@ -151,7 +183,7 @@ case $CHOICE in
 
       ;;
         
-    8 )
+    9 )
       echo
 	  sleep 2
       sudo pacman -S --needed --noconfirm power-profiles-daemon
