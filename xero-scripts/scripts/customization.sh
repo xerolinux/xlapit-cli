@@ -109,9 +109,13 @@ case $CHOICE in
 
     k )
       echo
-      echo "#################################"
-      echo " KDE Rices Currently Unavailable "
-      echo "#################################"
+      echo "######################################"
+      echo "    Setting up the XeroLayan Rice.    "
+      echo "######################################"
+      echo
+      cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
+      echo
+      cd ~/xero-layan-git/ && sh install.sh
       sleep 4
       clear && sh $0
 
