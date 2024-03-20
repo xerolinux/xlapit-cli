@@ -24,6 +24,7 @@ echo "7. Activate Flatpak Theming (Required If used)."
 echo "8. Activate OS-Prober for Dual-Booting with other OS."
 echo "9. Install/Activate Power Daemon for Laptops/Desktops."
 echo
+echo "d. Fix Discover PackageKit issue."
 echo "m. Update Arch Mirrorlist, for faster download speeds."
 echo "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
 echo
@@ -204,6 +205,28 @@ case $CHOICE in
 
       ;;
     
+    d )
+      echo
+      echo "##########################################"
+      echo "    Fixing Discover's PackageKit issue    "
+      echo "##########################################"
+	  sleep 3
+	  echo
+	  # Check if the file exists
+	  if [ -f "/usr/share/polkit-1/actions/org.freedesktop.packagekit.policy" ]; then
+         # If it exists, rename it
+         sudo mv /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy.old
+      fi
+      # Install packagekit-qt6
+      sudo pacman -S --needed --noconfirm packagekit-qt6
+	  echo
+      echo "#######################################"
+      echo "    Done ! Discover should work now.   "
+      echo "#######################################"
+      sleep 3
+      clear && sh $0
+      ;;
+
     m )
       echo
       echo "##########################################"
