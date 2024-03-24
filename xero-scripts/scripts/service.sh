@@ -58,7 +58,7 @@ case $CHOICE in
          echo "Microcode is already in, Skipping...."
       else
          echo "Adding microcode module..."
-         sudo sed -i "s/^HOOKS=(base udev/HOOKS=(base udev microcode/g" /etc/mkinitcpio.conf;
+         sudo sed -i "s/^HOOKS=(base udev autodetect/HOOKS=(base udev autodetect microcode/g" /etc/mkinitcpio.conf;
          sleep 3
          echo
          sudo mkinitcpio -P
