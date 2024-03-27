@@ -8,15 +8,14 @@
 clear
 tput setaf 3
 echo "##############################################################"
-echo "#               XeroLinux Distrobox/Docker Tool              #"
+echo "#        XeroLinux Distrobox/Docker/Virt-Manager Tool        #"
 echo "##############################################################"
 tput sgr0
 echo
-echo "Hello $USER, what would you like to do. Press i for the Wiki."
+echo "Hello $USER, what would you like to do today ?"
 echo
 echo "################## Distrobox & Docker Setup ##################"
 echo
-echo "p. Install Podman/Desktop."
 echo "d. Install/Configure Docker."
 echo "b. Install/Configure Distrobox."
 echo
@@ -39,31 +38,12 @@ read CHOICE
 
 case $CHOICE in
 
-    i )
-      echo
-      sleep 2
-      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#distrobox--docker"  > /dev/null 2>&1
-      echo
-      clear && sh $0
-      ;;
-
-    p )
-      echo
-      sleep 2
-      echo "Installing Podman & Podman-Desktop..."
-      echo
-      sudo pacman -S --noconfirm --needed podman && flatpak install io.podman_desktop.PodmanDesktop
-      echo
-      clear && sh $0
-
-      ;;
-
     d )
       echo
       sleep 2
       echo "Installing & Srtting up Docker..."
       echo
-      sudo pacman -S --noconfirm --needed docker docker-compose docker-buildx
+      sudo pacman -S --noconfirm docker docker-compose docker-buildx
       sleep 2
       echo
       echo "Enabling Services & Adding you to group"
@@ -96,7 +76,7 @@ case $CHOICE in
       sleep 2
       echo "Installing Dostrobox..."
       echo
-      sudo pacman -S --noconfirm --needed distrobox
+      sudo pacman -S --noconfirm distrobox
       sleep 3
       echo
       clear && sh $0
