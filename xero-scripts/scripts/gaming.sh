@@ -12,22 +12,22 @@ echo "#             The Gaming Essentials.            #"
 echo "#################################################"
 tput sgr0
 echo
-echo "Hello $USER, what would you like to install ? (multilib required)"
+echo "Hello $USER, what would you like to install ? Press i for the Wiki."
 echo
 echo "################# Game Launchers #################"
 echo
-echo "s. Steam (Native)."
-echo "l. Lutris (Flathub)."
-echo "h. Heroic (Flathub)."
-echo "b. Bottles (Flathub)."
+echo "s. Steam."
+echo "l. Lutris."
+echo "h. Heroic."
+echo "b. Bottles."
 echo
 echo "################### Game Tools ###################"
 echo
-echo "1.  Mangohud (Native)."
-echo "2.  Goverlay (Flathub)."
-echo "3.  Protonup-qt (Flathub)."
-echo "4.  Vulkan Compatibility Layer (AMD)."
-echo "5.  Vulkan Compatibility Layer (nVidia)."
+echo "1.  Mangohud."
+echo "2.  Goverlay."
+echo "3.  Protonup-qt."
+echo "4.  Vulkan Layer (AMD)."
+echo "5.  Vulkan Layer (nVidia)."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -38,13 +38,21 @@ read CHOICE
 
 case $CHOICE in
 
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#game-launchers"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
+
     s )
       echo
       echo "#################################################"
       echo "#            Installing Steam Launcher          #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm steam
+      sudo pacman -S --noconfirm --needed steam
       sleep 3
       echo
       echo "Applying Download Speed Enhancement Patch..."
@@ -64,7 +72,9 @@ case $CHOICE in
       echo "#           Installing Lutris Launcher          #"
       echo "#################################################"
       echo
-      flatpak install net.lutris.Lutris
+      echo "Native (Unofficial) or Flatpak (Official) ?"
+      echo
+      select lutris in "Native" "Flatpak" "Back"; do case $lutris in Native) sudo pacman -S --noconfirm --needed lutris wine-meta && break ;; Flatpak) flatpak install net.lutris.Lutris && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "vm.max_map_count=2147483642" | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null
       echo
@@ -82,7 +92,9 @@ case $CHOICE in
       echo "#           Installing Heroic Launcher          #"
       echo "#################################################"
       echo
-      flatpak install com.heroicgameslauncher.hgl
+      echo "Native (Unofficial) or Flatpak (Official) ?"
+      echo
+      select heroic in "Native" "Flatpak" "Back"; do case $heroic in Native) $AUR_HELPER -S --noconfirm --needed heroic-games-launcher-bin wine-meta && break ;; Flatpak) flatpak install com.heroicgameslauncher.hgl && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -98,7 +110,9 @@ case $CHOICE in
       echo "#          Installing Bottles Launcher          #"
       echo "#################################################"
       echo
-      flatpak install com.usebottles.bottles
+      echo "Native (Unofficial) or Flatpak (Official) ?"
+      echo
+      select bottles in "Native" "Flatpak" "Back"; do case $bottles in Native) $AUR_HELPER -S --noconfirm --needed bottles wine-meta && break ;; Flatpak) flatpak install com.usebottles.bottles && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -114,7 +128,7 @@ case $CHOICE in
       echo "#               Installing Mangohud             #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm mangohud
+      sudo pacman -S --noconfirm --needed mangohud
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -130,7 +144,7 @@ case $CHOICE in
       echo "#               Installing Goverlay             #"
       echo "#################################################"
       echo
-      sudo pacman -S --noconfirm goverlay
+      sudo pacman -S --noconfirm --needed goverlay
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -146,7 +160,9 @@ case $CHOICE in
       echo "#             Installing ProtonUp-QT            #"
       echo "#################################################"
       echo
-      flatpak install net.davidotek.pupgui2
+      echo "Native (Unofficial) or Flatpak (Official) ?"
+      echo
+      select protonup in "Native" "Flatpak" "Back"; do case $protonup in Native) $AUR_HELPER -S --noconfirm --needed protonup-qt wine-meta && break ;; Flatpak) flatpak install net.davidotek.pupgui2 && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -162,7 +178,7 @@ case $CHOICE in
       echo "#               Installing DXVK-bin             #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm dxvk-bin
+      $AUR_HELPER -S --noconfirm --needed dxvk-bin
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"
@@ -178,7 +194,7 @@ case $CHOICE in
       echo "#                Installing nvdxvk              #"
       echo "#################################################"
       echo
-      $AUR_HELPER -S --noconfirm dxvk-nvapi-mingw
+      $AUR_HELPER -S --noconfirm --needed dxvk-nvapi-mingw
       echo
       echo "#################################################"
       echo "#        Done ! Returning to main menu..        #"

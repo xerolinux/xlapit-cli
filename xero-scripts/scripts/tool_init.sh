@@ -12,22 +12,15 @@ echo "#                           Initial System Setup                          
 echo "############################################################################"
 tput sgr0
 echo
-echo "Hello $USER, Please Select What To Do. (multilib Repo req.)"
+echo "Hello $USER, Please Select What To Do. Press i for the Wiki."
 echo
 echo "############ Initial Setup Section ############"
 echo
 echo "a. PipeWire/Bluetooth Packages."
-echo "b. Web Browser (Brave/Firefox/Vivaldi)."
-echo "m. Activate multilib repository if not done."
 echo "d. Activate/Set Pacman Parallel Downloads (10)."
 echo "f. Activate Flathub Repositories (Req. for OBS)."
 echo "t. Enable fast multithreaded package compilation."
-echo
-echo "########## GUI Package Managers ##########"
-echo
-echo "o. OctoPi GUI."
-echo "s. PacSeek TUI."
-echo "p. Pamac-All GUI."
+echo "p. Install 3rd-Party GUI Package Manager(s) (AUR)."
 echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
@@ -37,6 +30,14 @@ while :; do
 read CHOICE
 
 case $CHOICE in
+
+    i )
+      echo
+      sleep 2
+      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-setup"  > /dev/null 2>&1
+      echo
+      clear && sh $0
+      ;;
 
     a )
       echo
@@ -57,39 +58,8 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-            clear && sh $0
-      ;;
-
-    b )
-      echo
-      echo "##########################################"
-      echo "            Which Web Browser ?           "
-      echo "##########################################"
-      sleep 3
-      echo
-      select browser in "Brave" "Firefox" "Vivaldi"; do case $browser in Brave) $AUR_HELPER -S --noconfirm brave-bin && break ;; Firefox) sudo pacman -S --noconfirm firefox firefox-ublock-origin && break ;; Vivaldi) sudo pacman -S --noconfirm vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
       sleep 3
       clear && sh $0
-
-      ;;
-
-    m )
-      echo
-      sleep 3
-      echo "Activating multilib repository..."
-      sudo sed -i '/^\s*#\s*\[multilib\]/,/^$/ s/^#//' /etc/pacman.conf
-      sudo pacman -Syy
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 6
-      clear && sh $0
-
       ;;
 
     d )
@@ -102,7 +72,7 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;
@@ -114,11 +84,12 @@ case $CHOICE in
       echo "##########################################"
       sleep 3
       echo
-      sudo pacman -S --noconfirm flatpak
+      sudo pacman -S --noconfirm --needed flatpak
+      echo
       echo "#######################################"
       echo "           Done Plz Reboot !           "
       echo "#######################################"
-      sleep 6
+      sleep 3
       clear && sh $0
 
       ;;
@@ -151,56 +122,64 @@ case $CHOICE in
       echo "#######################################"
       echo "                 Done !                "
       echo "#######################################"
-      sleep 6
-      clear && sh $0
-
-      ;;
-
-    o )
-      echo
-      echo "##########################################"
-      echo "             Installing Octopi            "
-      echo "##########################################"
       sleep 3
-      $AUR_HELPER -S --noconfirm octopi alpm_octopi_utils octopi-notifier-noknotify
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 6
-      clear && sh $0
-
-      ;;
-
-    s )
-      echo
-      echo "##########################################"
-      echo "               PacSeek T.U.I              "
-      echo "##########################################"
-      sleep 3
-      echo
-      $AUR_HELPER -S --noconfirm pacseek-bin
-      echo
-      echo "#######################################"
-      echo "           Done Plz Reboot !           "
-      echo "#######################################"
-      sleep 6
       clear && sh $0
 
       ;;
 
     p )
       echo
-      echo "##########################################"
-      echo "            Installing Pamac-All          "
-      echo "##########################################"
-      sleep 3
-      $AUR_HELPER -S --noconfirm pamac-all pamac-cli libpamac-full
+      # Function to install packages using AUR Helper
+      install_aur_packages() {
+          $AUR_HELPER -S --noconfirm --needed $@
+      }
+
+      # Function to display package selection dialog
+      package_selection_dialog() {
+          PACKAGES=$(whiptail --checklist --separate-output "Select GUI Package Manager to install:" 20 60 7 \
+          "OctoPi" "A powerful Pacman frontend using Qt" OFF \
+          "PacSeek" "TUI for installing AUR packages" OFF \
+          "Pamac-All" "A GUI with AUR/Flatpak/Snap support" OFF \
+          "BauhGUI" "For AppImage, Flatpak, Snap, Arch/AUR" OFF \
+          "ArchUpdate" "An update notifier/applier (Arch/AUR)" OFF 3>&1 1>&2 2>&3)
+
+          # Check if user has selected any packages
+          if [ -n "$PACKAGES" ]; then
+              for PACKAGE in $PACKAGES; do
+                  case $PACKAGE in
+                      OctoPi)
+                          install_aur_packages octopi alpm_octopi_utils octopi-notifier-noknotify
+                          ;;
+                      PacSeek)
+                          install_aur_packages pacseek-bin pacfinder
+                          ;;
+                      Pamac-All)
+                          install_aur_packages pamac-all pamac-cli libpamac-full
+                          ;;
+                      BauhGUI)
+                          install_aur_packages bauh
+                          ;;
+                      ArchUpdate)
+                          install_aur_packages arch-update \
+                          && systemctl --user enable --now arch-update.timer
+                          ;;
+                      *)
+                          echo "Unknown package: $PACKAGE"
+                          ;;
+                  esac
+              done
+          else
+              echo "No packages selected."
+          fi
+      }
+
+      # Call the package selection dialog function
+      package_selection_dialog
       echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 6
+      echo "#################################"
+      echo "              Done !             "
+      echo "#################################"
+      sleep 3
       clear && sh $0
 
       ;;
