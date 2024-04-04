@@ -79,14 +79,15 @@ case $CHOICE in
 
       # Function to display package selection dialog
       package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select Browser(s) to install :" 20 60 7 \
+          PACKAGES=$(whiptail --checklist --separate-output "Select Browser(s) to install :" 20 60 8 \
           "Brave" "The web browser from Brave" OFF \
           "Firefox" "Fast, Private & Safe Web Browser" OFF \
           "Vivaldi" "Feature-packed web browser" OFF \
           "Mullvad" "Mass surveillance free browser" OFF \
           "Floorp" "A Firefox-based Browser" OFF \
           "LibreWolf" "LibreWolf Web Browser" OFF \
-          "Chromium" "Ungoogled Chromium Browser" OFF 3>&1 1>&2 2>&3)
+          "Chromium" "Ungoogled Chromium Browser" OFF \
+          "Tor" "Tor Browser Bundle" OFF 3>&1 1>&2 2>&3)
 
           # Check if user has selected any packages
           if [ -n "$PACKAGES" ]; then
@@ -112,6 +113,9 @@ case $CHOICE in
                           ;;
                       Chromium)
                           install_flatpak_packages com.github.Eloston.UngoogledChromium
+                          ;;
+                      Tor)
+                          install_flatpak_packages org.torproject.torbrowser-launcher
                           ;;
                       *)
                           echo "Unknown package: $PACKAGE"
@@ -256,7 +260,7 @@ case $CHOICE in
               for PACKAGE in $PACKAGES; do
                   case $PACKAGE in
                       GiMP)
-                          install_pacman_packages gimp
+                          install_flatpak_packages org.gimp.GIMP org.gimp.GIMP.Manual org.gimp.GIMP.Plugin.Resynthesizer org.gimp.GIMP.Plugin.LiquidRescale org.gimp.GIMP.Plugin.Lensfun org.gimp.GIMP.Plugin.GMic org.gimp.GIMP.Plugin.Fourier org.gimp.GIMP.Plugin.FocusBlur org.gimp.GIMP.Plugin.BIMP
                           ;;
                       Krita)
                           install_flatpak_packages flathub org.kde.krita
@@ -305,11 +309,12 @@ case $CHOICE in
 
       # Function to display package selection dialog
       package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select Music & Media Apps to install:" 20 60 7 \
+          PACKAGES=$(whiptail --checklist --separate-output "Select Music & Media Apps to install:" 20 60 5 \
           "MPV" "An OpenSource media player" OFF \
           "Spotify" "Online music streaming service" OFF \
           "Tenacity" "Telemetry-less Audio editing" OFF \
-          "Strawberry" "A music player for collectors" OFF 3>&1 1>&2 2>&3)
+          "Strawberry" "A music player for collectors" OFF \
+          "LinuxAudio" "A MASSIVE collection of VST Plugins" OFF 3>&1 1>&2 2>&3)
 
           # Check if user has selected any packages
           if [ -n "$PACKAGES" ]; then
@@ -326,6 +331,9 @@ case $CHOICE in
                           ;;
                       Strawberry)
                           install_flatpak_packages org.strawberrymusicplayer.strawberry
+                          ;;
+                      LinuxAudio)
+                          install_flatpak_packages org.freedesktop.LinuxAudio.Plugins.x42Plugins org.freedesktop.LinuxAudio.Plugins.swh org.freedesktop.LinuxAudio.Plugins.sfizz org.freedesktop.LinuxAudio.Plugins.setBfree org.freedesktop.LinuxAudio.Plugins.reMID-lv2 org.freedesktop.LinuxAudio.Plugins.master_me org.freedesktop.LinuxAudio.Plugins.jc303 org.freedesktop.LinuxAudio.Plugins.guitarixvst org.freedesktop.LinuxAudio.Plugins.gmsynth org.freedesktop.LinuxAudio.Plugins.ZynFusion org.freedesktop.LinuxAudio.Plugins.ZamPlugins org.freedesktop.LinuxAudio.Plugins.Yoshimi org.freedesktop.LinuxAudio.Plugins.WolfShaper org.freedesktop.LinuxAudio.Plugins.WhiteElephantAudio org.freedesktop.LinuxAudio.Plugins.VL1Emulator org.freedesktop.LinuxAudio.Plugins.UhhyouPlugins org.freedesktop.LinuxAudio.Plugins.Tunefish4 org.freedesktop.LinuxAudio.Plugins.TAP org.freedesktop.LinuxAudio.Plugins.Surge org.freedesktop.LinuxAudio.Plugins.Surge-XT org.freedesktop.LinuxAudio.Plugins.Stochas org.freedesktop.LinuxAudio.Plugins.SpectMorph org.freedesktop.LinuxAudio.Plugins.Sorcer org.freedesktop.LinuxAudio.Plugins.SonoBus org.freedesktop.LinuxAudio.Plugins.SoSynthLV2 org.freedesktop.LinuxAudio.Plugins.Odin2 org.freedesktop.LinuxAudio.Plugins.OBXd org.freedesktop.LinuxAudio.Plugins.Ninjas2 org.freedesktop.LinuxAudio.Plugins.NeuralAmpModeler org.freedesktop.LinuxAudio.Plugins.MDA org.freedesktop.LinuxAudio.Plugins.KapitonovPluginsPack org.freedesktop.LinuxAudio.Plugins.Helm org.freedesktop.LinuxAudio.Plugins.GxPlugins org.freedesktop.LinuxAudio.Plugins.Guitarix org.freedesktop.LinuxAudio.Plugins.GuitarML org.freedesktop.LinuxAudio.Plugins.Geonkick org.freedesktop.LinuxAudio.Plugins.Fire org.freedesktop.LinuxAudio.Plugins.Fabla org.freedesktop.LinuxAudio.Plugins.DrumGizmo org.freedesktop.LinuxAudio.Plugins.DragonflyReverb org.freedesktop.LinuxAudio.Plugins.Dexed org.freedesktop.LinuxAudio.Plugins.DPF-Plugins org.freedesktop.LinuxAudio.Plugins.DISTRHO-Ports org.freedesktop.LinuxAudio.Plugins.ChowTapeModel org.freedesktop.LinuxAudio.Plugins.ChowDSP-Plugins org.freedesktop.LinuxAudio.Plugins.Cardinal org.freedesktop.LinuxAudio.Plugins.Calf org.freedesktop.LinuxAudio.Plugins.CMT org.freedesktop.LinuxAudio.Plugins.CAPS org.freedesktop.LinuxAudio.Plugins.BYOD org.freedesktop.LinuxAudio.Plugins.ArtyFX org.freedesktop.LinuxAudio.Plugins.Airwindows org.freedesktop.LinuxAudio.Plugins.AVLDrums org.freedesktop.LinuxAudio.Plugins.ADLplug
                           ;;
                       *)
                           echo "Unknown package: $PACKAGE"
@@ -367,7 +375,7 @@ case $CHOICE in
 
       # Function to display package selection dialog
       package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select Social/Web Apps to install:" 20 60 7 \
+          PACKAGES=$(whiptail --checklist --separate-output "Select Social/Web Apps to install:" 20 60 4 \
           "Discord" "All-in-one IM for gamers" OFF \
           "Ferdium" "Organize many apps into one" OFF \
           "WebCord" "Customizable Discord Fork" OFF \
@@ -419,7 +427,7 @@ case $CHOICE in
 
       # Function to display package selection dialog
       package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select Virtualization System to install :" 20 60 7 \
+          PACKAGES=$(whiptail --checklist --separate-output "Select Virtualization System to install :" 20 60 2 \
           "VirtManager" "Manage QEMU virtual machines" OFF \
           "VirtualBox" "Powerful x86 virtualization" OFF 3>&1 1>&2 2>&3)
 
@@ -541,7 +549,7 @@ case $CHOICE in
 
       # Function to display package selection dialog
       package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select PKGs/Groups to install (selective) :" 20 60 7 \
+          PACKAGES=$(whiptail --checklist --separate-output "Select PKGs/Groups to install (selective) :" 20 60 6 \
           "Frameworks" "KDE Framworks 6 Group" OFF \
           "KSystem" "KDE System Group" OFF \
           "KNetwork" "KDE Network Group" OFF \
