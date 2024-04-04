@@ -84,7 +84,8 @@ case $CHOICE in
       echo "##########################################"
       sleep 3
       echo
-      sudo pacman -S --noconfirm --needed flatpak
+      sudo pacman -S --noconfirm --needed flatpak \
+      && sudo flatpak remote-modify --default-branch=23.08 flathub system
       echo
       echo "#######################################"
       echo "           Done Plz Reboot !           "
