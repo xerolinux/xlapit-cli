@@ -22,6 +22,8 @@ echo "f. Activate Flathub Repositories (Req. for OBS)."
 echo "t. Enable fast multithreaded package compilation."
 echo "p. Install 3rd-Party GUI Package Manager(s) (AUR)."
 echo
+echo "r. Add & Enable the Chaotic-AUR Repository (Risky!)."
+echo
 echo "Type Your Selection. Or type q to return to main menu."
 echo
 
@@ -180,6 +182,33 @@ case $CHOICE in
       echo "#################################"
       echo "              Done !             "
       echo "#################################"
+      sleep 3
+      clear && sh $0
+
+      ;;
+
+    r )
+      echo
+      echo "###########################################"
+      echo "      Adding/Enabling Chaotic-Aur Repo     "
+      echo "###########################################"
+      echo
+      sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+      sleep 2
+      sudo pacman-key --lsign-key 3056513887B78AEB
+      sleep 2
+      sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+      sleep 2
+      sudo pacman -U --noconfitm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+      sleep 2
+      sudo cp /etc/pacman.conf /etc/pacman.conf.backup && \
+      echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf
+      sleep 2
+      sudo pacman -Syy
+      echo
+      echo "#######################################"
+      echo "                 Done !                "
+      echo "#######################################"
       sleep 3
       clear && sh $0
 
