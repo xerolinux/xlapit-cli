@@ -14,6 +14,17 @@ bash -c "$(curl -fsSL https://tinyurl.com/xtoolkit)"
 
 It will prompt you before injecting as in adding the XeroLinux repository, where from it will then prompt you, should you agree, as to which AUR helper you prefer, then proceed to do so then install and launch the toolkit.. Again only if you agree..
 
+**- FOr the security concious :**
+
+If you care about security, instead of using _Curl_ command you can download the script, inspect it then run it.. Do it via the following commands :
+```
+wget https://raw.githubusercontent.com/xerolinux/xerocurl/main/xapi.sh
+```
+And after inspection set as executable and run via
+```
+chmod +x xapi.sh && ./xapi.sh
+```
+
 You can access toolkit by either typing `xero-cli -m` in terminal or from the application menu via the **XeroLinux Post Installation Toolkit** shortcut.. Just close terminal window once done using it lol ;)
 
 ### Toolkit Notes
