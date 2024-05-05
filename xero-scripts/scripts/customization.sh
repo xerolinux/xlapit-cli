@@ -50,12 +50,12 @@ case $CHOICE in
       echo "#######################################"
       sleep 2
       echo
-      sudo pacman -S --needed --noconfirm fastfetch
-      echo
-      $AUR_HELPER -S --noconfirm --needed ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts zsh-theme-powerlevel10k
+      $AUR_HELPER -S --noconfirm --needed fastfetch ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts
       echo
       fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc config.jsonc.bk && wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && wget -O Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && sed -i 's/xero.png/Arch.png/g' ~/.config/fastfetch/config.jsonc
       sleep 2
+      if [ -f ~/.bashrc ]; then sed -i 's/neofetch/fastfetch/g' ~/.bashrc; fi
+      if [ -f ~/.zshrc ]; then sed -i 's/neofetch/fastfetch/g' ~/.zshrc; fi
       echo
       echo "Done Have fun using Fastfetch !"
       echo "###############################"
