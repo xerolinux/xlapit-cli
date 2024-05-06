@@ -18,7 +18,7 @@ It will prompt you before injecting as in adding the XeroLinux repository, where
 
 If you care about security, instead of using _Curl_ command you can download the script, inspect it then run it.. Do it via the following commands :
 ```
-wget https://raw.githubusercontent.com/xerolinux/xerocurl/main/xapi.sh
+wget https://tinyurl.com/xt-code
 ```
 And after inspection set as executable and run via
 ```
