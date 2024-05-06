@@ -197,9 +197,9 @@ case $CHOICE in
       sleep 2
       sudo pacman-key --lsign-key 3056513887B78AEB
       sleep 2
-      sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+      sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
       sleep 2
-      sudo pacman -U --noconfitm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+      sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
       sleep 2
       sudo cp /etc/pacman.conf /etc/pacman.conf.backup && \
       echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf
