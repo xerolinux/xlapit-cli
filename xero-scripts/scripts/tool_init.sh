@@ -1,228 +1,158 @@
 #!/bin/bash
-#set -e
-##################################################################################################################
-# Written to be used on 64 bits computers
-# Author 	: 	DarkXero
-# Website 	: 	http://xerolinux.xyz
-##################################################################################################################
-clear
-tput setaf 5
-echo "############################################################################"
-echo "#                           Initial System Setup                           #"
-echo "############################################################################"
-tput sgr0
-echo
-echo "Hello $USER, Please Select What To Do. Press i for the Wiki."
-echo
-echo "############ Initial Setup Section ############"
-echo
-echo "a. PipeWire/Bluetooth Packages."
-echo "d. Activate/Set Pacman Parallel Downloads (10)."
-echo "f. Activate Flathub Repositories (Req. for OBS)."
-echo "t. Enable fast multithreaded package compilation."
-echo "p. Install 3rd-Party GUI Package Manager(s) (AUR)."
-echo
-echo "r. Add & Enable the Chaotic-AUR Repository (Risky!)."
-echo
-echo "Type Your Selection. Or type q to return to main menu."
-echo
+set -e
 
-while :; do
+# Function to check and install gum if not present
+check_gum() {
+  command -v gum >/dev/null 2>&1 || { echo >&2 "Gum is not installed. Installing..."; sudo pacman -S --noconfirm gum; }
+}
 
-read CHOICE
+# Function to check and install dialog if not present
+check_dialog() {
+  command -v dialog >/dev/null 2>&1 || { echo >&2 "Dialog is not installed. Installing..."; sudo pacman -S --noconfirm dialog; }
+}
 
-case $CHOICE in
+# Function to display the menu
+display_menu() {
+  clear
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Initial System Setup"
+  echo
+  gum style --foreground 142 "Hello $USER, please select an option. Press 'i' for the Wiki."
+  echo
+  gum style --foreground 35 "1. PipeWire/Bluetooth Packages."
+  gum style --foreground 35 "2. Activate/Set Pacman Parallel Downloads."
+  gum style --foreground 35 "3. Activate Flathub Repositories (Discover/CLI)."
+  gum style --foreground 35 "4. Enable Fast Multithreaded Package Compilation."
+  gum style --foreground 35 "5. Install 3rd-Party GUI Package Manager(s) (AUR)."
+  echo
+  gum style --foreground 35 "6. Add & Enable the Chaotic-AUR Repository (Risky!)."
+  echo
+  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
+  echo
+}
 
-    i )
-      echo
-      sleep 2
-      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-setup"  > /dev/null 2>&1
-      echo
-      clear && sh $0
-      ;;
+# Function to open Wiki
+open_wiki() {
+  gum style --foreground 33 "Opening Wiki..."
+  sleep 3
+  xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-setup" > /dev/null 2>&1
+  clear && exec "$0"
+}
 
-    a )
-      echo
-      echo "###########################################"
-      echo "        Installing Audio/Bluetooth         "
-      echo "###########################################"
-      echo
-      echo "Installing PipeWire packages..."
-      echo
-      sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
-      sleep 3
-      echo
-      echo "Installing Bluetooth packages..."
-      echo
-      sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
-      sudo systemctl enable --now  bluetooth.service
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
-      ;;
+# Function for each task
+install_pipewire_bluetooth() {
+  gum style --foreground 35 "Installing PipeWire/Bluetooth Packages..."
+  sleep 2
+  echo
+  sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
+  sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
+  sudo systemctl enable --now bluetooth.service
+  gum style --foreground 35 "PipeWire/Bluetooth Packages installation complete!"
+  sleep 3
+  restart_script
+}
 
-    d )
-      echo
-      sleep 3
-      echo
-      sudo sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
-      sudo pacman -Syy
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
+set_pacman_parallel_downloads() {
+  gum style --foreground 35 "Activating Pacman Parallel Downloads..."
+  sleep 2
+  echo
+  sudo sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
+  sudo pacman -Syy
+  gum style --foreground 35 "Pacman Parallel Downloads activated!"
+  sleep 3
+  restart_script
+}
 
-      ;;
+activate_flathub_repositories() {
+  gum style --foreground 35 "Activating Flathub Repositories..."
+  sleep 2
+  echo
+  sudo pacman -S --noconfirm --needed flatpak
+  sudo flatpak remote-modify --default-branch=23.08 flathub system
+  gum style --foreground 35 "Flathub Repositories activated! Please reboot."
+  sleep 3
+  restart_script
+}
 
-    f )
-      echo
-      echo "##########################################"
-      echo "       Adding & Activating Flatpaks       "
-      echo "##########################################"
-      sleep 3
-      echo
-      sudo pacman -S --noconfirm --needed flatpak \
-      && sudo flatpak remote-modify --default-branch=23.08 flathub system
-      echo
-      echo "#######################################"
-      echo "           Done Plz Reboot !           "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
+enable_multithreaded_compilation() {
+  gum style --foreground 35 "Enabling Multithreaded Compilation..."
+  sleep 2
+  echo
+  numberofcores=$(grep -c ^processor /proc/cpuinfo)
+  if [ "$numberofcores" -gt 1 ]; then
+    sudo sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$((numberofcores+1))\"/" /etc/makepkg.conf
+    sudo sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -z - --threads=0)/" /etc/makepkg.conf
+    sudo sed -i "s/COMPRESSZST=(zstd -c -z -q -)/COMPRESSZST=(zstd -c -z -q - --threads=0)/" /etc/makepkg.conf
+    sudo sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
+  fi
+  gum style --foreground 35 "Multithreaded Compilation enabled!"
+  sleep 3
+  restart_script
+}
 
-      ;;
+install_gui_package_managers() {
+  gum style --foreground 35 "Installing 3rd-Party GUI Package Managers..."
+  sleep 2
+  echo
+  PACKAGES=$(dialog --checklist "Select GUI Package Managers to install:" 20 60 10 \
+    "OctoPi" "Octopi Package Manager" off \
+    "PacSeek" "PacSeek Package Manager" off \
+    "Pamac-All" "Pamac-All Package Manager" off \
+    "BauhGUI" "Bauh GUI Package Manager" off \
+    "ArchUpdate" "Arch Update Notifier" off 3>&1 1>&2 2>&3)
+  for PACKAGE in $PACKAGES; do
+    case $PACKAGE in
+      "OctoPi") $AUR_HELPER -S --needed octopi alpm_octopi_utils octopi-notifier-noknotify ;;
+      "PacSeek") $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
+      "Pamac-All") $AUR_HELPER -S --needed pamac-all pamac-cli libpamac-full ;;
+      "BauhGUI") $AUR_HELPER -S --needed bauh ;;
+      "ArchUpdate") $AUR_HELPER -S --needed arch-update; systemctl --user enable --now arch-update.timer ;;
+    esac
+  done
+  gum style --foreground 35 "3rd-Party GUI Package Managers installation complete!"
+  sleep 3
+  restart_script
+}
 
-    t )
-      echo
-      echo "###########################################"
-      echo "      Enabling multithread compilation     "
-      echo "###########################################"
-      sleep 3
-      echo
-      numberofcores=$(grep -c ^processor /proc/cpuinfo)
+add_chaotic_aur() {
+  gum style --foreground 35 "Adding Chaotic-AUR Repository..."
+  sleep 2
+  echo
+  sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+  sudo pacman-key --lsign-key 3056513887B78AEB
+  sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+  sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+  echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf
+  sudo pacman -Syy
+  gum style --foreground 35 "Chaotic-AUR Repository added!"
+  sleep 3
+  restart_script
+}
 
-      if [ $numberofcores -gt 1 ]
-      then
-        echo "You have " $numberofcores" cores."
-        echo "Changing the makeflags for "$numberofcores" cores."
-        sudo sed -i 's/#MAKEFLAGS="-j2"/MAKEFLAGS="-j'$(($numberofcores+1))'"/g' /etc/makepkg.conf;
-        echo
-        echo "Changing the compression settings for "$numberofcores" cores."
-        echo
-        sudo sed -i 's/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -z - --threads=0)/g' /etc/makepkg.conf
-        sudo sed -i 's/COMPRESSZST=(zstd -c -z -q -)/COMPRESSZST=(zstd -c -z -q - --threads=0)/g' /etc/makepkg.conf
-        sudo sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/g" /etc/makepkg.conf
-      else
-        echo
-        echo "No change."
-      fi
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
+restart_script() {
+  clear
+  exec "$0"
+}
 
-      ;;
+main() {
+  check_gum
+  check_dialog
+  while :; do
+    display_menu
+    read -rp "Enter your choice: " CHOICE
+    echo
 
-    p )
-      echo
-      # Function to install packages using AUR Helper
-      install_aur_packages() {
-          $AUR_HELPER -S --noconfirm --needed $@
-      }
+    case $CHOICE in
+      i) open_wiki ;;
+      1) install_pipewire_bluetooth ;;
+      2) set_pacman_parallel_downloads ;;
+      3) activate_flathub_repositories ;;
+      4) enable_multithreaded_compilation ;;
+      5) install_gui_package_managers ;;
+      6) add_chaotic_aur ;;
+      q) clear && exec xero-cli -m ;;
+      *) gum style --foreground 31 "Invalid choice. Select a valid option." ;;
+    esac
+  done
+}
 
-      # Function to display package selection dialog
-      package_selection_dialog() {
-          PACKAGES=$(whiptail --checklist --separate-output "Select GUI Package Manager to install:" 20 60 7 \
-          "OctoPi" "A powerful Pacman frontend using Qt" OFF \
-          "PacSeek" "TUI for installing AUR packages" OFF \
-          "Pamac-All" "A GUI with AUR/Flatpak/Snap support" OFF \
-          "BauhGUI" "For AppImage, Flatpak, Snap, Arch/AUR" OFF \
-          "ArchUpdate" "An update notifier/applier (Arch/AUR)" OFF 3>&1 1>&2 2>&3)
-
-          # Check if user has selected any packages
-          if [ -n "$PACKAGES" ]; then
-              for PACKAGE in $PACKAGES; do
-                  case $PACKAGE in
-                      OctoPi)
-                          install_aur_packages octopi alpm_octopi_utils octopi-notifier-noknotify
-                          ;;
-                      PacSeek)
-                          install_aur_packages pacseek-bin pacfinder
-                          ;;
-                      Pamac-All)
-                          install_aur_packages pamac-all pamac-cli libpamac-full
-                          ;;
-                      BauhGUI)
-                          install_aur_packages bauh
-                          ;;
-                      ArchUpdate)
-                          install_aur_packages arch-update \
-                          && systemctl --user enable --now arch-update.timer
-                          ;;
-                      *)
-                          echo "Unknown package: $PACKAGE"
-                          ;;
-                  esac
-              done
-          else
-              echo "No packages selected."
-          fi
-      }
-
-      # Call the package selection dialog function
-      package_selection_dialog
-      echo
-      echo "#################################"
-      echo "              Done !             "
-      echo "#################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    r )
-      echo
-      echo "###########################################"
-      echo "      Adding/Enabling Chaotic-Aur Repo     "
-      echo "###########################################"
-      echo
-      sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
-      sleep 2
-      sudo pacman-key --lsign-key 3056513887B78AEB
-      sleep 2
-      sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
-      sleep 2
-      sudo pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
-      sleep 2
-      sudo cp /etc/pacman.conf /etc/pacman.conf.backup && \
-      echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf
-      sleep 2
-      sudo pacman -Syy
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    q )
-      clear && xero-cli -m
-
-      ;;
-
-    * )
-      echo "#################################"
-      echo "    Choose the correct number    "
-      echo "#################################"
-      ;;
-esac
-done
+main

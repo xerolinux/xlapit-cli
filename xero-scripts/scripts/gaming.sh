@@ -2,218 +2,142 @@
 #set -e
 ##################################################################################################################
 # Written to be used on 64 bits computers
-# Author 	: 	DarkXero
-# Website 	: 	http://xerolinux.xyz
+# Author   :   DarkXero
+# Website  :   http://xerolinux.xyz
 ##################################################################################################################
-clear
-tput setaf 3
-echo "#################################################"
-echo "#             The Gaming Essentials.            #"
-echo "#################################################"
-tput sgr0
-echo
-echo "Hello $USER, what would you like to install ? Press i for the Wiki."
-echo
-echo "################# Game Launchers #################"
-echo
-echo "s. Steam."
-echo "l. Lutris."
-echo "h. Heroic."
-echo "b. Bottles."
-echo
-echo "################### Game Tools ###################"
-echo
-echo "1.  Mangohud."
-echo "2.  Goverlay."
-echo "3.  Protonup-qt."
-echo "4.  Vulkan Layer (AMD)."
-echo "5.  Vulkan Layer (nVidia)."
-echo
-echo "Type Your Selection. Or type q to return to main menu."
-echo
 
-while :; do
+# Function to check and install dependencies
+check_dependency() {
+  local dependency=$1
+  command -v $dependency >/dev/null 2>&1 || { echo >&2 "$dependency is not installed. Installing..."; sudo pacman -S --noconfirm $dependency; }
+}
 
-read CHOICE
+# Function to display header
+display_header() {
+  clear
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "The Gaming Essentials."
+  echo
+  gum style --foreground 33 "Hello $USER, what would you like to install? Press 'i' for the Wiki."
+  echo
+}
 
-case $CHOICE in
+# Function to display options
+display_options() {
+  gum style --foreground 35 "################# Game Launchers #################"
+  echo
+  gum style --foreground 35 "s. Steam."
+  gum style --foreground 35 "l. Lutris."
+  gum style --foreground 35 "h. Heroic."
+  gum style --foreground 35 "b. Bottles."
+  echo
+  gum style --foreground 35 "################### Game Tools ###################"
+  echo
+  gum style --foreground 35 "1. Mangohud."
+  gum style --foreground 35 "2. Goverlay."
+  gum style --foreground 35 "3. Protonup-qt."
+  gum style --foreground 35 "4. Vulkan Layer (AMD)."
+  gum style --foreground 35 "5. Vulkan Layer (nVidia)."
+  echo
+  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
+  echo
+}
 
-    i )
-      echo
-      sleep 2
-      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#game-launchers"  > /dev/null 2>&1
-      echo
-      clear && sh $0
-      ;;
+# Function to handle selections
+handle_selection() {
+  local selection=$1
+  local prompt=$2
+  local commands=$3
 
-    s )
-      echo
-      echo "#################################################"
-      echo "#            Installing Steam Launcher          #"
-      echo "#################################################"
-      echo
-      sudo pacman -S --noconfirm --needed steam
-      sleep 3
-      echo
-      echo "Applying Download Speed Enhancement Patch..."
-      echo -e "@nClientDownloadEnableHTTP2PlatformLinux 0\n@fDownloadRateImprovementToAddAnotherConnection 1.0" > ~/.steam/steam/steam_dev.cfg
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
+  echo
+  gum style --foreground 35 "##########   $prompt   ##########"
+  echo
+  eval "$commands"
+  echo
+  gum style --foreground 35 "##########   Done! Returning to main menu..   ##########"
+  sleep 3
+  clear && exec "$0"
+}
 
-      ;;
+# Function for native or flatpak installation options
+native_or_flatpak_install() {
+  local name=$1
+  local native_command=$2
+  local flatpak_command=$3
 
-    l )
-      echo
-      echo "#################################################"
-      echo "#           Installing Lutris Launcher          #"
-      echo "#################################################"
-      echo
-      echo "Native (Unofficial) or Flatpak (Official) ?"
-      echo
-      select lutris in "Native" "Flatpak" "Back"; do case $lutris in Native) sudo pacman -S --noconfirm --needed lutris wine-meta && break ;; Flatpak) flatpak install net.lutris.Lutris && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
-      echo
-      echo "vm.max_map_count=2147483642" | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
+  gum style --foreground 33 "Native (Unofficial) or Flatpak (Official)?"
+  echo
+  select option in "Native" "Flatpak" "Back"; do
+    case $option in
+      Native)
+        eval "$native_command"
+        break
+        ;;
+      Flatpak)
+        eval "$flatpak_command"
+        break
+        ;;
+      Back)
+        clear && exec "$0"
+        break
+        ;;
+      *)
+        gum style --foreground 31 "Invalid option. Please select 1, 2, or 3."
+        ;;
+    esac
+  done
+  handle_selection "$name" "$name Launcher Installed" ""
+}
 
-      ;;
+# Function to process user choice
+process_choice() {
+  while :; do
+    read -rp "Enter your choice: " CHOICE
+    echo
 
-    h )
-      echo
-      echo "#################################################"
-      echo "#           Installing Heroic Launcher          #"
-      echo "#################################################"
-      echo
-      echo "Native (Unofficial) or Flatpak (Official) ?"
-      echo
-      select heroic in "Native" "Flatpak" "Back"; do case $heroic in Native) $AUR_HELPER -S --noconfirm --needed heroic-games-launcher-bin wine-meta && break ;; Flatpak) flatpak install com.heroicgameslauncher.hgl && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
+    case $CHOICE in
+      i)
+        xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#game-launchers" > /dev/null 2>&1
+        clear && exec "$0"
+        ;;
+      s)
+        handle_selection "s" "Installing Steam Launcher" "sudo pacman -S --noconfirm --needed steam; echo -e '@nClientDownloadEnableHTTP2PlatformLinux 0\n@fDownloadRateImprovementToAddAnotherConnection 1.0' > ~/.steam/steam/steam_dev.cfg"
+        ;;
+      l)
+        native_or_flatpak_install "Lutris" "sudo pacman -S --noconfirm --needed lutris wine-meta; echo 'vm.max_map_count=2147483642' | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null" "flatpak install net.lutris.Lutris"
+        ;;
+      h)
+        native_or_flatpak_install "Heroic" "$AUR_HELPER -S --noconfirm --needed heroic-games-launcher-bin wine-meta" "flatpak install com.heroicgameslauncher.hgl"
+        ;;
+      b)
+        native_or_flatpak_install "Bottles" "$AUR_HELPER -S --noconfirm --needed bottles wine-meta" "flatpak install com.usebottles.bottles"
+        ;;
+      1)
+        handle_selection "1" "Installing Mangohud" "sudo pacman -S --noconfirm --needed mangohud"
+        ;;
+      2)
+        handle_selection "2" "Installing Goverlay" "sudo pacman -S --noconfirm --needed goverlay"
+        ;;
+      3)
+        native_or_flatpak_install "ProtonUp-QT" "$AUR_HELPER -S --noconfirm --needed protonup-qt wine-meta" "flatpak install net.davidotek.pupgui2"
+        ;;
+      4)
+        handle_selection "4" "Installing DXVK-bin" "$AUR_HELPER -S --noconfirm --needed dxvk-bin"
+        ;;
+      5)
+        handle_selection "5" "Installing nvdxvk" "$AUR_HELPER -S --noconfirm --needed dxvk-nvapi-mingw"
+        ;;
+      q)
+        clear && xero-cli -m
+        ;;
+      *)
+        gum style --foreground 31 "########## Choose the correct option ##########"
+        ;;
+    esac
+  done
+}
 
-      ;;
-
-    b )
-      echo
-      echo "#################################################"
-      echo "#          Installing Bottles Launcher          #"
-      echo "#################################################"
-      echo
-      echo "Native (Unofficial) or Flatpak (Official) ?"
-      echo
-      select bottles in "Native" "Flatpak" "Back"; do case $bottles in Native) $AUR_HELPER -S --noconfirm --needed bottles wine-meta && break ;; Flatpak) flatpak install com.usebottles.bottles && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    1 )
-      echo
-      echo "#################################################"
-      echo "#               Installing Mangohud             #"
-      echo "#################################################"
-      echo
-      sudo pacman -S --noconfirm --needed mangohud
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    2 )
-      echo
-      echo "#################################################"
-      echo "#               Installing Goverlay             #"
-      echo "#################################################"
-      echo
-      sudo pacman -S --noconfirm --needed goverlay
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    3 )
-      echo
-      echo "#################################################"
-      echo "#             Installing ProtonUp-QT            #"
-      echo "#################################################"
-      echo
-      echo "Native (Unofficial) or Flatpak (Official) ?"
-      echo
-      select protonup in "Native" "Flatpak" "Back"; do case $protonup in Native) $AUR_HELPER -S --noconfirm --needed protonup-qt wine-meta && break ;; Flatpak) flatpak install net.davidotek.pupgui2 && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, or 3." ;; esac done
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    4 )
-      echo
-      echo "#################################################"
-      echo "#               Installing DXVK-bin             #"
-      echo "#################################################"
-      echo
-      $AUR_HELPER -S --noconfirm --needed dxvk-bin
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    5 )
-      echo
-      echo "#################################################"
-      echo "#                Installing nvdxvk              #"
-      echo "#################################################"
-      echo
-      $AUR_HELPER -S --noconfirm --needed dxvk-nvapi-mingw
-      echo
-      echo "#################################################"
-      echo "#        Done ! Returning to main menu..        #"
-      echo "#################################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    q )
-      clear && xero-cli -m
-
-      ;;
-
-    * )
-      echo "#################################"
-      echo "    Choose the correct number    "
-      echo "#################################"
-
-      ;;
-esac
-done
+# Main execution
+check_dependency gum
+display_header
+display_options
+process_choice

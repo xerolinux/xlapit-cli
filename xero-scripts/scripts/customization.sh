@@ -1,171 +1,121 @@
 #!/bin/bash
-#set -e
-##################################################################################################################
-# Written to be used on 64 bits computers
-# Author 	: 	DarkXero
-# Website 	: 	http://xerolinux.xyz
-##################################################################################################################
-clear
-tput setaf 3
-echo "#################################################"
-echo "#              System Customization             #"
-echo "#################################################"
-tput sgr0
-echo
-echo "Hello $USER, please select what to do. Press i for the Wiki."
-echo
-echo "################# Shell / Prompts ################"
-echo
-echo "n. Install Fastfetch."
-echo "f. Install Fish Shell."
-echo "z. Install ZSH+OMZ+Powerlevel10k."
-echo
-echo "################## DE/WM Ricing ##################"
-echo
-echo "k. XeroLinux KDE Rice"
-echo "h. Hyprland Dot Files/Rices"
-echo
-echo "Type Your Selection. Or type q to return to main menu."
-echo
 
-while :; do
+# Function to check and install dependencies
+check_dependency() {
+  local dependency=$1
+  command -v $dependency >/dev/null 2>&1 || { echo >&2 "$dependency is not installed. Installing..."; sudo pacman -S --noconfirm $dependency; }
+}
 
-read CHOICE
+# Function to display header
+display_header() {
+  clear
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "System Customization"
+  echo
+  gum style --foreground 33 "Hello $USER, please select an option. Press 'i' for the Wiki."
+  echo
+}
 
-case $CHOICE in
+# Function to display options
+display_options() {
+  gum style --foreground 35 "1. Install Fastfetch."
+  gum style --foreground 35 "2. Install Fish Shell."
+  gum style --foreground 35 "3. Install ZSH All in one."
+  gum style --foreground 35 "4. XeroLinux Layan KDE Rice."
+  gum style --foreground 35 "5. Hyprland Dot Files & Rices."
+  echo
+  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
+  echo
+}
 
-    i )
-      echo
-      sleep 2
-      xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-customization"  > /dev/null 2>&1
-      echo
-      clear && sh $0
+# Function to process user choice
+process_choice() {
+  while :; do
+    read -rp "Enter your choice: " CHOICE
+    echo
 
-      ;;
+    case $CHOICE in
+      i)
+        gum style --foreground 33 "Opening Wiki..."
+        sleep 3
+        xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-customization" > /dev/null 2>&1
+        clear && exec "$0"
+        ;;
+      1)
+        gum style --foreground 35 "Setting up Fastfetch..."
+        sleep 2
+        echo
+        $AUR_HELPER -S --noconfirm --needed fastfetch imagemagick ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts
+        fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc config.jsonc.bk && wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && wget -O Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && sed -i 's/xero.png/Arch.png/g' ~/.config/fastfetch/config.jsonc
+        gum style --foreground 35 "Fastfetch setup complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      2)
+        gum style --foreground 35 "Setting up Fish Shell..."
+        sleep 2
+        echo
+        sudo pacman -S --needed --noconfirm fish neofetch
+        $AUR_HELPER -S --noconfirm --needed ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts zsh-theme-powerlevel10k
+        sudo chsh $USER -s /bin/fish
+        gum style --foreground 35 "Fish shell setup complete! Log out and back in."
+        sleep 3
+        clear && exec "$0"
+        ;;
+      3)
+        gum style --foreground 35 "Setting up ZSH with p10k & OMZ Plugins..."
+        sleep 2
+        echo
+        sudo pacman -S --needed --noconfirm zsh grml-zsh-config fastfetch
+        $AUR_HELPER -S --noconfirm --needed ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts zsh-theme-powerlevel10k
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+        git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+        git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+        cd $HOME/ && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.p10k.zsh && rm ~/.zshrc && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.zshrc
+        fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc config.jsonc.bk && wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && wget -O Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && sed -i 's/xero.png/Arch.png/g' ~/.config/fastfetch/config.jsonc
+        sudo chsh $USER -s /bin/zsh
+        gum style --foreground 35 "ZSH setup complete! Log out and back in."
+        sleep 3
+        clear && exec "$0"
+        ;;
+      4)
+        gum style --foreground 35 "Setting up XeroLinux KDE Rice..."
+        sleep 2
+        echo
+        cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
+        cd ~/xero-layan-git/ && sh install.sh
+        gum style --foreground 35 "XeroLinux KDE Rice setup complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      5)
+        gum style --foreground 35 "Select Hyprland Dots..."
+        select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
+          case $dots in
+            ML4W) xdg-open "https://gitlab.com/stephan-raabe/dotfiles" > /dev/null 2>&1 && break ;;
+            JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland" > /dev/null 2>&1 && break ;;
+            Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file" > /dev/null 2>&1 && break ;;
+            Back) clear && exec "$0" && break ;;
+            *) gum style --foreground 31 "Invalid option. Select 1, 2, or 3." ;;
+          esac
+        done
+        gum style --foreground 35 "Hyprland Dots setup complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      q)
+        clear && xero-cli -m
+        ;;
+      *)
+        gum style --foreground 31 "Invalid choice. Select a valid option."
+        ;;
+    esac
+  done
+}
 
-    n )
-      echo
-      echo "#######################################"
-      echo "         Setting up Fastfestch         "
-      echo "#######################################"
-      sleep 2
-      echo
-      $AUR_HELPER -S --noconfirm --needed fastfetch ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts
-      echo
-      fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc config.jsonc.bk && wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && wget -O Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && sed -i 's/xero.png/Arch.png/g' ~/.config/fastfetch/config.jsonc
-      sleep 2
-      echo
-      echo "Done Have fun using Fastfetch !"
-      echo "###############################"
-      sleep 6
-      clear && sh $0
-
-      ;;
-
-    f )
-      echo
-      echo "#######################################"
-      echo "         Setting up Fish Shell         "
-      echo "#######################################"
-      sleep 2
-      echo
-      echo "Step 1 - Fish Shell & Fonts"
-      echo "################################"
-      sudo pacman -S --needed --noconfirm fish neofetch
-      echo
-      $AUR_HELPER -S --noconfirm --needed ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts zsh-theme-powerlevel10k
-      echo
-      echo
-      echo "Step 2 - Setting Fish as default"
-      echo "################################"
-      echo
-      sudo chsh $USER -s /bin/fish
-      echo
-      sleep 2
-      echo
-      echo "Done Please Log-out n back in !"
-      echo "###############################"
-      sleep 6
-      clear && sh $0
-
-      ;;
-
-    z )
-      echo
-      echo "######################################"
-      echo "Setting up ZSH With p10k & OMZ Plugins"
-      echo "######################################"
-      sleep 2
-      echo "Step 1 - Grabing Necessary Fonts"
-      echo "################################"
-      sudo pacman -S --needed --noconfirm zsh grml-zsh-config fastfetch
-      $AUR_HELPER -S --noconfirm --needed ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts zsh-theme-powerlevel10k
-      sleep 2
-      echo "Step 2 - Grabing OhMyZsh & Plugins"
-      echo "##################################"
-      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-      git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
-      git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-      git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-      sleep 2
-      echo "Step 3 - Grabing PowerLevel10k Theme"
-      echo "#####################################"
-      git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-      cd $HOME/ && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.p10k.zsh \
-      && rm ~/.zshrc && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.zshrc \
-      && fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc config.jsonc.bk && wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && wget -O Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && sed -i 's/xero.png/Arch.png/g' ~/.config/fastfetch/config.jsonc
-      sleep 2
-      echo "Step 4 - Setting Default Shell to ZSH"
-      echo "#####################################"
-      sudo chsh $USER -s /bin/zsh
-      echo "#####################################"
-      echo "     Done ! Now Logout & back in     "
-      echo "#####################################"
-      sleep 6
-      clear && sh $0
-
-      ;;
-
-    k )
-      echo
-      echo "######################################"
-      echo "    Setting up the XeroLayan Rice.    "
-      echo "######################################"
-      echo
-      cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
-      echo
-      cd ~/xero-layan-git/ && sh install.sh
-      sleep 4
-      clear && sh $0
-
-      ;;
-
-    h )
-      echo
-      echo "##########################################"
-      echo "           Select Hyprland Dots           "
-      echo "##########################################"
-      echo
-      select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do case $dots in ML4W) xdg-open "https://gitlab.com/stephan-raabe/dotfiles"  > /dev/null 2>&1 && break ;; JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland"  > /dev/null 2>&1 && break ;; Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file"  > /dev/null 2>&1 && break ;; Back) clear && sh $0 && break ;; *) echo "Invalid option. Please select 1, 2, 3 or 4." ;; esac done
-      echo
-      echo "#######################################"
-      echo "                 Done !                "
-      echo "#######################################"
-      sleep 3
-      clear && sh $0
-
-      ;;
-
-    q )
-      clear && xero-cli -m
-
-      ;;
-
-    * )
-      echo "#################################"
-      echo "    Choose the correct number    "
-      echo "#################################"
-
-      ;;
-esac
-done
+# Main execution
+check_dependency gum
+display_header
+display_options
+process_choice

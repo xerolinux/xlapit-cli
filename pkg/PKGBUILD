@@ -1,7 +1,7 @@
 # Maintainer: DarkXero <info at techxero.com>
 
 pkgname='xlapit-cli'
-pkgver=r103.6d592de
+pkgver=r105.05a02a2
 pkgrel=1
 pkgdesc='XeroLinux Post Installation CLI Toolkit'
 arch=("any")
