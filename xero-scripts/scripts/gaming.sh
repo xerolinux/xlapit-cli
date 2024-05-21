@@ -23,14 +23,14 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 35 "################# Game Launchers #################"
+  gum style --foreground 200 "################# Game Launchers #################"
   echo
   gum style --foreground 35 "s. Steam."
   gum style --foreground 35 "l. Lutris."
   gum style --foreground 35 "h. Heroic."
   gum style --foreground 35 "b. Bottles."
   echo
-  gum style --foreground 35 "################### Game Tools ###################"
+  gum style --foreground 215 "################### Game Tools ###################"
   echo
   gum style --foreground 35 "1. Mangohud."
   gum style --foreground 35 "2. Goverlay."

@@ -30,7 +30,7 @@ display_options() {
 
 # Function to prompt user for GPU drivers
 prompt_user() {
-  gum style --foreground 33 "If Hybrid, only Intel/NVIDIA setup is supported."
+  gum style --foreground 196 "If Hybrid, only Intel/NVIDIA setup is supported."
   echo
   read -rp "Are you using a Desktop with AMD GPU ? (y/n): " amd_desktop
   if [[ $amd_desktop =~ ^[Yy](es)?$ ]]; then
@@ -84,7 +84,8 @@ prompt_user() {
       fi
     fi
   fi
-  gum style --foreground 35 "Time to reboot for everything to work."
+  echo
+  gum style --foreground 196 "Time to reboot for everything to work."
   sleep 3
 }
 

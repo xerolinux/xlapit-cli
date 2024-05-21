@@ -29,9 +29,9 @@ display_menu() {
   gum style --foreground 35 "8.  Install Collection of XeroLinux's Fix Scripts (Optional)."
   gum style --foreground 35 "9.  Install XeroLinux Grub/GPU Hooks (Advanced Grub Users Only)."
   echo
-  gum style --foreground 196 "d. Fix Discover PackageKit issue."
-  gum style --foreground 196 "m. Update Arch Mirrorlist, for faster download speeds."
-  gum style --foreground 196 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
+  gum style --foreground 69 "d. Fix Discover PackageKit issue."
+  gum style --foreground 69 "m. Update Arch Mirrorlist, for faster download speeds."
+  gum style --foreground 69 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
   echo
@@ -111,41 +111,41 @@ install_grub_hooks() {
 }
 
 fix_discover_issue() {
-  gum style --foreground 35 "##########    Fixing Discover's PackageKit issue    ##########"
+  gum style --foreground 69 "##########    Fixing Discover's PackageKit issue    ##########"
   sleep 3
   if [ -f "/usr/share/polkit-1/actions/org.freedesktop.packagekit.policy" ]; then
     sudo mv /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy.old
   fi
   sudo pacman -S --needed --noconfirm packagekit-qt6
-  gum style --foreground 35 "##########    Done! Discover should work now.   ##########"
+  gum style --foreground 69 "##########    Done! Discover should work now.   ##########"
   sleep 3
   restart_script
 }
 
 update_mirrorlist() {
-  gum style --foreground 35 "##########     Updating Mirrors To Fastest Ones     ##########"
+  gum style --foreground 69 "##########     Updating Mirrors To Fastest Ones     ##########"
   sudo pacman -S --noconfirm --needed reflector
   sudo reflector --verbose -phttps -f10 -l10 --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syy
-  gum style --foreground 35 "##########    Done! Updating should go faster   ##########"
+  gum style --foreground 69 "##########    Done! Updating should go faster   ##########"
   sleep 3
   restart_script
 }
 
 fix_gpg_keyring() {
-  gum style --foreground 35 "##########   Fixing Pacman Databases..   ##########"
+  gum style --foreground 69 "##########   Fixing Pacman Databases..   ##########"
   sleep 2
-  gum style --foreground 35 "Step 1 - Deleting Existing Keys.."
+  gum style --foreground 69 "Step 1 - Deleting Existing Keys.."
   sudo rm -r /etc/pacman.d/gnupg/*
   sleep 2
-  gum style --foreground 35 "Step 2 - Populating Keys.."
+  gum style --foreground 69 "Step 2 - Populating Keys.."
   sudo pacman-key --init && sudo pacman-key --populate
   sleep 2
-  gum style --foreground 35 "Step 3 - Adding Ubuntu keyserver.."
+  gum style --foreground 69 "Step 3 - Adding Ubuntu keyserver.."
   echo "keyserver hkp://keyserver.ubuntu.com:80" | sudo tee --append /etc/pacman.d/gnupg/gpg.conf
   sleep 2
-  gum style --foreground 35 "Step 4 - Updating ArchLinux Keyring.."
+  gum style --foreground 69 "Step 4 - Updating ArchLinux Keyring.."
   sudo pacman -Syy --noconfirm archlinux-keyring
-  gum style --foreground 35 "##########    Done! Try Update now & Report     ##########"
+  gum style --foreground 69 "##########    Done! Try Update now & Report     ##########"
   sleep 6
   restart_script
 }

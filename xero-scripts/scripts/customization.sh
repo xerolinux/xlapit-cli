@@ -96,12 +96,12 @@ process_choice() {
         clear && exec "$0"
         ;;
       x)
-        gum style --foreground 35 "Setting up XeroLinux KDE Rice..."
+        gum style --foreground 200 "Setting up XeroLinux KDE Rice..."
         sleep 2
         echo
         cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
         cd ~/xero-layan-git/ && sh install.sh
-        gum style --foreground 35 "XeroLinux KDE Rice setup complete!"
+        gum style --foreground 200 "XeroLinux KDE Rice setup complete!"
         sleep 3
         clear && exec "$0"
         ;;

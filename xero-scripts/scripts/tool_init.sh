@@ -24,7 +24,8 @@ display_menu() {
   gum style --foreground 35 "4. Enable Fast Multithreaded Package Compilation."
   gum style --foreground 35 "5. Install 3rd-Party GUI Package Manager(s) (AUR)."
   echo
-  gum style --foreground 196 "6. Add & Enable the Chaotic-AUR Repository (Risky!)."
+  gum style --foreground 69 "6. Add & Enable the Chaotic-AUR Repository (Pre-Compiled)."
+  gum style --foreground 196 "7. Add & Enable the CachyOS Repositories (Advanced Users Only)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
   echo
@@ -112,7 +113,7 @@ install_gui_package_managers() {
 }
 
 add_chaotic_aur() {
-  gum style --foreground 35 "Adding Chaotic-AUR Repository..."
+  gum style --foreground 69 "Adding Chaotic-AUR Repository..."
   sleep 2
   echo
   sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
@@ -121,7 +122,19 @@ add_chaotic_aur() {
   sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
   echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf
   sudo pacman -Syy
-  gum style --foreground 35 "Chaotic-AUR Repository added!"
+  gum style --foreground 69 "Chaotic-AUR Repository added!"
+  sleep 3
+  restart_script
+}
+
+add_cachyos() {
+  gum style --foreground 196 "Adding CachyOS Repositories..."
+  sleep 2
+  echo
+  cd ~ && curl https://mirror.cachyos.org/cachyos-repo.tar.xz -o cachyos-repo.tar.xz
+  tar xvf cachyos-repo.tar.xz && cd ~/cachyos-repo
+  sudo ./cachyos-repo.sh
+  gum style --foreground 196 "CachyOS Repositories added!"
   sleep 3
   restart_script
 }
@@ -147,6 +160,7 @@ main() {
       4) enable_multithreaded_compilation ;;
       5) install_gui_package_managers ;;
       6) add_chaotic_aur ;;
+      7) add_cachyos ;;
       q) clear && exec xero-cli -m ;;
       *) gum style --foreground 31 "Invalid choice. Select a valid option." ;;
     esac

@@ -4,6 +4,14 @@ This toolkit aims to be an all-in-one solution for post-installation, expediting
 
 ![XLAPiT](https://i.imgur.com/JuWceYE.png)
 
+<div align="center">
+
+### ! DO NOT ADD CachyOS Repo !
+
+#### ...Unless you know what you are doing...
+
+</div>
+
 ### How to get it
 
 First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you the user. I will never force anything on you. Now just run this simple curl command to get started.
@@ -14,7 +22,7 @@ bash -c "$(curl -fsSL https://tinyurl.com/xtoolkit)"
 
 It will prompt you before injecting as in adding the XeroLinux repository, where from it will then prompt you, should you agree, as to which AUR helper you prefer, then proceed to do so then install and launch the toolkit.. Again only if you agree..
 
-**- FOr the security concious :**
+**- For the security concious :**
 
 If you care about security, instead of using _Curl_ command you can download the script, inspect it then run it.. Do it via the following commands :
 ```
