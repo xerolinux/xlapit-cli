@@ -32,7 +32,7 @@ display_options() {
 prompt_user() {
   gum style --foreground 196 "If Hybrid, only Intel/NVIDIA setup is supported."
   echo
-  read -rp "Are you using a Desktop with AMD GPU ? (y/n): " amd_desktop
+  read -rp "Are you only using an AMD dGPU/iGPU ? (y/n): " amd_desktop
   if [[ $amd_desktop =~ ^[Yy](es)?$ ]]; then
     sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers libva-mesa-driver lib32-libva-mesa-driver
     read -rp "Will you be using DaVinci Resolve ? (y/n): " davinci
@@ -40,11 +40,11 @@ prompt_user() {
       sudo pacman -S --needed --noconfirm mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime rocm-hip-runtime
     fi
   else
-    read -rp "Are you only using an Intel GPU (iGPU/dGPU) ? (y/n): " intel_gpu
+    read -rp "Are you only using an Intel dGPU/iGPU ? (y/n): " intel_gpu
     if [[ $intel_gpu =~ ^[Yy](es)?$ ]]; then
       sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
     else
-      read -rp "Are you using an NVIDIA GPU ? (y/n): " nvidia_gpu
+      read -rp "Are you using an NVIDIA Discrete GPU ? (y/n): " nvidia_gpu
       if [[ $nvidia_gpu =~ ^[Yy](es)?$ ]]; then
         read -rp "Single GPU Desktop or Hybrid Laptop ? (desktop/hybrid): " nvidia_setup
         if [[ $nvidia_setup == "desktop" ]]; then

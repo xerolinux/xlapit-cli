@@ -39,6 +39,10 @@ You can access toolkit by either typing `xero-cli -m` in terminal or from the ap
 
 It's crucial to clarify that this toolkit isn't intended for custom Arch-Based distros. While some elements might function, I can't ensure seamless compatibility due to potential conflicts arising from differing tweaks and repositories. To ensure optimal performance, it's strongly recommended for use on a clean Pure-Arch install executed through the **ArchInstall** script. Nor will it provide Arch or DE/WM installations.
 
+### GPU Driver Notes
+
+When it comes to **GPU Drivers**, toolkit cover most common setups. There is a caveat that comes with that, it currently does **NOT** cover the AMD/nVidia Hybrid ones. For those you will have to consult online documentation, sorry. Anyway, by answering the prompts correctly you will have your system(s) up and running in no time at all. Even Kernel modiules will load for **nVidia**. If you have any issues let me know here...
+
 ### How to Contribute
 
 If you can/want to Contribute your knowledge improving this toolkit taking it above and beyond, making it the defacto for every **Arch** user, please see [**Here**](https://github.com/xerolinux/xlapit-cli/wiki/User-Contribution) for more information.
