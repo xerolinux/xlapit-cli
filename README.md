@@ -8,7 +8,7 @@ This toolkit aims to be an all-in-one solution for post-installation, expediting
 
 ### ! DO NOT ADD CachyOS Repos !
 
-#### Also do not activate Both ChaoticAUR & CachyOS Repos, only one of them.
+#### Activate either ChaoticAUR OR CachyOS Repos, NOT BOTH.
 
 #### ...Unless you know what you are doing and want trouble...
 
