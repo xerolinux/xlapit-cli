@@ -34,7 +34,8 @@ display_options() {
   gum style --foreground 35 "7. Social & Chat Tools."
   gum style --foreground 35 "8. Virtualization Tools."
   gum style --foreground 35 "9. Video Tools & Software."
-  gum style --foreground 35 "10. Extra KDE Plasma Packages."
+  echo
+  gum style --foreground 196 "p. Extra KDE Plasma Packages."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
   echo
@@ -317,7 +318,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      10)
+      p)
         package_selection_dialog "Select PKGs/Groups to install (selective):" \
         "Frameworks" "KDE Framworks 6 Group" OFF \
         "KSystem" "KDE System Group" OFF \

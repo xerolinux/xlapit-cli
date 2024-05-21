@@ -20,8 +20,9 @@ display_options() {
   gum style --foreground 35 "1. Install Fastfetch."
   gum style --foreground 35 "2. Install Fish Shell."
   gum style --foreground 35 "3. Install ZSH All in one."
-  gum style --foreground 35 "4. XeroLinux Layan KDE Rice."
-  gum style --foreground 35 "5. Hyprland Dot Files & Rices."
+  gum style --foreground 35 "4. Hyprland Dot Files & Rices."
+  echo
+  gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
   echo
@@ -80,16 +81,6 @@ process_choice() {
         clear && exec "$0"
         ;;
       4)
-        gum style --foreground 35 "Setting up XeroLinux KDE Rice..."
-        sleep 2
-        echo
-        cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
-        cd ~/xero-layan-git/ && sh install.sh
-        gum style --foreground 35 "XeroLinux KDE Rice setup complete!"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      5)
         gum style --foreground 35 "Select Hyprland Dots..."
         select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
           case $dots in
@@ -101,6 +92,16 @@ process_choice() {
           esac
         done
         gum style --foreground 35 "Hyprland Dots setup complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      x)
+        gum style --foreground 35 "Setting up XeroLinux KDE Rice..."
+        sleep 2
+        echo
+        cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
+        cd ~/xero-layan-git/ && sh install.sh
+        gum style --foreground 35 "XeroLinux KDE Rice setup complete!"
         sleep 3
         clear && exec "$0"
         ;;

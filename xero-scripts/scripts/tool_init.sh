@@ -24,7 +24,7 @@ display_menu() {
   gum style --foreground 35 "4. Enable Fast Multithreaded Package Compilation."
   gum style --foreground 35 "5. Install 3rd-Party GUI Package Manager(s) (AUR)."
   echo
-  gum style --foreground 35 "6. Add & Enable the Chaotic-AUR Repository (Risky!)."
+  gum style --foreground 196 "6. Add & Enable the Chaotic-AUR Repository (Risky!)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
   echo
@@ -97,15 +97,13 @@ install_gui_package_managers() {
     "OctoPi" "Octopi Package Manager" off \
     "PacSeek" "PacSeek Package Manager" off \
     "Pamac-All" "Pamac-All Package Manager" off \
-    "BauhGUI" "Bauh GUI Package Manager" off \
-    "ArchUpdate" "Arch Update Notifier" off 3>&1 1>&2 2>&3)
+    "BauhGUI" "Bauh GUI Package Manager" off 3>&1 1>&2 2>&3)
   for PACKAGE in $PACKAGES; do
     case $PACKAGE in
-      "OctoPi") $AUR_HELPER -S --needed octopi alpm_octopi_utils octopi-notifier-noknotify ;;
+      "OctoPi") $AUR_HELPER -S --needed octopi alpm_octopi_utils ;;
       "PacSeek") $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
       "Pamac-All") $AUR_HELPER -S --needed pamac-all pamac-cli libpamac-full ;;
       "BauhGUI") $AUR_HELPER -S --needed bauh ;;
-      "ArchUpdate") $AUR_HELPER -S --needed arch-update; systemctl --user enable --now arch-update.timer ;;
     esac
   done
   gum style --foreground 35 "3rd-Party GUI Package Managers installation complete!"

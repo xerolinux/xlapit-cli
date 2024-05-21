@@ -29,9 +29,9 @@ display_menu() {
   gum style --foreground 35 "8.  Install Collection of XeroLinux's Fix Scripts (Optional)."
   gum style --foreground 35 "9.  Install XeroLinux Grub/GPU Hooks (Advanced Grub Users Only)."
   echo
-  gum style --foreground 35 "d. Fix Discover PackageKit issue."
-  gum style --foreground 35 "m. Update Arch Mirrorlist, for faster download speeds."
-  gum style --foreground 35 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
+  gum style --foreground 196 "d. Fix Discover PackageKit issue."
+  gum style --foreground 196 "m. Update Arch Mirrorlist, for faster download speeds."
+  gum style --foreground 196 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
   echo
