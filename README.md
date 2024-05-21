@@ -6,7 +6,7 @@ This toolkit aims to be an all-in-one solution for post-installation, expediting
 
 <div align="center">
 
-### ! DO NOT ADD CachyOS Repo !
+### ! DO NOT ADD CachyOS Repos !
 
 #### ...Unless you know what you are doing...
 
