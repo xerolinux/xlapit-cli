@@ -6,11 +6,9 @@ This toolkit aims to be an all-in-one solution for post-installation, expediting
 
 <div align="center">
 
-### ! DO NOT ADD CachyOS Repos !
+### Activate either ChaoticAUR "OR" CachyOS Repos, NOT "Both".
 
-#### Activate either ChaoticAUR OR CachyOS Repos, NOT BOTH.
-
-#### ...Unless you know what you are doing and want trouble...
+#### !!! CachyOS Repos are for Advanced Users Only !!!
 
 </div>
 
