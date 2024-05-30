@@ -30,6 +30,14 @@ display_options() {
 
 # Function to prompt user for GPU drivers
 prompt_user() {
+  # Display GPU information
+  gum style --foreground 33 "Gathering information about your connected GPUs..."
+  echo
+  inxi -G
+  echo
+  gum style --foreground 33 "Above is your GPU setup, read carefully and answer prompts wisely."
+  echo
+
   gum style --foreground 196 "If Hybrid, only Intel/NVIDIA setup is supported."
   echo
   read -rp "Are you only using an AMD dGPU/iGPU ? (y/n): " amd_desktop
