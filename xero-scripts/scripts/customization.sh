@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set window title
+echo -ne "\033]0;System Customization\007"
+
 # Function to check and install dependencies
 check_dependency() {
   local dependency=$1
@@ -25,12 +28,45 @@ display_options() {
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
-  echo
 }
+
+# Function to handle errors and prompt user
+handle_error() {
+  echo
+  gum style --foreground 196 "An error occurred. Would you like to retry or go back to the main menu? (r/m)"
+  read -rp "Enter your choice: " choice
+  case $choice in
+    r|R) exec "$0" ;;
+    m|M) clear && exec xero-cli -m ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Function to handle Ctrl+C
+handle_interrupt() {
+  echo
+  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
+  read -rp "Enter your choice: " choice
+  echo
+  case $choice in
+    e|E) exit 1 ;;
+    r|R) exec "$0" ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Trap errors and Ctrl+C
+trap 'handle_error' ERR
+trap 'handle_interrupt' SIGINT
 
 # Function to process user choice
 process_choice() {
   while :; do
+    echo
     read -rp "Enter your choice: " CHOICE
     echo
 
@@ -106,12 +142,14 @@ process_choice() {
         clear && exec "$0"
         ;;
       q)
-        clear && xero-cli -m
+        clear && exec xero-cli -m
         ;;
       *)
-        gum style --foreground 31 "Invalid choice. Select a valid option."
+        gum style --foreground 31 "Invalid choice. Please select a valid option."
+        echo
         ;;
     esac
+    sleep 3
   done
 }
 

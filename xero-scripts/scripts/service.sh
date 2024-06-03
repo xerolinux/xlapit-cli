@@ -1,11 +1,8 @@
 #!/bin/bash
 set -e
 
-##################################################################################################################
-# Written to be used on 64 bits computers
-# Author   :   DarkXero
-# Website  :   http://xerolinux.xyz
-##################################################################################################################
+# Set window title
+echo -ne "\033]0;Fixes & Tweaks\007"
 
 # Function to check and install gum if not present
 check_gum() {
@@ -34,8 +31,40 @@ display_menu() {
   gum style --foreground 69 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
-  echo
 }
+
+# Function to handle errors and prompt user
+handle_error() {
+  echo
+  gum style --foreground 196 "An error occurred. Would you like to retry or go back to the main menu? (r/m)"
+  read -rp "Enter your choice: " choice
+  case $choice in
+    r|R) exec "$0" ;;
+    m|M) clear && exec xero-cli -m ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Function to handle Ctrl+C
+handle_interrupt() {
+  echo
+  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
+  read -rp "Enter your choice: " choice
+  echo
+  case $choice in
+    e|E) exit 1 ;;
+    r|R) exec "$0" ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Trap errors and Ctrl+C
+trap 'handle_error' ERR
+trap 'handle_interrupt' SIGINT
 
 # Function for each task
 install_firewalld() {
@@ -43,13 +72,13 @@ install_firewalld() {
   sudo systemctl enable --now firewalld.service
   gum style --foreground 35 "##########  All Done, Enjoy!    ##########"
   sleep 3
-  restart_script
+  exec "$0"
 }
 
 clear_pacman_cache() {
   sudo pacman -Scc
   sleep 2
-  restart_script
+  exec "$0"
 }
 
 restart_pipewire() {
@@ -60,13 +89,13 @@ restart_pipewire() {
   sleep 1.5
   gum style --foreground 35 "##########  All Done, Try now  ##########"
   sleep 2
-  restart_script
+  exec "$0"
 }
 
 unlock_pacman_db() {
   sudo rm /var/lib/pacman/db.lck
   sleep 2
-  restart_script
+  exec "$0"
 }
 
 activate_v4l2loopback() {
@@ -76,7 +105,7 @@ activate_v4l2loopback() {
   echo 'options v4l2loopback exclusive_caps=1 card_label="OBS Virtual Camera"' | sudo tee /etc/modprobe.d/v4l2loopback.conf > /dev/null
   gum style --foreground 35 "Please reboot your system for changes to take effect."
   sleep 2
-  restart_script
+  exec "$0"
 }
 
 activate_flatpak_theming() {
@@ -86,7 +115,7 @@ activate_flatpak_theming() {
   sudo flatpak override --filesystem=xdg-config/gtk-4.0:ro
   gum style --foreground 35 "##########     Flatpak Theming Activated     ##########"
   sleep 3
-  restart_script
+  exec "$0"
 }
 
 install_power_daemon() {
@@ -94,20 +123,20 @@ install_power_daemon() {
   sudo systemctl enable --now power-profiles-daemon
   sudo groupadd power && sudo usermod -aG power "$(whoami)"
   sleep 2
-  restart_script
+  exec "$0"
 }
 
 install_fix_scripts() {
   sudo pacman -S --needed --noconfirm xero-fix-scripts
   sleep 2
-  restart_script
+  exec "$0"
 }
 
 install_grub_hooks() {
   sudo pacman -S --needed --noconfirm grub-hooks xero-hooks
   sudo mkinitcpio -P && sudo grub-mkconfig -o /boot/grub/grub.cfg
   sleep 2
-  restart_script
+  exec "$0"
 }
 
 fix_discover_issue() {
@@ -119,7 +148,7 @@ fix_discover_issue() {
   sudo pacman -S --needed --noconfirm packagekit-qt6
   gum style --foreground 69 "##########    Done! Discover should work now.   ##########"
   sleep 3
-  restart_script
+  exec "$0"
 }
 
 update_mirrorlist() {
@@ -128,7 +157,7 @@ update_mirrorlist() {
   sudo reflector --verbose -phttps -f10 -l10 --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syy
   gum style --foreground 69 "##########    Done! Updating should go faster   ##########"
   sleep 3
-  restart_script
+  exec "$0"
 }
 
 fix_gpg_keyring() {
@@ -147,11 +176,6 @@ fix_gpg_keyring() {
   sudo pacman -Syy --noconfirm archlinux-keyring
   gum style --foreground 69 "##########    Done! Try Update now & Report     ##########"
   sleep 6
-  restart_script
-}
-
-restart_script() {
-  clear
   exec "$0"
 }
 
@@ -176,8 +200,12 @@ main() {
       m) update_mirrorlist ;;
       g) fix_gpg_keyring ;;
       q) clear && exec xero-cli -m ;;
-      *) gum style --foreground 31 "##########    Choose the correct number    ##########" ;;
+      *)
+        gum style --foreground 31 "Invalid choice. Please select a valid option."
+        echo
+        ;;
     esac
+    sleep 3
   done
 }
 

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set window title
+echo -ne "\033]0;Device Drivers\007"
+
 # Function to check and install dependencies
 check_dependency() {
   local dependency=$1
@@ -25,8 +28,40 @@ display_options() {
   gum style --foreground 35 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
-  echo
 }
+
+# Function to handle errors and prompt user
+handle_error() {
+  echo
+  gum style --foreground 196 "An error occurred. Would you like to retry or go back to the main menu? (r/m)"
+  read -rp "Enter your choice: " choice
+  case $choice in
+    r|R) exec "$0" ;;
+    m|M) clear && exec xero-cli -m ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Function to handle Ctrl+C
+handle_interrupt() {
+  echo
+  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
+  read -rp "Enter your choice: " choice
+  echo
+  case $choice in
+    e|E) exit 1 ;;
+    r|R) exec "$0" ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Trap errors and Ctrl+C
+trap 'handle_error' ERR
+trap 'handle_interrupt' SIGINT
 
 # Function to prompt user for GPU drivers
 prompt_user() {
@@ -115,6 +150,7 @@ package_selection_dialog() {
 # Function to process user choice
 process_choice() {
   while :; do
+    echo
     read -rp "Enter your choice: " CHOICE
     echo
 
@@ -123,12 +159,12 @@ process_choice() {
         gum style --foreground 33 "Opening Wiki..."
         sleep 3
         xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-drivers" > /dev/null 2>&1
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       1)
         prompt_user
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       2)
         gum style --foreground 35 "Installing Printer Drivers and Tools..."
@@ -136,10 +172,10 @@ process_choice() {
         echo
         sudo pacman -S --needed --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
         sudo systemctl enable --now avahi-daemon cups.socket
-        sudo groupadd lp && sudo groupadd cups && sudo usermod -aG sys,lp,cups "$(whoami)"
+        sudo groupadd lp && sudo groupadd cups and sudo usermod -aG sys,lp,cups "$(whoami)"
         gum style --foreground 35 "Printer Drivers and Tools installation complete!"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       3)
         gum style --foreground 35 "Installing Samba Tools..."
@@ -148,7 +184,7 @@ process_choice() {
         sudo pacman -S --needed samba-support
         gum style --foreground 35 "Samba Tools installation complete!"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       4)
         gum style --foreground 35 "Installing Scanner Drivers..."
@@ -157,7 +193,7 @@ process_choice() {
         sudo pacman -S --noconfirm --needed scanner-support
         gum style --foreground 35 "Scanner Drivers installation complete!"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       5)
         gum style --foreground 35 "Installing Game Controller Drivers..."
@@ -166,7 +202,7 @@ process_choice() {
         package_selection_dialog "DualShock4 DualSense XBoxOne" "install_aur_packages"
         gum style --foreground 35 "Game Controller Drivers installation complete!"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       6)
         gum style --foreground 35 "Installing DeckLink & StreamDeck Drivers/Tools..."
@@ -175,16 +211,17 @@ process_choice() {
         package_selection_dialog "Decklink DeckMaster StreamDeckUI" "install_aur_packages"
         gum style --foreground 35 "DeckLink & StreamDeck Drivers/Tools installation complete!"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       q)
-        clear && xero-cli -m
+        clear and exec xero-cli -m
         ;;
       *)
-        gum style --foreground 31 "Invalid choice. Select a valid option."
+        gum style --foreground 50 "Invalid choice. Please select a valid option."
         echo
         ;;
     esac
+    sleep 3
   done
 }
 

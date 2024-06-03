@@ -1,10 +1,7 @@
 #!/bin/bash
-#set -e
-##################################################################################################################
-# Written to be used on 64 bits computers
-# Author   :   DarkXero
-# Website  :   http://xerolinux.xyz
-##################################################################################################################
+
+# Set window title
+echo -ne "\033]0;Gaming Tools\007"
 
 # Function to check and install dependencies
 check_dependency() {
@@ -15,124 +12,162 @@ check_dependency() {
 # Function to display header
 display_header() {
   clear
-  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "The Gaming Essentials."
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Gaming Tools & Launchers"
   echo
-  gum style --foreground 33 "Hello $USER, what would you like to install? Press 'i' for the Wiki."
+  gum style --foreground 33 "Hello $USER, select what gaming software to install. Press 'i' for the Wiki."
   echo
 }
 
 # Function to display options
 display_options() {
-  gum style --foreground 200 "################# Game Launchers #################"
-  echo
-  gum style --foreground 35 "s. Steam."
-  gum style --foreground 35 "l. Lutris."
-  gum style --foreground 35 "h. Heroic."
-  gum style --foreground 35 "b. Bottles."
-  echo
-  gum style --foreground 215 "################### Game Tools ###################"
-  echo
-  gum style --foreground 35 "1. Mangohud."
-  gum style --foreground 35 "2. Goverlay."
-  gum style --foreground 35 "3. Protonup-qt."
-  gum style --foreground 35 "4. Vulkan Layer (AMD)."
-  gum style --foreground 35 "5. Vulkan Layer (nVidia)."
+  gum style --foreground 35 "1. Steam (Flatpak)."
+  gum style --foreground 35 "2. Heroic Games Launcher (Flatpak)."
+  gum style --foreground 35 "3. Lutris (Flatpak)."
+  gum style --foreground 35 "4. Emulators (Flatpak)."
+  gum style --foreground 35 "5. Game Mode."
+  gum style --foreground 35 "6. MangoHUD."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
-  echo
 }
 
-# Function to handle selections
-handle_selection() {
-  local selection=$1
-  local prompt=$2
-  local commands=$3
-
+# Function to handle errors and prompt user
+handle_error() {
   echo
-  gum style --foreground 35 "##########   $prompt   ##########"
+  gum style --foreground 196 "An error occurred. Would you like to retry or go back to the main menu? (r/m)"
+  read -rp "Enter your choice: " choice
   echo
-  eval "$commands"
-  echo
-  gum style --foreground 35 "##########   Done! Returning to main menu..   ##########"
+  case $choice in
+    r|R) exec "$0" ;;
+    m|M) clear && exec xero-cli -m ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
   sleep 3
   clear && exec "$0"
 }
 
-# Function for native or flatpak installation options
-native_or_flatpak_install() {
-  local name=$1
-  local native_command=$2
-  local flatpak_command=$3
-
-  gum style --foreground 33 "Native (Unofficial) or Flatpak (Official)?"
+# Function to handle Ctrl+C
+handle_interrupt() {
   echo
-  select option in "Native" "Flatpak" "Back"; do
-    case $option in
-      Native)
-        eval "$native_command"
-        break
-        ;;
-      Flatpak)
-        eval "$flatpak_command"
-        break
-        ;;
-      Back)
-        clear && exec "$0"
-        break
-        ;;
-      *)
-        gum style --foreground 31 "Invalid option. Please select 1, 2, or 3."
-        ;;
-    esac
-  done
-  handle_selection "$name" "$name Launcher Installed" ""
+  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
+  read -rp "Enter your choice: " choice
+  echo
+  case $choice in
+    e|E) exit 1 ;;
+    r|R) exec "$0" ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Trap errors and Ctrl+C
+trap 'handle_error' ERR
+trap 'handle_interrupt' SIGINT
+
+# Function to install gaming packages
+install_gaming_packages() {
+  case $1 in
+    steam)
+      flatpak install -y com.valvesoftware.Steam
+      ;;
+    heroic)
+      flatpak install -y com.heroicgameslauncher.hgl
+      ;;
+    lutris)
+      flatpak install -y net.lutris.Lutris
+      ;;
+    emulators)
+      flatpak install -y org.ppsspp.PPSSPP org.DolphinEmu.dolphin-emu org.flycast.Flycast org.pcsx2.PCSX2 org.yuzu_emu.yuzu org.citra_emu.citra org.ryujinx.Ryujinx
+      ;;
+    gamemode)
+      sudo pacman -S --noconfirm --needed gamemode
+      ;;
+    mangohud)
+      sudo pacman -S --noconfirm --needed mangohud lib32-mangohud
+      ;;
+    *)
+      echo "Unknown package: $1"
+      ;;
+  esac
 }
 
 # Function to process user choice
 process_choice() {
   while :; do
+    echo
     read -rp "Enter your choice: " CHOICE
     echo
 
     case $CHOICE in
       i)
-        xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#game-launchers" > /dev/null 2>&1
+        gum style --foreground 33 "Opening Wiki..."
+        sleep 3
+        xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#gaming" > /dev/null 2>&1
         clear && exec "$0"
         ;;
-      s)
-        handle_selection "s" "Installing Steam Launcher" "sudo pacman -S --noconfirm --needed steam; echo -e '@nClientDownloadEnableHTTP2PlatformLinux 0\n@fDownloadRateImprovementToAddAnotherConnection 1.0' > ~/.steam/steam/steam_dev.cfg"
-        ;;
-      l)
-        native_or_flatpak_install "Lutris" "sudo pacman -S --noconfirm --needed lutris wine-meta; echo 'vm.max_map_count=2147483642' | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null" "flatpak install net.lutris.Lutris"
-        ;;
-      h)
-        native_or_flatpak_install "Heroic" "$AUR_HELPER -S --noconfirm --needed heroic-games-launcher-bin wine-meta" "flatpak install com.heroicgameslauncher.hgl"
-        ;;
-      b)
-        native_or_flatpak_install "Bottles" "$AUR_HELPER -S --noconfirm --needed bottles wine-meta" "flatpak install com.usebottles.bottles"
-        ;;
       1)
-        handle_selection "1" "Installing Mangohud" "sudo pacman -S --noconfirm --needed mangohud"
+        gum style --foreground 35 "Installing Steam..."
+        sleep 2
+        echo
+        install_gaming_packages steam
+        gum style --foreground 35 "Steam installation complete!"
+        sleep 3
+        clear && exec "$0"
         ;;
       2)
-        handle_selection "2" "Installing Goverlay" "sudo pacman -S --noconfirm --needed goverlay"
+        gum style --foreground 35 "Installing Heroic Games Launcher..."
+        sleep 2
+        echo
+        install_gaming_packages heroic
+        gum style --foreground 35 "Heroic Games Launcher installation complete!"
+        sleep 3
+        clear && exec "$0"
         ;;
       3)
-        native_or_flatpak_install "ProtonUp-QT" "$AUR_HELPER -S --noconfirm --needed protonup-qt wine-meta" "flatpak install net.davidotek.pupgui2"
+        gum style --foreground 35 "Installing Lutris..."
+        sleep 2
+        echo
+        install_gaming_packages lutris
+        gum style --foreground 35 "Lutris installation complete!"
+        sleep 3
+        clear && exec "$0"
         ;;
       4)
-        handle_selection "4" "Installing DXVK-bin" "$AUR_HELPER -S --noconfirm --needed dxvk-bin"
+        gum style --foreground 35 "Installing Emulators..."
+        sleep 2
+        echo
+        install_gaming_packages emulators
+        gum style --foreground 35 "Emulators installation complete!"
+        sleep 3
+        clear && exec "$0"
         ;;
       5)
-        handle_selection "5" "Installing nvdxvk" "$AUR_HELPER -S --noconfirm --needed dxvk-nvapi-mingw"
+        gum style --foreground 35 "Installing Game Mode..."
+        sleep 2
+        echo
+        install_gaming_packages gamemode
+        gum style --foreground 35 "Game Mode installation complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      6)
+        gum style --foreground 35 "Installing MangoHUD..."
+        sleep 2
+        echo
+        install_gaming_packages mangohud
+        gum style --foreground 35 "MangoHUD installation complete!"
+        sleep 3
+        clear && exec "$0"
         ;;
       q)
-        clear && xero-cli -m
+        clear && exec xero-cli -m
         ;;
       *)
-        gum style --foreground 31 "########## Choose the correct option ##########"
+        gum style --foreground 50 "Invalid choice. Please select a valid option."
+        echo
         ;;
     esac
+    sleep 3
   done
 }
 

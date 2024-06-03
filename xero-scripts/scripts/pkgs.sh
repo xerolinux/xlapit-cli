@@ -6,6 +6,9 @@
 # Website  :   http://xerolinux.xyz
 ##################################################################################################################
 
+# Set window title
+echo -ne "\033]0;Essential Package Installer\007"
+
 # Function to check and install dependencies
 check_dependency() {
   local dependency=$1
@@ -15,7 +18,7 @@ check_dependency() {
 # Function to display header
 display_header() {
   clear
-  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Essential Pkg Installer"
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Essential Package Installer"
   echo
   gum style --foreground 33 "Hello $USER, this will install extra packages. Press 'i' for the Wiki."
   echo
@@ -23,7 +26,7 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 35 "################# Various Extra Pkgs #################"
+  gum style --foreground 35 "################# Various Extra Packages #################"
   echo
   gum style --foreground 35 "1. LibreOffice."
   gum style --foreground 35 "2. Web Browsers."
@@ -38,8 +41,40 @@ display_options() {
   gum style --foreground 196 "p. Extra KDE Plasma Packages."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
-  echo
 }
+
+# Function to handle errors and prompt user
+handle_error() {
+  echo
+  gum style --foreground 196 "An error occurred. Would you like to retry or go back to the main menu? (r/m)"
+  read -rp "Enter your choice: " choice
+  echo
+  case $choice in
+    r|R) exec "$0" ;;
+    m|M) clear and exec xero-cli -m ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Function to handle Ctrl+C
+handle_interrupt() {
+  echo
+  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
+  read -rp "Enter your choice: " choice
+  case $choice in
+    e|E) exit 1 ;;
+    r|R) exec "$0" ;;
+    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+  esac
+  sleep 3
+  clear && exec "$0"
+}
+
+# Trap errors and Ctrl+C
+trap 'handle_error' ERR
+trap 'handle_interrupt' SIGINT
 
 # Function to install packages using pacman
 install_pacman_packages() {
@@ -216,20 +251,21 @@ package_selection_dialog() {
 # Function to process user choice
 process_choice() {
   while :; do
+    echo
     read -rp "Enter your choice: " CHOICE
     echo
 
     case $CHOICE in
       i)
         xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#recommended-packages" > /dev/null 2>&1
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       1)
         sudo pacman -S --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
         install_aur_packages ttf-gentium-basic hsqldb2-java libreoffice-extension-languagetool
         gum style --foreground 35 "##########  Done, Please Reboot !  ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       2)
         package_selection_dialog "Select Browser(s) to install:" \
@@ -243,14 +279,14 @@ process_choice() {
         "Tor" "Tor Browser Bundle" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       3)
         gum style --foreground 35 "##########       Installing Recommended Tools       ##########"
         install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
         gum style --foreground 35 "##########     Done !    ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       4)
         package_selection_dialog "Select Development Apps to install:" \
@@ -263,7 +299,7 @@ process_choice() {
         "IntelliJ" "IntelliJ IDEA IDE for Java" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       5)
         package_selection_dialog "Select Photography & 3D Apps to install:" \
@@ -274,7 +310,7 @@ process_choice() {
         "Unreal" "Advanced 3D Game-Engine" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       6)
         package_selection_dialog "Select Music & Media Apps to install:" \
@@ -285,7 +321,7 @@ process_choice() {
         "LinuxAudio" "A MASSIVE collection of VST Plugins" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       7)
         package_selection_dialog "Select Social/Web Apps to install:" \
@@ -295,7 +331,7 @@ process_choice() {
         "Tokodon" "A Mastodon client for Plasma" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       8)
         package_selection_dialog "Select Virtualization System to install:" \
@@ -303,7 +339,7 @@ process_choice() {
         "VirtualBox" "Powerful x86 virtualization" OFF
         gum style --foreground 35 "########## Done! Please Reboot. ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       9)
         package_selection_dialog "Select App(s) to install (DaVinci-Resolve will take a while to compile, don't interrupt the process):" \
@@ -316,7 +352,7 @@ process_choice() {
         "Avidemux" "Graphical tool to edit video" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       p)
         package_selection_dialog "Select PKGs/Groups to install (selective):" \
@@ -328,15 +364,17 @@ process_choice() {
         "Kextras" "Extra KDE Tools" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear && exec "$0"
+        clear and exec "$0"
         ;;
       q)
-        clear && exec xero-cli -m
+        clear and exec xero-cli -m
         ;;
       *)
-        gum style --foreground 31 "##########    Choose the correct number    ##########"
+        gum style --foreground 50 "Invalid choice. Please select a valid option."
+        echo
         ;;
     esac
+    sleep 3
   done
 }
 
