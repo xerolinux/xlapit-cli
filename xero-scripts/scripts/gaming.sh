@@ -20,12 +20,18 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 35 "1. Steam (Flatpak)."
-  gum style --foreground 35 "2. Heroic Games Launcher (Flatpak)."
-  gum style --foreground 35 "3. Lutris (Flatpak)."
-  gum style --foreground 35 "4. Emulators (Flatpak)."
-  gum style --foreground 35 "5. Game Mode."
-  gum style --foreground 35 "6. MangoHUD."
+  gum style --foreground 137 ".::: Native Packages :::."
+  echo
+  gum style --foreground 35 "1. Steam."
+  gum style --foreground 35 "2. MangoHUD."
+  gum style --foreground 35 "3. Game Mode."
+  echo
+  gum style --foreground 93 ".::: Flatpak Packages :::."
+  echo
+  gum style --foreground 35 "4. Heroic."
+  gum style --foreground 35 "5. Lutris."
+  gum style --foreground 35 "6. Bottles."
+  gum style --foreground 35 "7. ProtonUp-QT."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -68,7 +74,10 @@ trap 'handle_interrupt' SIGINT
 install_gaming_packages() {
   case $1 in
     steam)
-      flatpak install -y com.valvesoftware.Steam
+      sudo pacman -S --noconfirm --needed steam
+      ;;
+    bottles)
+      flatpak install -y com.usebottles.bottles
       ;;
     heroic)
       flatpak install -y com.heroicgameslauncher.hgl
@@ -77,13 +86,16 @@ install_gaming_packages() {
       flatpak install -y net.lutris.Lutris
       ;;
     emulators)
-      flatpak install -y org.ppsspp.PPSSPP org.DolphinEmu.dolphin-emu org.flycast.Flycast org.pcsx2.PCSX2 org.yuzu_emu.yuzu org.citra_emu.citra org.ryujinx.Ryujinx
+      flatpak install -y org.ppsspp.PPSSPP org.DolphinEmu.dolphin-emu org.flycast.Flycast org.pcsx2.PCSX2 org.citra_emu.citra
       ;;
     gamemode)
       sudo pacman -S --noconfirm --needed gamemode
       ;;
     mangohud)
       sudo pacman -S --noconfirm --needed mangohud lib32-mangohud
+      ;;
+    protonupQT)
+      flatpak install -y net.davidotek.pupgui2
       ;;
     *)
       echo "Unknown package: $1"
@@ -112,36 +124,23 @@ process_choice() {
         install_gaming_packages steam
         gum style --foreground 35 "Steam installation complete!"
         sleep 3
+        echo
+        echo "Patching VM.Max.MapCount"
+        echo
+        echo "vm.max_map_count=2147483642" | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null
+        sleep 6
         clear && exec "$0"
         ;;
       2)
-        gum style --foreground 35 "Installing Heroic Games Launcher..."
+        gum style --foreground 35 "Installing MangoHUD..."
         sleep 2
         echo
-        install_gaming_packages heroic
-        gum style --foreground 35 "Heroic Games Launcher installation complete!"
+        install_gaming_packages mangohud
+        gum style --foreground 35 "MangoHUD installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       3)
-        gum style --foreground 35 "Installing Lutris..."
-        sleep 2
-        echo
-        install_gaming_packages lutris
-        gum style --foreground 35 "Lutris installation complete!"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      4)
-        gum style --foreground 35 "Installing Emulators..."
-        sleep 2
-        echo
-        install_gaming_packages emulators
-        gum style --foreground 35 "Emulators installation complete!"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      5)
         gum style --foreground 35 "Installing Game Mode..."
         sleep 2
         echo
@@ -150,12 +149,39 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      6)
-        gum style --foreground 35 "Installing MangoHUD..."
+      4)
+        gum style --foreground 35 "Installing Heroic Games Launcher..."
         sleep 2
         echo
-        install_gaming_packages mangohud
-        gum style --foreground 35 "MangoHUD installation complete!"
+        install_gaming_packages heroic
+        gum style --foreground 35 "Heroic Games Launcher installation complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      5)
+        gum style --foreground 35 "Installing Lutris..."
+        sleep 2
+        echo
+        install_gaming_packages lutris
+        gum style --foreground 35 "Lutris installation complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      6)
+        gum style --foreground 35 "Installing Bottles..."
+        sleep 2
+        echo
+        install_gaming_packages bottles
+        gum style --foreground 35 "Bottles installation complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      7)
+        gum style --foreground 35 "Installing ProtonUp-QT..."
+        sleep 2
+        echo
+        install_gaming_packages protonupQT
+        gum style --foreground 35 "ProtonUp-QT installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
