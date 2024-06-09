@@ -81,8 +81,8 @@ process_choice() {
         gum style --foreground 35 "Setting up Fastfetch..."
         sleep 2
         echo
-        $AUR_HELPER -S --noconfirm --needed fastfetch imagemagick ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts
-        fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc config.jsonc.bk && wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && wget -O Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && sed -i 's/xero.png/Arch.png/g' ~/.config/fastfetch/config.jsonc
+        $AUR_HELPER -S --noconfirm --needed fastfetch
+        fastfetch --gen-config
         gum style --foreground 35 "Fastfetch setup complete!"
         sleep 3
         clear && exec "$0"
@@ -91,8 +91,8 @@ process_choice() {
         gum style --foreground 35 "Setting up Fish Shell..."
         sleep 2
         echo
-        sudo pacman -S --needed --noconfirm fish neofetch
-        $AUR_HELPER -S --noconfirm --needed ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts zsh-theme-powerlevel10k
+        sudo pacman -S --needed --noconfirm fish fastfetch
+        fastfetch --gen-config
         sudo chsh $USER -s /bin/fish
         gum style --foreground 35 "Fish shell setup complete! Log out and back in."
         sleep 3
