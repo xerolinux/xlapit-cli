@@ -76,6 +76,47 @@ handle_interrupt() {
 trap 'handle_error' ERR
 trap 'handle_interrupt' SIGINT
 
+# Function to display package selection dialog
+package_selection_dialog() {
+    local title=$1
+    shift
+    local options=("$@")
+    PACKAGES=$(dialog --checklist "$title" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+
+    if [ -n "$PACKAGES" ]; then
+        for PACKAGE in $PACKAGES; do
+            case $PACKAGE in
+                DualShock4)
+                    install_aur_packages ds4drv game-devices-udev
+                    sleep 3
+                    "_:: Please follow guide on Github for configuration ::_"
+                    sleep 3
+                    xdg-open "https://github.com/chrippa/ds4drv"  > /dev/null 2>&1
+                    ;;
+                DualSense)
+                    install_aur_packages dualsensectl game-devices-udev
+                    sleep 3
+                    "_:: Please follow guide on Github for configuration ::_"
+                    sleep 3
+                    xdg-open "https://github.com/nowrep/dualsensectl"  > /dev/null 2>&1
+                    ;;
+                Vivaldi)
+                    install_aur_packages xone-dkms game-devices-udev
+                    sleep 3
+                    "_:: Please follow guide on Github for configuration ::_"
+                    sleep 3
+                    xdg-open "https://github.com/medusalix/xone"  > /dev/null 2>&1
+                    ;;
+                *)
+                    echo "Unknown package: $PACKAGE"
+                    ;;
+            esac
+        done
+    else
+        echo "No packages selected."
+    fi
+}
+
 # Function to install gaming packages
 install_gaming_packages() {
   case $1 in
