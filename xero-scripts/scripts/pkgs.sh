@@ -242,7 +242,7 @@ process_choice() {
         install_aur_packages ttf-gentium-basic hsqldb2-java libreoffice-extension-languagetool
         gum style --foreground 35 "##########  Done, Please Reboot !  ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       2)
         package_selection_dialog "Select Browser(s) to install:" \
@@ -256,14 +256,14 @@ process_choice() {
         "Tor" "Tor Browser Bundle" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       3)
         gum style --foreground 35 "########## Installing Recommended Tools ##########"
         install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       4)
         package_selection_dialog "Select Development Apps to install:" \
@@ -276,7 +276,7 @@ process_choice() {
         "IntelliJ" "IntelliJ IDEA IDE for Java" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       5)
         package_selection_dialog "Select Photography & 3D Apps to install:" \
@@ -287,7 +287,7 @@ process_choice() {
         "Unreal" "Advanced 3D Game-Engine" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       6)
         package_selection_dialog "Select Music & Media Apps to install:" \
@@ -298,7 +298,7 @@ process_choice() {
         "LinuxAudio" "A MASSIVE collection of VST Plugins" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       7)
         package_selection_dialog "Select Social/Web Apps to install:" \
@@ -308,7 +308,7 @@ process_choice() {
         "Tokodon" "A Mastodon client for Plasma" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       8)
         package_selection_dialog "Select Virtualization System to install:" \
@@ -316,7 +316,7 @@ process_choice() {
         "VirtualBox" "Powerful x86 virtualization" OFF
         gum style --foreground 35 "########## Done! Please Reboot. ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       9)
         package_selection_dialog "Select App(s) to install (DaVinci-Resolve will take a while to compile, don't interrupt the process):" \
@@ -329,10 +329,10 @@ process_choice() {
         "Avidemux" "Graphical tool to edit video" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       q)
-        clear and exec xero-cli -m
+        clear && exec xero-cli -m
         ;;
       *)
         gum style --foreground 50 "Invalid choice. Please select a valid option."

@@ -163,7 +163,7 @@ process_choice() {
       1)
         prompt_user
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       2)
         gum style --foreground 35 "Installing Printer Drivers and Tools..."
@@ -174,7 +174,7 @@ process_choice() {
         sudo groupadd lp && sudo groupadd cups and sudo usermod -aG sys,lp,cups "$(whoami)"
         gum style --foreground 35 "Printer Drivers and Tools installation complete!"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       3)
         gum style --foreground 35 "Installing Samba Tools..."
@@ -183,7 +183,7 @@ process_choice() {
         sudo pacman -S --needed samba-support
         gum style --foreground 35 "Samba Tools installation complete!"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       4)
         gum style --foreground 35 "Installing Scanner Drivers..."
@@ -192,7 +192,7 @@ process_choice() {
         sudo pacman -S --noconfirm --needed scanner-support
         gum style --foreground 35 "Scanner Drivers installation complete!"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       5)
         gum style --foreground 35 "Installing DeckLink & StreamDeck Drivers/Tools..."
@@ -201,10 +201,10 @@ process_choice() {
         package_selection_dialog "Decklink DeckMaster StreamDeckUI" "install_aur_packages"
         gum style --foreground 35 "DeckLink & StreamDeck Drivers/Tools installation complete!"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       q)
-        clear and exec xero-cli -m
+        clear && exec xero-cli -m
         ;;
       *)
         gum style --foreground 50 "Invalid choice. Please select a valid option."
