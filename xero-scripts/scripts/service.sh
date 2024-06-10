@@ -22,8 +22,8 @@ display_menu() {
   gum style --foreground 35 "4.  Unlock Pacman DB (In case of DB error)."
   gum style --foreground 35 "5.  Activate v4l2loopback for OBS-VirtualCam."
   gum style --foreground 35 "6.  Activate Flatpak Theming (Required If used)."
-  gum style --foreground 35 "8.  Install Collection of XeroLinux's Fix Scripts (Optional)."
-  gum style --foreground 35 "9.  Install XeroLinux Grub/GPU Hooks (Advanced Grub Users Only)."
+  gum style --foreground 35 "7.  Install Collection of XeroLinux's Fix Scripts (Optional)."
+  gum style --foreground 35 "8.  Install XeroLinux Grub/GPU Hooks (Advanced Grub Users Only)."
   echo
   gum style --foreground 227 "w. WayDroid Installation Guide."
   gum style --foreground 69 "d. Fix Discover PackageKit issue."
