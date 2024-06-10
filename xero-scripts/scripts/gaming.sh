@@ -30,14 +30,15 @@ display_options() {
   gum style --foreground 35 "1. Steam."
   gum style --foreground 35 "2. MangoHUD."
   gum style --foreground 35 "3. Game Mode."
-  gum style --foreground 35 "4. Game Controllers."
+  gum style --foreground 35 "4. Game Scope."
+  gum style --foreground 35 "5. Game Controllers."
   echo
   gum style --foreground 93 ".::: Flatpak Packages :::."
   echo
-  gum style --foreground 35 "5. Heroic."
-  gum style --foreground 35 "6. Lutris."
-  gum style --foreground 35 "7. Bottles."
-  gum style --foreground 35 "8. ProtonUp-QT."
+  gum style --foreground 35 "6. Heroic."
+  gum style --foreground 35 "7. Lutris."
+  gum style --foreground 35 "8. Bottles."
+  gum style --foreground 35 "9. ProtonUp-QT."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -121,7 +122,7 @@ package_selection_dialog() {
 install_gaming_packages() {
   case $1 in
     steam)
-      sudo pacman -S --noconfirm --needed steam
+      sudo pacman -S --noconfirm --needed steam vkd3d giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses ocl-icd lib32-ocl-icd libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader cups dosbox lib32-opencl-icd-loader lib32-vkd3d  opencl-icd-loader
       ;;
     bottles)
       flatpak install -y com.usebottles.bottles
@@ -131,6 +132,7 @@ install_gaming_packages() {
       ;;
     lutris)
       flatpak install -y net.lutris.Lutris
+      sudo pacman -S --needed wine-staging
       ;;
     emulators)
       flatpak install -y org.ppsspp.PPSSPP org.DolphinEmu.dolphin-emu org.flycast.Flycast org.pcsx2.PCSX2 org.citra_emu.citra
@@ -138,8 +140,11 @@ install_gaming_packages() {
     gamemode)
       sudo pacman -S --noconfirm --needed gamemode
       ;;
+    gamescope)
+      sudo pacman -S --noconfirm --needed gamescope
+      ;;
     mangohud)
-      sudo pacman -S --noconfirm --needed mangohud lib32-mangohud
+      sudo pacman -S --noconfirm --needed mangohud lib32-mangohud ttf-liberation lib32-fontconfig wqy-zenhei
       ;;
     protonupQT)
       flatpak install -y net.davidotek.pupgui2
@@ -197,6 +202,15 @@ process_choice() {
         clear && exec "$0"
         ;;
       4)
+        gum style --foreground 35 "Installing Game Mode..."
+        sleep 2
+        echo
+        install_gaming_packages gamemode
+        gum style --foreground 35 "Game Mode installation complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      5)
         package_selection_dialog "Select Controller Driver to install:" \
         "DualSense" "DualSence Driver" OFF \
         "DualShock4" "DualShock 4 Driver" OFF \
@@ -205,7 +219,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      5)
+      6)
         gum style --foreground 35 "Installing Heroic Games Launcher..."
         sleep 2
         echo
@@ -214,7 +228,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      6)
+      7)
         gum style --foreground 35 "Installing Lutris..."
         sleep 2
         echo
@@ -223,7 +237,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      7)
+      8)
         gum style --foreground 35 "Installing Bottles..."
         sleep 2
         echo
@@ -232,7 +246,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      8)
+      9)
         gum style --foreground 35 "Installing ProtonUp-QT..."
         sleep 2
         echo
