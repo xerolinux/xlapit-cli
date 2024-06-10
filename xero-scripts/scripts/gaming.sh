@@ -18,6 +18,11 @@ display_header() {
   echo
 }
 
+# Function to install AUR packages
+install_aur_packages() {
+  $AUR_HELPER -S --noconfirm --needed "$@"
+}
+
 # Function to display options
 display_options() {
   gum style --foreground 137 ".::: Native Packages :::."
@@ -25,13 +30,14 @@ display_options() {
   gum style --foreground 35 "1. Steam."
   gum style --foreground 35 "2. MangoHUD."
   gum style --foreground 35 "3. Game Mode."
+  gum style --foreground 35 "4. Game Controllers."
   echo
   gum style --foreground 93 ".::: Flatpak Packages :::."
   echo
-  gum style --foreground 35 "4. Heroic."
-  gum style --foreground 35 "5. Lutris."
-  gum style --foreground 35 "6. Bottles."
-  gum style --foreground 35 "7. ProtonUp-QT."
+  gum style --foreground 35 "5. Heroic."
+  gum style --foreground 35 "6. Lutris."
+  gum style --foreground 35 "7. Bottles."
+  gum style --foreground 35 "8. ProtonUp-QT."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -150,6 +156,15 @@ process_choice() {
         clear && exec "$0"
         ;;
       4)
+        gum style --foreground 35 "Installing Game Controller Drivers..."
+        sleep 2
+        echo
+        package_selection_dialog "DualShock4 DualSense XBoxOne" "install_aur_packages"
+        gum style --foreground 35 "Game Controller Drivers installation complete!"
+        sleep 3
+        clear and exec "$0"
+        ;;
+      5)
         gum style --foreground 35 "Installing Heroic Games Launcher..."
         sleep 2
         echo
@@ -158,7 +173,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      5)
+      6)
         gum style --foreground 35 "Installing Lutris..."
         sleep 2
         echo
@@ -167,7 +182,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      6)
+      7)
         gum style --foreground 35 "Installing Bottles..."
         sleep 2
         echo
@@ -176,7 +191,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      7)
+      8)
         gum style --foreground 35 "Installing ProtonUp-QT..."
         sleep 2
         echo

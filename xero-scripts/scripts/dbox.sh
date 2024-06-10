@@ -22,18 +22,17 @@ display_header() {
 display_options() {
   gum style --foreground 215 "====== Docker/DistroBox ======"
   echo
-  gum style --foreground 35 "1. Install Podman/Desktop."
-  gum style --foreground 35 "2. Install/Configure Docker."
-  gum style --foreground 35 "3. Install/Configure Distrobox."
+  gum style --foreground 35 "1. Install/Configure Docker."
+  gum style --foreground 35 "2. Install/Configure Distrobox."
   echo
   gum style --foreground 200 "====== DistroBox Images ======"
   echo
-  gum style --foreground 35 "4. Pull Latest Debian Image."
-  gum style --foreground 35 "5. Pull Latest Fedora Image."
-  gum style --foreground 35 "6. Pull Latest Void Linux Image."
-  gum style --foreground 35 "7. Pull Latest Tumbleweed Image."
+  gum style --foreground 35 "3. Pull Latest Debian Image."
+  gum style --foreground 35 "4. Pull Latest Fedora Image."
+  gum style --foreground 35 "5. Pull Latest Void Linux Image."
+  gum style --foreground 35 "6. Pull Latest Tumbleweed Image."
   echo
-  gum style --foreground 35 "8. Update all Containers (Might take a while)."
+  gum style --foreground 35 "7. Update all Containers (Might take a while)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -86,15 +85,6 @@ process_choice() {
         clear && exec "$0"
         ;;
       1)
-        gum style --foreground 35 "Installing Podman & Podman-Desktop..."
-        sleep 2
-        echo
-        sudo pacman -S --noconfirm --needed podman flatpak && flatpak install -y io.podman_desktop.PodmanDesktop || handle_error
-        gum style --foreground 35 "Podman installation complete!"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      2)
         gum style --foreground 35 "Installing & Setting up Docker..."
         sleep 2
         echo
@@ -108,7 +98,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      3)
+      2)
         gum style --foreground 35 "Installing Distrobox..."
         sleep 2
         echo
@@ -117,7 +107,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      4)
+      3)
         gum style --foreground 35 "Pulling Latest Debian Image with label 'Debian'..."
         sleep 2
         echo
@@ -127,7 +117,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      5)
+      4)
         gum style --foreground 35 "Pulling Latest Fedora Image with label 'Fedora'..."
         sleep 2
         echo
@@ -137,7 +127,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      6)
+      5)
         gum style --foreground 35 "Pulling Latest Void Linux Image with label 'VoidLinux'..."
         sleep 2
         echo
@@ -147,7 +137,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      7)
+      6)
         gum style --foreground 35 "Pulling Latest Tumbleweed Image with label 'OpenSuse'..."
         sleep 2
         echo
@@ -157,7 +147,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      8)
+      7)
         gum style --foreground 35 "Upgrading all Containers..."
         sleep 2
         echo

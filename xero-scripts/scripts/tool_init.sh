@@ -37,6 +37,7 @@ display_menu() {
 handle_error() {
   echo
   gum style --foreground 196 "An error occurred. Would you like to retry or go back to the main menu? (r/m)"
+  echo
   read -rp "Enter your choice: " choice
   case $choice in
     r|R) exec "$0" ;;
@@ -51,6 +52,7 @@ handle_error() {
 handle_interrupt() {
   echo
   gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
+  echo
   read -rp "Enter your choice: " choice
   echo
   case $choice in
@@ -79,7 +81,7 @@ install_pipewire_bluetooth() {
   gum style --foreground 35 "Installing PipeWire/Bluetooth Packages..."
   sleep 2
   echo
-  sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack libpipewire pipewire-v4l2 pipewire-x11-bell pipewire-zeroconf realtime-privileges sof-firmware ffmpeg ffmpegthumbs ffnvcodec-headers
+  sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack pipewire-support ffmpeg ffmpegthumbs ffnvcodec-headers
   sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
   sudo systemctl enable --now bluetooth.service
   gum style --foreground 35 "PipeWire/Bluetooth Packages installation complete!"
@@ -179,6 +181,7 @@ main() {
   check_dialog
   while :; do
     display_menu
+    echo
     read -rp "Enter your choice: " CHOICE
     echo
 

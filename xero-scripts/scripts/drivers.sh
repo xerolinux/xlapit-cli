@@ -24,8 +24,7 @@ display_options() {
   gum style --foreground 35 "2. Printer Drivers and Tools."
   gum style --foreground 35 "3. Samba Tools (XeroLinux Repo)."
   gum style --foreground 35 "4. Scanner Drivers (XeroLinux Repo)."
-  gum style --foreground 35 "5. Game Controller Drivers (PS4/5/XBox)."
-  gum style --foreground 35 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
+  gum style --foreground 35 "5. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -196,15 +195,6 @@ process_choice() {
         clear and exec "$0"
         ;;
       5)
-        gum style --foreground 35 "Installing Game Controller Drivers..."
-        sleep 2
-        echo
-        package_selection_dialog "DualShock4 DualSense XBoxOne" "install_aur_packages"
-        gum style --foreground 35 "Game Controller Drivers installation complete!"
-        sleep 3
-        clear and exec "$0"
-        ;;
-      6)
         gum style --foreground 35 "Installing DeckLink & StreamDeck Drivers/Tools..."
         sleep 2
         echo

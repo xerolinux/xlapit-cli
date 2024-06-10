@@ -12,7 +12,7 @@ check_gum() {
 # Function to display the menu
 display_menu() {
   clear
-  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Fixes/Tweaks"
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "System Fixes & Tweaks"
   echo
   gum style --foreground 33 "Hello $USER, what would you like to do today?"
   echo
@@ -22,13 +22,13 @@ display_menu() {
   gum style --foreground 35 "4.  Unlock Pacman DB (In case of DB error)."
   gum style --foreground 35 "5.  Activate v4l2loopback for OBS-VirtualCam."
   gum style --foreground 35 "6.  Activate Flatpak Theming (Required If used)."
-  gum style --foreground 35 "7.  Install/Activate Power Daemon for Laptops/Desktops."
   gum style --foreground 35 "8.  Install Collection of XeroLinux's Fix Scripts (Optional)."
   gum style --foreground 35 "9.  Install XeroLinux Grub/GPU Hooks (Advanced Grub Users Only)."
   echo
+  gum style --foreground 227 "w. WayDroid Installation Guide."
   gum style --foreground 69 "d. Fix Discover PackageKit issue."
-  gum style --foreground 69 "m. Update Arch Mirrorlist, for faster download speeds."
-  gum style --foreground 69 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
+  gum style --foreground 27 "m. Update Arch Mirrorlist, for faster download speeds."
+  gum style --foreground 160 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -70,7 +70,7 @@ trap 'handle_interrupt' SIGINT
 install_firewalld() {
   sudo pacman -S --needed --noconfirm firewalld python-pyqt5 python-capng
   sudo systemctl enable --now firewalld.service
-  gum style --foreground 35 "##########  All Done, Enjoy!    ##########"
+  gum style --foreground 35 "##########  All Done, Enjoy!  ##########"
   sleep 3
   exec "$0"
 }
@@ -118,14 +118,6 @@ activate_flatpak_theming() {
   exec "$0"
 }
 
-install_power_daemon() {
-  sudo pacman -S --needed --noconfirm power-profiles-daemon
-  sudo systemctl enable --now power-profiles-daemon
-  sudo groupadd power && sudo usermod -aG power "$(whoami)"
-  sleep 2
-  exec "$0"
-}
-
 install_fix_scripts() {
   sudo pacman -S --needed --noconfirm xero-fix-scripts
   sleep 2
@@ -139,29 +131,37 @@ install_grub_hooks() {
   exec "$0"
 }
 
+waydroid_guide() {
+  gum style --foreground 36 "Opening Guide..."
+  sleep 3
+  xdg-open "https://forum.xerolinux.xyz/thread-327.html" > /dev/null 2>&1
+  sleep 3
+  exec "$0"
+}
+
 fix_discover_issue() {
-  gum style --foreground 69 "##########    Fixing Discover's PackageKit issue    ##########"
+  gum style --foreground 69 "########## Fixing Discover's PackageKit issue ##########"
   sleep 3
   if [ -f "/usr/share/polkit-1/actions/org.freedesktop.packagekit.policy" ]; then
     sudo mv /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy.old
   fi
   sudo pacman -S --needed --noconfirm packagekit-qt6
-  gum style --foreground 69 "##########    Done! Discover should work now.   ##########"
+  gum style --foreground 69 "########## Done! Discover should work now. ##########"
   sleep 3
   exec "$0"
 }
 
 update_mirrorlist() {
-  gum style --foreground 69 "##########     Updating Mirrors To Fastest Ones     ##########"
+  gum style --foreground 69 "##########  Updating Mirrors To Fastest Ones  ##########"
   sudo pacman -S --noconfirm --needed reflector
   sudo reflector --verbose -phttps -f10 -l10 --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syy
-  gum style --foreground 69 "##########    Done! Updating should go faster   ##########"
+  gum style --foreground 69 "########## Done! Updating should go faster ##########"
   sleep 3
   exec "$0"
 }
 
 fix_gpg_keyring() {
-  gum style --foreground 69 "##########   Fixing Pacman Databases..   ##########"
+  gum style --foreground 69 "########## Fixing Pacman Databases.. ##########"
   sleep 2
   gum style --foreground 69 "Step 1 - Deleting Existing Keys.."
   sudo rm -r /etc/pacman.d/gnupg/*
@@ -183,6 +183,7 @@ main() {
   check_gum
   while :; do
     display_menu
+    echo
     read -rp "Enter your choice: " CHOICE
     echo
 
@@ -193,9 +194,9 @@ main() {
       4) unlock_pacman_db ;;
       5) activate_v4l2loopback ;;
       6) activate_flatpak_theming ;;
-      7) install_power_daemon ;;
-      8) install_fix_scripts ;;
-      9) install_grub_hooks ;;
+      7) install_fix_scripts ;;
+      8) install_grub_hooks ;;
+      w) waydroid_guide ;;
       d) fix_discover_issue ;;
       m) update_mirrorlist ;;
       g) fix_gpg_keyring ;;

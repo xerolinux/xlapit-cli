@@ -19,15 +19,12 @@ check_dependency() {
 display_header() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Essential Package Installer"
-  echo
   gum style --foreground 33 "Hello $USER, this will install extra packages. Press 'i' for the Wiki."
   echo
 }
 
 # Function to display options
 display_options() {
-  gum style --foreground 35 "################# Various Extra Packages #################"
-  echo
   gum style --foreground 35 "1. LibreOffice."
   gum style --foreground 35 "2. Web Browsers."
   gum style --foreground 35 "3. System Tools."
@@ -37,8 +34,6 @@ display_options() {
   gum style --foreground 35 "7. Social & Chat Tools."
   gum style --foreground 35 "8. Virtualization Tools."
   gum style --foreground 35 "9. Video Tools & Software."
-  echo
-  gum style --foreground 196 "p. Extra KDE Plasma Packages."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -220,24 +215,6 @@ package_selection_dialog() {
                 Avidemux)
                     install_pacman_packages avidemux-qt
                     ;;
-                Frameworks)
-                    install_pacman_packages kf6
-                    ;;
-                KSystem)
-                    install_pacman_packages kde-system
-                    ;;
-                KNetwork)
-                    install_pacman_packages kde-network
-                    ;;
-                KGraphics)
-                    install_pacman_packages kde-graphics
-                    ;;
-                KUtilities)
-                    install_pacman_packages kde-utilities
-                    ;;
-                Kextras)
-                    install_pacman_packages dolphin-plugins plasmatube audiotube ffmpegthumbs kirigami-gallery dwayland qt6-wayland lib32-wayland wayland-protocols kwayland-integration plasma-wayland-protocols kdecoration ksshaskpass kgpg
-                    ;;
                 *)
                     echo "Unknown package: $PACKAGE"
                     ;;
@@ -282,9 +259,9 @@ process_choice() {
         clear and exec "$0"
         ;;
       3)
-        gum style --foreground 35 "##########       Installing Recommended Tools       ##########"
+        gum style --foreground 35 "########## Installing Recommended Tools ##########"
         install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
-        gum style --foreground 35 "##########     Done !    ##########"
+        gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear and exec "$0"
         ;;
@@ -350,18 +327,6 @@ process_choice() {
         "MKVToolNix" "Matroska files creator and tools" OFF \
         "MakeMKV" "DVD and Blu-ray to MKV converter" OFF \
         "Avidemux" "Graphical tool to edit video" OFF
-        gum style --foreground 35 "##########  Done ! ##########"
-        sleep 3
-        clear and exec "$0"
-        ;;
-      p)
-        package_selection_dialog "Select PKGs/Groups to install (selective):" \
-        "Frameworks" "KDE Framworks 6 Group" OFF \
-        "KSystem" "KDE System Group" OFF \
-        "KNetwork" "KDE Network Group" OFF \
-        "KGraphics" "KDE Graphics Group" OFF \
-        "KUtilities" "KDE Utilities Group" OFF \
-        "Kextras" "Extra KDE Tools" OFF
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear and exec "$0"
