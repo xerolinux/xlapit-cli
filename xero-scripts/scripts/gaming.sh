@@ -177,10 +177,17 @@ process_choice() {
         gum style --foreground 35 "Steam installation complete!"
         sleep 3
         echo
+        echo "Applying Download Speed Enhancement Patch..."
+        mkdir -p ~/.steam/steam/ && touch ~/.steam/steam/steam_dev.cfg
+        echo -e "@nClientDownloadEnableHTTP2PlatformLinux 0\n@fDownloadRateImprovementToAddAnotherConnection 1.0" > ~/.steam/steam/steam_dev.cfg > /dev/null 2>&1
+        sleep 3
+        echo
         echo "Patching VM.Max.MapCount"
         echo
         echo "vm.max_map_count=2147483642" | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null
-        sleep 6
+        sleep 3
+        gum style --foreground 35 "Steam installation complete!"
+        sleep 3
         clear && exec "$0"
         ;;
       2)
