@@ -86,24 +86,24 @@ package_selection_dialog() {
     if [ -n "$PACKAGES" ]; then
         for PACKAGE in $PACKAGES; do
             case $PACKAGE in
-                DualShock4)
-                    install_aur_packages ds4drv game-devices-udev
-                    sleep 3
-                    "_:: Please follow guide on Github for configuration ::_"
-                    sleep 3
-                    xdg-open "https://github.com/chrippa/ds4drv"  > /dev/null 2>&1
-                    ;;
                 DualSense)
                     install_aur_packages dualsensectl game-devices-udev
                     sleep 3
-                    "_:: Please follow guide on Github for configuration ::_"
+                    echo "_:: Please follow guide on Github for configuration ::_"
                     sleep 3
                     xdg-open "https://github.com/nowrep/dualsensectl"  > /dev/null 2>&1
                     ;;
-                Vivaldi)
+                DualShock4)
+                    install_aur_packages ds4drv game-devices-udev
+                    sleep 3
+                    echo "_:: Please follow guide on Github for configuration ::_"
+                    sleep 3
+                    xdg-open "https://github.com/chrippa/ds4drv"  > /dev/null 2>&1
+                    ;;
+                XBoxOne)
                     install_aur_packages xone-dkms game-devices-udev
                     sleep 3
-                    "_:: Please follow guide on Github for configuration ::_"
+                    echo "_:: Please follow guide on Github for configuration ::_"
                     sleep 3
                     xdg-open "https://github.com/medusalix/xone"  > /dev/null 2>&1
                     ;;
@@ -197,13 +197,13 @@ process_choice() {
         clear && exec "$0"
         ;;
       4)
-        gum style --foreground 35 "Installing Game Controller Drivers..."
-        sleep 2
-        echo
-        package_selection_dialog "DualShock4 DualSense XBoxOne" "install_aur_packages"
+        package_selection_dialog "Select Controller Driver to install:" \
+        "DualSense" "DualSence Driver" OFF \
+        "DualShock4" "DualShock 4 Driver" OFF \
+        "XBoxOne" "XBOX One Controller Driver" OFF
         gum style --foreground 35 "Game Controller Drivers installation complete!"
         sleep 3
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       5)
         gum style --foreground 35 "Installing Heroic Games Launcher..."
