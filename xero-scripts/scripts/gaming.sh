@@ -178,8 +178,8 @@ process_choice() {
         sleep 3
         echo
         echo "Applying Download Speed Enhancement Patch..."
-        mkdir -p ~/.steam/steam/ && touch ~/.steam/steam/steam_dev.cfg
-        echo -e "@nClientDownloadEnableHTTP2PlatformLinux 0\n@fDownloadRateImprovementToAddAnotherConnection 1.0" > ~/.steam/steam/steam_dev.cfg > /dev/null 2>&1
+        touch ~/.local/share/Steam/steam_dev.cfg
+        echo -e "@nClientDownloadEnableHTTP2PlatformLinux 0\n@fDownloadRateImprovementToAddAnotherConnection 1.0" > ~/.local/share/Steam/steam_dev.cfg > /dev/null 2>&1
         sleep 3
         echo
         echo "Patching VM.Max.MapCount"
