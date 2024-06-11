@@ -22,11 +22,10 @@ display_menu() {
   gum style --foreground 35 "4.  Unlock Pacman DB (In case of DB error)."
   gum style --foreground 35 "5.  Activate v4l2loopback for OBS-VirtualCam."
   gum style --foreground 35 "6.  Activate Flatpak Theming (Required If used)."
-  gum style --foreground 35 "7.  Install Collection of XeroLinux's Fix Scripts (Optional)."
-  gum style --foreground 35 "8.  Install XeroLinux Grub/GPU Hooks (Advanced Grub Users Only)."
+  gum style --foreground 35 "7.  Install Collection of XeroLinux's Fix Scripts."
+  gum style --foreground 35 "8.  Install XeroLinux Grub/GPU Hooks (Grub Users Only)."
   echo
   gum style --foreground 227 "w. WayDroid Installation Guide."
-  gum style --foreground 69 "d. Fix Discover PackageKit issue."
   gum style --foreground 27 "m. Update Arch Mirrorlist, for faster download speeds."
   gum style --foreground 160 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
@@ -120,6 +119,7 @@ activate_flatpak_theming() {
 
 install_fix_scripts() {
   sudo pacman -S --needed --noconfirm xero-fix-scripts
+  xdg-open "https://github.com/xerolinux/xero-fix-scripts" > /dev/null 2>&1
   sleep 2
   exec "$0"
 }
@@ -135,18 +135,6 @@ waydroid_guide() {
   gum style --foreground 36 "Opening Guide..."
   sleep 3
   xdg-open "https://forum.xerolinux.xyz/thread-327.html" > /dev/null 2>&1
-  sleep 3
-  exec "$0"
-}
-
-fix_discover_issue() {
-  gum style --foreground 69 "########## Fixing Discover's PackageKit issue ##########"
-  sleep 3
-  if [ -f "/usr/share/polkit-1/actions/org.freedesktop.packagekit.policy" ]; then
-    sudo mv /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy /usr/share/polkit-1/actions/org.freedesktop.packagekit.policy.old
-  fi
-  sudo pacman -S --needed --noconfirm packagekit-qt6
-  gum style --foreground 69 "########## Done! Discover should work now. ##########"
   sleep 3
   exec "$0"
 }
@@ -197,7 +185,6 @@ main() {
       7) install_fix_scripts ;;
       8) install_grub_hooks ;;
       w) waydroid_guide ;;
-      d) fix_discover_issue ;;
       m) update_mirrorlist ;;
       g) fix_gpg_keyring ;;
       q) clear && exec xero-cli -m ;;

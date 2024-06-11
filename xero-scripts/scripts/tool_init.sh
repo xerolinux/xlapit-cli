@@ -21,14 +21,14 @@ display_menu() {
   echo
   gum style --foreground 142 "Hello $USER, please select an option. Press 'i' for the Wiki."
   echo
-  gum style --foreground 35 "1. PipeWire/Bluetooth Packages."
-  gum style --foreground 35 "2. Activate/Set Pacman Parallel Downloads."
-  gum style --foreground 35 "3. Activate Flathub Repositories (Discover/CLI)."
+  gum style --foreground 35 "1. Fix PipeWire & Bluetooth."
+  gum style --foreground 35 "2. Activate Pacman Parallel Downloads."
+  gum style --foreground 35 "3. Activate Flathub Repositories (Discover)."
   gum style --foreground 35 "4. Enable Fast Multithreaded Package Compilation."
   gum style --foreground 35 "5. Install 3rd-Party GUI Package Manager(s) (AUR)."
   echo
-  gum style --foreground 69 "6. Add & Enable the Chaotic-AUR Repository (Pre-Compiled)."
-  gum style --foreground 196 "7. Add & Enable the CachyOS Repositories (Advanced Users Only)."
+  gum style --foreground 69 "6. Add & Enable the ChaoticAUR Repository (Recommended)."
+  gum style --foreground 196 "7. Add & Enable the CachyOS Repositories (Advanced Users)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
