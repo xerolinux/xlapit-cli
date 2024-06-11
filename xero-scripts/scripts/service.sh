@@ -26,8 +26,9 @@ display_menu() {
   gum style --foreground 35 "8.  Install XeroLinux Grub/GPU Hooks (Grub Users Only)."
   echo
   gum style --foreground 227 "w. WayDroid Installation Guide."
-  gum style --foreground 27 "m. Update Arch Mirrorlist, for faster download speeds."
-  gum style --foreground 160 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
+  gum style --foreground 196 "f. Frogging Family/TKG nVidia-All Tool (Advanced)."
+  gum style --foreground 159 "m. Update Arch Mirrorlist, for faster download speeds."
+  gum style --foreground 46 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -139,6 +140,16 @@ waydroid_guide() {
   exec "$0"
 }
 
+tkg_script() {
+  gum style --foreground 36 "Cloning & Running Script..."
+  sleep 3
+  cd ~ && git clone https://github.com/Frogging-Family/nvidia-all
+  cd ~/nvidia-all/ && makepkg -rsi
+  cd ~ && sudo rm -rf ~/nvidia-all/
+  sleep 3
+  exec "$0"
+}
+
 update_mirrorlist() {
   gum style --foreground 69 "##########  Updating Mirrors To Fastest Ones  ##########"
   sudo pacman -S --noconfirm --needed reflector
@@ -185,6 +196,7 @@ main() {
       7) install_fix_scripts ;;
       8) install_grub_hooks ;;
       w) waydroid_guide ;;
+      f) tkg_script ;;
       m) update_mirrorlist ;;
       g) fix_gpg_keyring ;;
       q) clear && exec xero-cli -m ;;
