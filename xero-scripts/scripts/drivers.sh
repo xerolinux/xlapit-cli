@@ -108,11 +108,11 @@ prompt_user() {
           if [[ $nvidia_series == "900" || $nvidia_series == "1000" ]]; then
             sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
             sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
-            $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl
+            $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
           elif [[ $nvidia_series == "2000" ]]; then
             sudo pacman -S --needed --noconfirm linux-headers nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
             sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
-            $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl
+            $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
           else
             echo "Invalid selection."
             return
