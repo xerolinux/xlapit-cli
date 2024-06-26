@@ -30,7 +30,7 @@ wget https://tinyurl.com/xt-code
 ```
 And after inspection set as executable and run via
 ```
-chmod +x xapi.sh && ./xapi.sh
+chmod +x xt-code && ./xt-code
 ```
 
 You can access toolkit by either typing `xero-cli -m` in terminal or from the application menu via the **XeroLinux Post Installation Toolkit** shortcut.. Just close terminal window once done using it lol ;)
