@@ -135,7 +135,7 @@ install_grub_hooks() {
 waydroid_guide() {
   gum style --foreground 36 "Opening Guide..."
   sleep 3
-  xdg-open "https://forum.xerolinux.xyz/thread-327.html" > /dev/null 2>&1
+  xdg-open "https://xerolinux.xyz/posts/waydroid-guide/" > /dev/null 2>&1
   sleep 3
   exec "$0"
 }
