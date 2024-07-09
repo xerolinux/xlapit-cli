@@ -110,9 +110,46 @@ process_choice() {
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
         cd $HOME/ && rm ~/.zshrc && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.zshrc
-        mkdir -p "$HOME/.config/ohmyposh" && curl -o "$HOME/.config/ohmyposh/tokyonight_storm.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json
-        fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc{,.bk} && wget -qO Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && wget -q https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && sed -i 's/xero.png/Arch.png/' config.jsonc
+        sleep 2
+        echo
+        echo "Applying Oh-My-Posh to ZSH"
+        echo
+        # Check if the folder exists, if not create it and download the file
+        if [ ! -d "$HOME/.config/ohmyposh" ]; then
+          mkdir -p "$HOME/.config/ohmyposh"
+        fi
+        curl -o "$HOME/.config/ohmyposh/tokyonight_storm.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json
+
+        # Check if the line exists in ~/.bashrc, if not add it
+        if ! grep -Fxq 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' "$HOME/.bashrc"; then
+          echo 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' >> "$HOME/.bashrc"
+        fi
+        sleep 2
+        echo "Setting up Fastetch (If not set)"
+        # Check if the ~/.config/fastfetch directory exists
+        if [ -d "$HOME/.config/fastfetch" ]; then
+          # Generate the default config
+          fastfetch --gen-config
+
+          # Change to the ~/.config/fastfetch directory
+          cd "$HOME/.config/fastfetch" || exit
+
+          # Rename the existing config file by appending .bk to its name
+          mv config.jsonc{,.bk}
+
+          # Download the new image and config file
+          wget -qO Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png
+          wget -q https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc
+
+          # Update the config file to use the new image name
+          sed -i 's/xero.png/Arch.png/' config.jsonc
+        fi
+        sleep 2
+        echo
+        echo "Switching to ZSH..."
+        echo
         sudo chsh $USER -s /bin/zsh
+        echo
         gum style --foreground 35 "ZSH setup complete! Log out and back in."
         sleep 3
         clear && exec "$0"
