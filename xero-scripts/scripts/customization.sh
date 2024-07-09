@@ -110,7 +110,7 @@ process_choice() {
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
         git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
         cd $HOME/ && rm ~/.zshrc && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/.zshrc
-        mkdir -p "$HOME/.config/ohmyposh" && curl -o "$HOME/.config/ohmyposh/easy-term.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/easy-term.omp.json
+        mkdir -p "$HOME/.config/ohmyposh" && curl -o "$HOME/.config/ohmyposh/tokyonight_storm.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json
         fastfetch --gen-config && cd ~/.config/fastfetch && mv config.jsonc{,.bk} && wget -qO Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png && wget -q https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc && sed -i 's/xero.png/Arch.png/' config.jsonc
         sudo chsh $USER -s /bin/zsh
         gum style --foreground 35 "ZSH setup complete! Log out and back in."
