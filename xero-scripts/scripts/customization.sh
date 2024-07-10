@@ -20,10 +20,11 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 35 "1. Install Fastfetch."
-  gum style --foreground 35 "2. Install Fish Shell."
-  gum style --foreground 35 "3. Install ZSH All in one."
-  gum style --foreground 35 "4. Hyprland Dot Files & Rices."
+  gum style --foreground 35 "1. Setup Fastfetch."
+  gum style --foreground 35 "2. Setup Fish Shell."
+  gum style --foreground 35 "3. Setup Oh-My-Posh (Bash)."
+  gum style --foreground 35 "4. Setup ZSH All in one w/OMP."
+  gum style --foreground 35 "5. Hyprland Advanced Dot Files."
   echo
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   echo
@@ -81,8 +82,22 @@ process_choice() {
         gum style --foreground 35 "Setting up Fastfetch..."
         sleep 2
         echo
-        $AUR_HELPER -S --noconfirm --needed fastfetch
+        sudo pacman -S --noconfirm --needed fastfetch
         fastfetch --gen-config
+        # Change to the ~/.config/fastfetch directory
+          cd "$HOME/.config/fastfetch" || exit
+
+          # Rename the existing config file by appending .bk to its name
+          mv config.jsonc{,.bk}
+
+          # Download the new image and config file
+          wget -qO Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png
+          wget -q https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc
+
+          # Update the config file to use the new image name
+          sed -i 's/xero.png/Arch.png/' $HOME/.config/fastfetch/config.jsonc
+        sleep 2
+        echo
         gum style --foreground 35 "Fastfetch setup complete!"
         sleep 3
         clear && exec "$0"
@@ -99,6 +114,22 @@ process_choice() {
         clear && exec "$0"
         ;;
       3)
+        gum style --foreground 35 "Setting up Oh-My-Posh..."
+        sleep 2
+        echo
+        $AUR_HELPER -S --noconfirm --needed oh-my-posh-bin && sudo oh-my-posh upgrade
+        mkdir -p "$HOME/.config/ohmyposh"
+        curl -o "$HOME/.config/ohmyposh/tokyonight_storm.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json
+        # Check if the line exists in ~/.bashrc, if not add it
+        if ! grep -Fxq 'eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' "$HOME/.bashrc"; then
+          echo '\neval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' >> "$HOME/.bashrc"
+        fi
+        echo
+        gum style --foreground 35 "Oh-My-Posh setup complete! Restart Shell."
+        sleep 6
+        clear && exec "$0"
+        ;;
+      4)
         gum style --foreground 35 "Setting up ZSH with OMP & OMZ Plugins..."
         sleep 2
         echo
@@ -125,26 +156,6 @@ process_choice() {
           echo 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' >> "$HOME/.bashrc"
         fi
         sleep 2
-        echo "Setting up Fastetch (If not set)"
-        # Check if the ~/.config/fastfetch directory exists
-        if [ -d "$HOME/.config/fastfetch" ]; then
-          # Generate the default config
-          fastfetch --gen-config
-
-          # Change to the ~/.config/fastfetch directory
-          cd "$HOME/.config/fastfetch" || exit
-
-          # Rename the existing config file by appending .bk to its name
-          mv config.jsonc{,.bk}
-
-          # Download the new image and config file
-          wget -qO Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png
-          wget -q https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc
-
-          # Update the config file to use the new image name
-          sed -i 's/xero.png/Arch.png/' config.jsonc
-        fi
-        sleep 2
         echo
         echo "Switching to ZSH..."
         echo
@@ -154,7 +165,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      4)
+      5)
         gum style --foreground 35 "Select Hyprland Dots..."
         select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
           case $dots in
