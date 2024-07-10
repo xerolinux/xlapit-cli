@@ -154,7 +154,7 @@ process_choice() {
 
         # Check if the line exists in ~/.bashrc, if not add it
         if ! grep -Fxq 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' "$HOME/.zshrc"; then
-          echo '' >> "$HOME/.bashrc"
+          echo '' >> "$HOME/.zshrc"
           echo 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' >> "$HOME/.zshrc"
         fi
         sleep 2
