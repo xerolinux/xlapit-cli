@@ -171,7 +171,7 @@ process_choice() {
         gum style --foreground 35 "Setting up Gnome Extensions & Tools..."
         sleep 2
         echo
-        $AUR_HELPER -S --noconfirm --needed extension-manager dconf-editor gnome-shell-extension-appindicator gnome-shell-extension-arc-menu gnome-shell-extension-caffeine gnome-shell-extension-vitals 	gnome-shell-extension-weather-oclock gnome-shell-extension-dash-to-dock gnome-shell-extension-blur-my-shell gnome-shell-extension-extension-list
+        $AUR_HELPER -S --noconfirm --needed extension-manager dconf-editor gnome-shell-extension-appindicator gnome-shell-extension-arc-menu gnome-shell-extension-caffeine gnome-shell-extension-vitals gnome-shell-extension-weather-oclock gnome-shell-extension-dash-to-dock gnome-shell-extension-blur-my-shell
         echo
         gum style --foreground 35 "Done ! Have fun tweaking Gnome ;)"
         sleep 3
