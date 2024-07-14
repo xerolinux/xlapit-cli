@@ -24,7 +24,7 @@ display_options() {
   gum style --foreground 35 "2. Setup Fish Shell."
   gum style --foreground 35 "3. Setup Oh-My-Posh (Bash)."
   gum style --foreground 35 "4. Setup ZSH All in one w/OMP."
-  gum style --foreground 35 "5. Setup Gnome Extenstions & Tools."
+  gum style --foreground 35 "5. Setup Gnome Extenstion Tools."
   gum style --foreground 35 "6. Top 3 Hyprland Advanced Dot Files."
   echo
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
@@ -168,10 +168,10 @@ process_choice() {
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 35 "Setting up Gnome Extensions & Tools..."
+        gum style --foreground 35 "Setting up Gnome Extension Tools..."
         sleep 2
         echo
-        $AUR_HELPER -S --noconfirm --needed extension-manager dconf-editor gnome-shell-extension-appindicator gnome-shell-extension-arc-menu gnome-shell-extension-caffeine gnome-shell-extension-vitals gnome-shell-extension-weather-oclock gnome-shell-extension-dash-to-dock gnome-shell-extension-blur-my-shell
+        $AUR_HELPER -S --noconfirm --needed extension-manager dconf-editor gnome-tweaks gnome-shell-extensions
         echo
         gum style --foreground 35 "Done ! Have fun tweaking Gnome ;)"
         sleep 3
