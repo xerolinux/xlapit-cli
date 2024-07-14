@@ -99,6 +99,30 @@ process_choice() {
           sed -i 's/xero.png/Arch.png/' $HOME/.config/fastfetch/config.jsonc
         sleep 2
         echo
+        add_fastfetch() {
+          if ! grep -Fxq 'fastfetch' "$HOME/.bashrc"; then
+            echo 'fastfetch' >> "$HOME/.bashrc"
+            echo "fastfetch has been added to your .bashrc and will run on Terminal launch."
+          else
+            echo "fastfetch is already set to run on Terminal launch."
+          fi
+        }
+
+        # Prompt the user
+        read -p "Do you want to enable fastfetch to run on Terminal launch? (y/n): " response
+
+        case "$response" in
+          [yY])
+            add_fastfetch
+            ;;
+          [nN])
+            echo "fastfetch will not be added to your .bashrc."
+            ;;
+          *)
+            echo "Invalid response. Please enter y or n."
+            ;;
+        esac
+        echo
         gum style --foreground 35 "Fastfetch setup complete!"
         sleep 3
         clear && exec "$0"
