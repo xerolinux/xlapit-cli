@@ -186,6 +186,7 @@ process_choice() {
         echo "Switching to ZSH..."
         echo
         sudo chsh $USER -s /bin/zsh
+        sed -i 's|Command=/bin/bash|Command=/bin/zsh|' "$HOME/.local/share/konsole/XeroLinux.profile"
         echo
         gum style --foreground 35 "ZSH setup complete! Log out and back in."
         sleep 3
