@@ -208,10 +208,10 @@ process_choice() {
         clear && exec "$0"
         ;;
       4)
-        gum style --foreground 35 "Installing Game Mode..."
+        gum style --foreground 35 "Installing GameScope..."
         sleep 2
         echo
-        install_gaming_packages gamemode
+        install_gaming_packages gamescope
         gum style --foreground 35 "Game Mode installation complete!"
         sleep 3
         clear && exec "$0"
