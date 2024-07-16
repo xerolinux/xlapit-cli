@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-set -e
 
 ######################################
 # Author   :   DarkXero              #
 # Website  :   http://xerolinux.xyz  #
 ######################################
+#set -e
 
 # Set window title
 echo -ne "\033]0;Essential Package Installer\007"
