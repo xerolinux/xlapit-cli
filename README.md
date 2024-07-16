@@ -24,7 +24,7 @@ It will prompt you before injecting as in adding the XeroLinux repository, where
 
 **- For the security concious :**
 
-If you care about security, instead of using _Curl_ command you can download the script, inspect it then run it.. Do it via the following commands :
+If you care about security, instead of using _Curl_ command you can download the script, inspect it then run it.. Do it via the following commands, then open and inspect via your favorite IDE :
 ```
 wget https://tinyurl.com/xt-code
 ```
