@@ -103,7 +103,7 @@ package_selection_dialog() {
                     install_pacman_packages firefox firefox-ublock-origin
                     ;;
                 Vivaldi)
-                    install_pacman_packages vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
+                    install_flatpak_packages com.vivaldi.Vivaldi
                     ;;
                 Mullvad)
                     install_aur_packages mullvad-browser-bin
