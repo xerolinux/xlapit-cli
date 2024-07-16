@@ -21,9 +21,8 @@ display_menu() {
   gum style --foreground 35 "3.  Restart PipeWire/PipeWire-Pulse."
   gum style --foreground 35 "4.  Unlock Pacman DB (In case of DB error)."
   gum style --foreground 35 "5.  Activate v4l2loopback for OBS-VirtualCam."
-  gum style --foreground 35 "6.  Activate Flatpak Theming (Required If used)."
-  gum style --foreground 35 "7.  Install Collection of XeroLinux's Fix Scripts."
-  gum style --foreground 35 "8.  Install XeroLinux Grub/GPU Hooks (Grub Users Only)."
+  gum style --foreground 35 "6.  Install Collection of XeroLinux's Fix Scripts."
+  gum style --foreground 35 "7.  Install XeroLinux Grub/GPU Hooks (Grub Users Only)."
   echo
   gum style --foreground 227 "w. WayDroid Installation Guide."
   gum style --foreground 196 "f. Frogging Family/TKG nVidia-All Tool (Advanced)."
@@ -103,18 +102,9 @@ activate_v4l2loopback() {
   sudo pacman -S --noconfirm --needed v4l2loopback-dkms v4l2loopback-utils
   echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null
   echo 'options v4l2loopback exclusive_caps=1 card_label="OBS Virtual Camera"' | sudo tee /etc/modprobe.d/v4l2loopback.conf > /dev/null
+  echo
   gum style --foreground 35 "Please reboot your system for changes to take effect."
   sleep 2
-  exec "$0"
-}
-
-activate_flatpak_theming() {
-  gum style --foreground 35 "##########    Activating Flatpak Theming.    ##########"
-  sudo flatpak override --filesystem="$HOME/.themes"
-  sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
-  sudo flatpak override --filesystem=xdg-config/gtk-4.0:ro
-  gum style --foreground 35 "##########     Flatpak Theming Activated     ##########"
-  sleep 3
   exec "$0"
 }
 
@@ -192,9 +182,8 @@ main() {
       3) restart_pipewire ;;
       4) unlock_pacman_db ;;
       5) activate_v4l2loopback ;;
-      6) activate_flatpak_theming ;;
-      7) install_fix_scripts ;;
-      8) install_grub_hooks ;;
+      6) install_fix_scripts ;;
+      7) install_grub_hooks ;;
       w) waydroid_guide ;;
       f) tkg_script ;;
       m) update_mirrorlist ;;

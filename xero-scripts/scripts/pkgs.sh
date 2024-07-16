@@ -126,14 +126,14 @@ package_selection_dialog() {
                 Github)
                     install_flatpak_packages io.github.shiftey.Desktop
                     ;;
-                ChatGPT)
-                    install_aur_packages chatgpt-desktop-bin
-                    ;;
                 VSCodium)
                     install_aur_packages vscodium-bin vscodium-bin-marketplace vscodium-bin-features
                     ;;
                 Meld)
                     install_pacman_packages meld
+                    ;;
+                Zed)
+                    install_pacman_packages zed
                     ;;
                 Zettlr)
                     install_flatpak_packages com.zettlr.Zettlr
@@ -267,7 +267,7 @@ process_choice() {
         gum style --foreground 200 "Be patient while this installs the many recommended packages..."
         echo
         sleep 6
-        install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub rate-mirrors-bin ocs-url expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans pacman-mirrorlist yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
+        install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo hardinfo2 arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
         echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
@@ -277,9 +277,9 @@ process_choice() {
         package_selection_dialog "Select Development Apps to install:" \
         "neoVim" "Vim text editor" OFF \
         "Github" "GitHub Desktop application" OFF \
-        "ChatGPT" "ChatGPT AI Desktop application" OFF \
         "VSCodium" "Telemetry-less code editing" OFF \
         "Meld" "Visual diff and merge tool" OFF \
+        "Zed" "Zed IDE by ATOM Devs" OFF \
         "Zettlr" "Markdown editor" OFF \
         "Eclipse" "Java bytecode compiler" OFF \
         "IntelliJ" "IntelliJ IDEA IDE for Java" OFF

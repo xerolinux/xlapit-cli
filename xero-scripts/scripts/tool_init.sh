@@ -21,11 +21,11 @@ display_menu() {
   echo
   gum style --foreground 142 "Hello $USER, please select an option. Press 'i' for the Wiki."
   echo
-  gum style --foreground 35 "1. Fix PipeWire & Bluetooth."
-  gum style --foreground 35 "2. Activate Pacman Parallel Downloads."
-  gum style --foreground 35 "3. Activate Flathub Repositories (Discover)."
-  gum style --foreground 35 "4. Enable Fast Multithreaded Package Compilation."
-  gum style --foreground 35 "5. Install 3rd-Party GUI Package Manager(s) (AUR)."
+  gum style --foreground 35 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
+  gum style --foreground 35 "2. Install Topgrade All-in-One Updater (Advanced)."
+  gum style --foreground 35 "3. Activate Flathub Repositories (Vanilla Arch Only)."
+  gum style --foreground 35 "4. Enable Fast Multithreaded Package Compilation (Makepkg)."
+  gum style --foreground 35 "5. Install 3rd-Party GUI Package Manager (At Your Own Risk)."
   echo
   gum style --foreground 69 "6. Add & Enable the ChaoticAUR Repository (Recommended)."
   gum style --foreground 196 "7. Add & Enable the CachyOS Repositories (Advanced Users)."
@@ -89,13 +89,14 @@ install_pipewire_bluetooth() {
   exec "$0"
 }
 
-set_pacman_parallel_downloads() {
-  gum style --foreground 35 "Activating Pacman Parallel Downloads..."
+install_topgrade_aio_updater() {
+  gum style --foreground 35 "Installing Topgrade..."
   sleep 2
   echo
-  sudo sed -i 's/^#ParallelDownloads = 5/ParallelDownloads = 10/' /etc/pacman.conf
-  sudo pacman -Syy
-  gum style --foreground 35 "Pacman Parallel Downloads activated!"
+  $AUR_HELPER -S --needed topgrade-bin
+  topgrade
+  echo
+  gum style --foreground 35 "Done! Use topgrade command topdate. Risky !"
   sleep 3
   exec "$0"
 }
@@ -106,6 +107,14 @@ activate_flathub_repositories() {
   echo
   sudo pacman -S --noconfirm --needed flatpak
   sudo flatpak remote-modify --default-branch=23.08 flathub system
+  echo
+  gum style --foreground 35 "##########    Activating Flatpak Theming.    ##########"
+  sudo flatpak override --filesystem="$HOME/.themes"
+  sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
+  sudo flatpak override --filesystem=xdg-config/gtk-4.0:ro
+  echo
+  gum style --foreground 35 "##########     Flatpak Theming Activated     ##########"
+  echo
   gum style --foreground 35 "Flathub Repositories activated! Please reboot."
   sleep 3
   exec "$0"
@@ -188,7 +197,7 @@ main() {
     case $CHOICE in
       i) open_wiki ;;
       1) install_pipewire_bluetooth ;;
-      2) set_pacman_parallel_downloads ;;
+      2) install_topgrade_aio_updater ;;
       3) activate_flathub_repositories ;;
       4) enable_multithreaded_compilation ;;
       5) install_gui_package_managers ;;
