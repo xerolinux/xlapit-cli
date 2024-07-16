@@ -158,7 +158,7 @@ process_choice() {
         clear && exec "$0"
         ;;
       1)
-        gum style --foreground 35 "Installing Steam..."
+        gum style --foreground 35 "Installing Steam + Mangohud + Gamemode + Gamescope..."
         sleep 2
         echo
         install_gaming_packages steam
