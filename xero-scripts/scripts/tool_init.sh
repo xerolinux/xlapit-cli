@@ -200,7 +200,7 @@ update_system() {
     echo
     echo "1) Simple (Arch packages only)"
     echo "2) Extended (Arch, AUR, Flatpaks)"
-    echo "3) Advanced ()"
+    echo "3) Advanced (All in one updater, Risky!)"
     echo
     echo "4) Return to previous menu."
     echo
