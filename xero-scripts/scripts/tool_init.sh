@@ -97,10 +97,10 @@ install_pipewire_bluetooth() {
 
 install_topgrade_aio_updater() {
   if ! command -v topgrade &> /dev/null; then
-    gum style --foreground 35 "Installing Topgrade..."
+    gum style --foreground 35 "Topgrade not installed, installing it..."
     sleep 2
     echo
-    $AUR_HELPER -S --needed topgrade-bin
+    $AUR_HELPER -S --noconfirm --needed topgrade-bin
   fi
   gum style --foreground 35 "Running Topgrade..."
   topgrade
