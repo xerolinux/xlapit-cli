@@ -26,14 +26,15 @@ display_menu() {
   echo
   gum style --foreground 142 "Hello $USER, please select an option. Press 'i' for the Wiki."
   echo
-  gum style --foreground 35 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
-  gum style --foreground 35 "2. Install Topgrade All-in-One Updater (Advanced)."
-  gum style --foreground 35 "3. Activate Flathub Repositories (Vanilla Arch Only)."
-  gum style --foreground 35 "4. Enable Fast Multithreaded Package Compilation (Makepkg)."
-  gum style --foreground 35 "5. Install 3rd-Party GUI Package Manager (At Your Own Risk)."
+  gum style --foreground 199 "u. Update System (Simple/Extended/Adv.)."
   echo
-  gum style --foreground 69 "6. Add & Enable the ChaoticAUR Repository (Recommended)."
-  gum style --foreground 196 "7. Add & Enable the CachyOS Repositories (Advanced Users)."
+  gum style --foreground 35 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
+  gum style --foreground 35 "2. Activate Flathub Repositories (Vanilla Arch Only)."
+  gum style --foreground 35 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
+  gum style --foreground 35 "4. Install 3rd-Party GUI Package Manager (At Your Own Risk)."
+  echo
+  gum style --foreground 69 "5. Add & Enable the ChaoticAUR Repository (Recommended)."
+  gum style --foreground 196 "6. Add & Enable the CachyOS Repositories (Advanced Users)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -95,13 +96,16 @@ install_pipewire_bluetooth() {
 }
 
 install_topgrade_aio_updater() {
-  gum style --foreground 35 "Installing Topgrade..."
-  sleep 2
-  echo
-  $AUR_HELPER -S --needed topgrade-bin
+  if ! command -v topgrade &> /dev/null; then
+    gum style --foreground 35 "Installing Topgrade..."
+    sleep 2
+    echo
+    $AUR_HELPER -S --needed topgrade-bin
+  fi
+  gum style --foreground 35 "Running Topgrade..."
   topgrade
   echo
-  gum style --foreground 35 "Done! Use topgrade command topdate. Risky !"
+  gum style --foreground 35 "Done, Systemm updated."
   sleep 3
   exec "$0"
 }
@@ -190,6 +194,42 @@ add_cachyos() {
   exec "$0"
 }
 
+# Function to update system
+update_system() {
+    echo "Select an update option:"
+    echo
+    echo "1) Simple (Arch packages only)"
+    echo "2) Extended (Arch, AUR, Flatpaks)"
+    echo "3) Advanced ()"
+    echo
+    echo "4) Return to previous menu."
+    echo
+    read -rp "Enter your choice: " choice
+
+    case $choice in
+        1)
+            sudo pacman -Syyu
+            ;;
+        2)
+            $AUR_HELPER -Syyu
+            flatpak update
+            ;;
+        3)
+            echo
+            gum style --foreground 196 "Warning: Using Topgrade can be destructive. Use at OWN RISK!"
+            sleep 6
+            echo
+            install_topgrade_aio_updater
+            ;;
+        4)
+            gum style --foreground 10 "Exiting..."
+            ;;
+        *)
+            gum style --foreground 9 "Invalid option. Please try again."
+            ;;
+    esac
+}
+
 main() {
   check_gum
   check_dialog
@@ -202,12 +242,12 @@ main() {
     case $CHOICE in
       i) open_wiki ;;
       1) install_pipewire_bluetooth ;;
-      2) install_topgrade_aio_updater ;;
-      3) activate_flathub_repositories ;;
-      4) enable_multithreaded_compilation ;;
-      5) install_gui_package_managers ;;
-      6) add_chaotic_aur ;;
-      7) add_cachyos ;;
+      2) activate_flathub_repositories ;;
+      3) enable_multithreaded_compilation ;;
+      4) install_gui_package_managers ;;
+      5) add_chaotic_aur ;;
+      6) add_cachyos ;;
+      u) update_system ;;
       q) clear && exec xero-cli -m ;;
       *)
         gum style --foreground 50 "Invalid choice. Please select a valid option."
