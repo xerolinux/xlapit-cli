@@ -91,108 +91,160 @@ package_selection_dialog() {
     local title=$1
     shift
     local options=("$@")
-    PACKAGES=$(dialog --checklist "$title" 20 60 10 "${options[@]}" 3>&1 1>&2 2>&3)
+    PACKAGES=$(dialog --checklist "$title" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3)
 
     if [ -n "$PACKAGES" ]; then
         for PACKAGE in $PACKAGES; do
             case $PACKAGE in
                 Brave)
+                    clear
                     install_aur_packages brave-bin
                     ;;
                 Firefox)
+                    clear
                     install_pacman_packages firefox firefox-ublock-origin
                     ;;
                 Vivaldi)
+                    clear
                     install_flatpak_packages com.vivaldi.Vivaldi
                     ;;
                 Mullvad)
+                    clear
                     install_aur_packages mullvad-browser-bin
                     ;;
                 Floorp)
+                    clear
                     install_flatpak_packages flathub one.ablaze.floorp
                     ;;
                 LibreWolf)
+                    clear
                     install_flatpak_packages io.gitlab.librewolf-community
                     ;;
                 Chromium)
+                    clear
                     install_flatpak_packages com.github.Eloston.UngoogledChromium
                     ;;
                 Tor)
+                    clear
                     install_flatpak_packages org.torproject.torbrowser-launcher
                     ;;
                 neoVim)
+                    clear
                     install_pacman_packages neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
                     ;;
                 Github)
+                    clear
                     install_flatpak_packages io.github.shiftey.Desktop
                     ;;
                 VSCodium)
+                    clear
                     install_aur_packages vscodium-bin vscodium-bin-marketplace vscodium-bin-features
                     ;;
                 Meld)
+                    clear
                     install_pacman_packages meld
                     ;;
                 Zed)
+                    clear
                     install_pacman_packages zed
                     ;;
                 Emacs)
-                    install_aur_packages emacs ttf-ubuntu-font-family ttf-jetbrains-mono-nerd ttf-jetbrains-mono
+                    clear
+                    echo "Please select which version you want to install :"
                     echo
-                    echo ".:: Importing DistroTube's Custom emacs Config ::."
+                    echo "1. Vanilla Emacs"
+                    echo "2. DistroTube's Emacs"
                     echo
-                    cd ~ && git clone https://github.com/xerolinux/eMacs-Config.git && cd eMacs-Config/ && cp -R emacs/ $HOME/.config
-                    rm -rf ~/emacs/
-                    sleep 6
+                    read -rp "Enter your choice (1 or 2): " emacs_choice
+                    echo
+                    case $emacs_choice in
+                        1)
+                            install_pacman_packages emacs ttf-ubuntu-font-family ttf-jetbrains-mono-nerd ttf-jetbrains-mono
+                            ;;
+                        2)
+                            install_pacman_packages emacs ttf-ubuntu-font-family ttf-jetbrains-mono-nerd ttf-jetbrains-mono
+                            echo
+                            echo ".:: Importing DistroTube's Custom emacs Config ::."
+                            echo
+                            cd ~ && git clone https://github.com/xerolinux/eMacs-Config.git && cd eMacs-Config/ && cp -R emacs/ $HOME/.config
+                            rm -rf ~/emacs/
+                            sleep 6
+                            ;;
+                        *)
+                            echo "Invalid choice. Returning to menu."
+                            ;;
+                    esac
+                    ;;
+                LazyGit)
+                    clear
+                    install_pacman_packages lazygit
                     ;;
                 Eclipse)
+                    clear
                     install_flatpak_packages org.eclipse.Java
                     ;;
                 IntelliJ)
+                    clear
                     install_flatpak_packages com.jetbrains.IntelliJ-IDEA-Community
                     ;;
                 GiMP)
+                    clear
                     install_flatpak_packages org.gimp.GIMP org.gimp.GIMP.Manual org.gimp.GIMP.Plugin.Resynthesizer org.gimp.GIMP.Plugin.LiquidRescale org.gimp.GIMP.Plugin.Lensfun org.gimp.GIMP.Plugin.GMic org.gimp.GIMP.Plugin.Fourier org.gimp.GIMP.Plugin.FocusBlur org.gimp.GIMP.Plugin.BIMP
                     ;;
                 Krita)
+                    clear
                     install_flatpak_packages flathub org.kde.krita
                     ;;
                 Blender)
+                    clear
                     install_pacman_packages blender
                     ;;
                 GoDot)
+                    clear
                     install_pacman_packages godot
                     ;;
                 Unreal)
+                    clear
                     install_aur_packages unreal-engine-bin
                     ;;
                 MPV)
+                    clear
                     install_pacman_packages mpv mpv-mpris
                     ;;
                 Spotify)
+                    clear
                     install_flatpak_packages com.spotify.Client
                     ;;
                 Tenacity)
+                    clear
                     install_flatpak_packages org.tenacityaudio.Tenacity
                     ;;
                 Strawberry)
+                    clear
                     install_flatpak_packages org.strawberrymusicplayer.strawberry
                     ;;
                 LinuxAudio)
+                    clear
                     install_flatpak_packages org.freedesktop.LinuxAudio.Plugins.*
                     ;;
                 Discord)
+                    clear
                     install_flatpak_packages com.discordapp.Discord
                     ;;
                 Ferdium)
+                    clear
                     install_flatpak_packages org.ferdium.Ferdium
                     ;;
                 WebCord)
+                    clear
                     install_aur_packages webcord-bin
                     ;;
                 Tokodon)
+                    clear
                     install_flatpak_packages org.kde.tokodon
                     ;;
                 VirtManager)
+                    clear
                     sudo pacman -Rdd --noconfirm iptables
                     install_pacman_packages virt-manager-meta vde2 ebtables dmidecode
                     echo -e "options kvm-intel nested=1" | sudo tee -a /etc/modprobe.d/kvm-intel.conf
@@ -201,27 +253,35 @@ package_selection_dialog() {
                     sudo systemctl restart libvirtd.service
                     ;;
                 VirtualBox)
+                    clear
                     install_pacman_packages virtualbox-meta
                     ;;
                 KDEnLive)
+                    clear
                     install_pacman_packages kdenlive
                     ;;
                 DaVinci)
+                    clear
                     install_aur_packages davinci-resolve
                     ;;
                 OBS-Studio)
+                    clear
                     install_flatpak_packages com.obsproject.Studio com.obsproject.Studio.Plugin.*
                     ;;
                 Mystiq)
+                    clear
                     install_aur_packages mystiq
                     ;;
                 MKVToolNix)
+                    clear
                     install_pacman_packages mkvtoolnix-gui
                     ;;
                 MakeMKV)
+                    clear
                     install_flatpak_packages com.makemkv.MakeMKV
                     ;;
                 Avidemux)
+                    clear
                     install_pacman_packages avidemux-qt
                     ;;
                 *)
@@ -285,6 +345,7 @@ process_choice() {
         package_selection_dialog "Select Development Apps to install:" \
         "neoVim" "Vim text editor" OFF \
         "Emacs" "Emacs with DistroTube's Config" OFF \
+        "LazyGit" "Powerful terminal UI for git commands" OFF \
         "Github" "GitHub Desktop application" OFF \
         "VSCodium" "Telemetry-less code editing" OFF \
         "Meld" "Visual diff and merge tool" OFF \
