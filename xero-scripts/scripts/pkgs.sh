@@ -135,8 +135,14 @@ package_selection_dialog() {
                 Zed)
                     install_pacman_packages zed
                     ;;
-                Zettlr)
-                    install_flatpak_packages com.zettlr.Zettlr
+                Emacs)
+                    install_aur_packages emacs ttf-ubuntu-font-family ttf-jetbrains-mono-nerd ttf-jetbrains-mono
+                    echo
+                    echo ".:: Importing DistroTube's Custom emacs Config ::."
+                    echo
+                    cd ~ && git clone https://github.com/xerolinux/eMacs-Config.git && cd eMacs-Config/ && cp -R emacs/ $HOME/.config
+                    rm -rf ~/emacs/
+                    sleep 6
                     ;;
                 Eclipse)
                     install_flatpak_packages org.eclipse.Java
@@ -243,6 +249,7 @@ process_choice() {
       1)
         sudo pacman -S --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
         install_aur_packages ttf-gentium-basic hsqldb2-java libreoffice-extension-languagetool
+        echo
         gum style --foreground 35 "##########  Done, Please Reboot !  ##########"
         sleep 3
         clear && exec "$0"
@@ -257,6 +264,7 @@ process_choice() {
         "LibreWolf" "LibreWolf Web Browser" OFF \
         "Chromium" "Ungoogled Chromium Browser" OFF \
         "Tor" "Tor Browser Bundle" OFF
+        echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
@@ -276,13 +284,14 @@ process_choice() {
       4)
         package_selection_dialog "Select Development Apps to install:" \
         "neoVim" "Vim text editor" OFF \
+        "Emacs" "Emacs with DistroTube's Config" OFF \
         "Github" "GitHub Desktop application" OFF \
         "VSCodium" "Telemetry-less code editing" OFF \
         "Meld" "Visual diff and merge tool" OFF \
         "Zed" "Zed IDE by ATOM Devs" OFF \
-        "Zettlr" "Markdown editor" OFF \
         "Eclipse" "Java bytecode compiler" OFF \
         "IntelliJ" "IntelliJ IDEA IDE for Java" OFF
+        echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
@@ -294,6 +303,7 @@ process_choice() {
         "Blender" "A 3D graphics creation suite" OFF \
         "GoDot" "Cross-platform 3D game engine" OFF \
         "Unreal" "Advanced 3D Game-Engine" OFF
+        echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
@@ -305,6 +315,7 @@ process_choice() {
         "Tenacity" "Telemetry-less Audio editing" OFF \
         "Strawberry" "A music player for collectors" OFF \
         "LinuxAudio" "A MASSIVE collection of VST Plugins" OFF
+        echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
@@ -315,6 +326,7 @@ process_choice() {
         "Ferdium" "Organize many apps into one" OFF \
         "WebCord" "Customizable Discord Fork" OFF \
         "Tokodon" "A Mastodon client for Plasma" OFF
+        echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
@@ -323,6 +335,7 @@ process_choice() {
         package_selection_dialog "Select Virtualization System to install:" \
         "VirtManager" "Manage QEMU virtual machines" OFF \
         "VirtualBox" "Powerful x86 virtualization" OFF
+        echo
         gum style --foreground 35 "########## Done! Please Reboot. ##########"
         sleep 3
         clear && exec "$0"
@@ -336,6 +349,7 @@ process_choice() {
         "MKVToolNix" "Matroska files creator and tools" OFF \
         "MakeMKV" "DVD and Blu-ray to MKV converter" OFF \
         "Avidemux" "Graphical tool to edit video" OFF
+        echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
