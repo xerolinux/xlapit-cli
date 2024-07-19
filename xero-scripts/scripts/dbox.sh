@@ -109,6 +109,8 @@ process_choice() {
         sleep 2
         echo
         sudo pacman -S --noconfirm --needed distrobox || handle_error
+        flatpak install -y io.github.dvlv.boxbuddyrs
+        echo
         gum style --foreground 35 "Distrobox installation complete!"
         sleep 3
         clear && exec "$0"

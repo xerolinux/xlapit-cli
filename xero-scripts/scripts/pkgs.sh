@@ -132,6 +132,10 @@ package_selection_dialog() {
                     clear
                     install_pacman_packages neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
                     ;;
+                Hugo)
+                    clear
+                    install_aur_packages gohugo-extended-bin
+                    ;;
                 Github)
                     clear
                     install_flatpak_packages io.github.shiftey.Desktop
@@ -223,9 +227,13 @@ package_selection_dialog() {
                     clear
                     install_flatpak_packages org.strawberrymusicplayer.strawberry
                     ;;
-                LinuxAudio)
+                Spotube)
                     clear
-                    install_flatpak_packages org.freedesktop.LinuxAudio.Plugins.*
+                    install_flatpak_packages com.github.KRTirtho.Spotube
+                    ;;
+                Cider)
+                    clear
+                    install_flatpak_packages flathub sh.cider.Cider
                     ;;
                 Discord)
                     clear
@@ -266,7 +274,7 @@ package_selection_dialog() {
                     ;;
                 OBS-Studio)
                     clear
-                    install_flatpak_packages com.obsproject.Studio com.obsproject.Studio.Plugin.*
+                    install_flatpak_packages com.obsproject.Studio com.obsproject.Studio.Plugin.waveform com.obsproject.Studio.Plugin.WebSocket com.obsproject.Studio.Plugin.TransitionTable com.obsproject.Studio.Plugin.SceneSwitcher com.obsproject.Studio.Plugin.ScaleToSound com.obsproject.Studio.Plugin.OBSVkCapture com.obsproject.Studio.Plugin.OBSLivesplitOne com.obsproject.Studio.Plugin.NDI com.obsproject.Studio.Plugin.MoveTransition com.obsproject.Studio.Plugin.Gstreamer com.obsproject.Studio.Plugin.GStreamerVaapi com.obsproject.Studio.Plugin.DroidCam com.obsproject.Studio.Plugin.BackgroundRemoval
                     ;;
                 Mystiq)
                     clear
@@ -344,8 +352,9 @@ process_choice() {
       4)
         package_selection_dialog "Select Development Apps to install:" \
         "neoVim" "Vim text editor" OFF \
-        "Emacs" "Emacs with DistroTube's Config" OFF \
+        "Emacs" "An extensible & customizable text editor" OFF \
         "LazyGit" "Powerful terminal UI for git commands" OFF \
+        "Hugo" "The fastest Static Site Generator" OFF \
         "Github" "GitHub Desktop application" OFF \
         "VSCodium" "Telemetry-less code editing" OFF \
         "Meld" "Visual diff and merge tool" OFF \
@@ -375,7 +384,8 @@ process_choice() {
         "Spotify" "Online music streaming service" OFF \
         "Tenacity" "Telemetry-less Audio editing" OFF \
         "Strawberry" "A music player for collectors" OFF \
-        "LinuxAudio" "A MASSIVE collection of VST Plugins" OFF
+        "Spotube" " An Open source Spotify client" OFF \
+        "Cider" "An open source Apple Music client" OFF
         echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3

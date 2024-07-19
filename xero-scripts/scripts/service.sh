@@ -26,8 +26,7 @@ display_menu() {
   gum style --foreground 35 "3.  Restart PipeWire/PipeWire-Pulse."
   gum style --foreground 35 "4.  Unlock Pacman DB (In case of DB error)."
   gum style --foreground 35 "5.  Activate v4l2loopback for OBS-VirtualCam."
-  gum style --foreground 35 "6.  Install Collection of XeroLinux's Fix Scripts."
-  gum style --foreground 35 "7.  Install XeroLinux Grub/GPU Hooks (Grub Users Only)."
+  gum style --foreground 35 "6.  Install XeroLinux Grub/GPU Hooks (Optional)."
   echo
   gum style --foreground 227 "w. WayDroid Installation Guide."
   gum style --foreground 196 "f. Frogging Family/TKG nVidia-All Tool (Advanced)."
@@ -113,13 +112,6 @@ activate_v4l2loopback() {
   exec "$0"
 }
 
-install_fix_scripts() {
-  sudo pacman -S --needed --noconfirm xero-fix-scripts
-  xdg-open "https://github.com/xerolinux/xero-fix-scripts" > /dev/null 2>&1
-  sleep 2
-  exec "$0"
-}
-
 install_grub_hooks() {
   sudo pacman -S --needed --noconfirm grub-hooks xero-hooks
   sudo mkinitcpio -P && sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -152,7 +144,15 @@ update_mirrorlist() {
     echo "rate-mirrors is not installed. Installing..."
     $AUR_HELPER -S --noconfirm --needed rate-mirrors-bin
   fi
-  rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist
+
+  if gum confirm "Have you activated the Chaotic-AUR repos?"; then
+    rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist
+    echo
+    rate-mirrors --allow-root --protocol https chaotic-aur | sudo tee /etc/pacman.d/chaotic-mirrorlist
+  else
+    rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist
+  fi
+
   echo
   sudo pacman -Syy
   echo
@@ -200,8 +200,7 @@ main() {
       3) restart_pipewire ;;
       4) unlock_pacman_db ;;
       5) activate_v4l2loopback ;;
-      6) install_fix_scripts ;;
-      7) install_grub_hooks ;;
+      6) install_grub_hooks ;;
       w) waydroid_guide ;;
       f) tkg_script ;;
       m) update_mirrorlist ;;
