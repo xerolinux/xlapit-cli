@@ -27,6 +27,7 @@ display_header() {
 # Function to display options
 display_options() {
   gum style --foreground 196 "1. GPU Drivers (Prompt)."
+  echo
   gum style --foreground 35 "2. Printer Drivers and Tools."
   gum style --foreground 35 "3. Samba Tools (XeroLinux Repo)."
   gum style --foreground 35 "4. Scanner Drivers (XeroLinux Repo)."

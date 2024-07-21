@@ -104,6 +104,10 @@ package_selection_dialog() {
                     clear
                     install_pacman_packages firefox firefox-ublock-origin
                     ;;
+                Filezilla)
+                    clear
+                    install_pacman_packages filezilla
+                    ;;
                 Vivaldi)
                     clear
                     install_flatpak_packages com.vivaldi.Vivaldi
@@ -130,7 +134,7 @@ package_selection_dialog() {
                     ;;
                 neoVim)
                     clear
-                    install_pacman_packages neovim neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
+                    install_pacman_packages neovim tmux neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
                     ;;
                 Hugo)
                     clear
@@ -235,21 +239,37 @@ package_selection_dialog() {
                     clear
                     install_flatpak_packages flathub sh.cider.Cider
                     ;;
-                Discord)
+                Vesktop)
                     clear
-                    install_flatpak_packages com.discordapp.Discord
+                    install_flatpak_packages dev.vencord.Vesktop
                     ;;
                 Ferdium)
                     clear
                     install_flatpak_packages org.ferdium.Ferdium
                     ;;
-                WebCord)
+                Telegram)
                     clear
-                    install_aur_packages webcord-bin
+                    install_flatpak_packages org.telegram.desktop
                     ;;
                 Tokodon)
                     clear
                     install_flatpak_packages org.kde.tokodon
+                    ;;
+                WhatsApp)
+                    clear
+                    install_flatpak_packages com.rtosta.zapzap
+                    ;;
+                Chatterino)
+                    clear
+                    install_flatpak_packages com.chatterino.chatterino
+                    ;;
+                Element)
+                    clear
+                    install_pacman_packages element-desktop
+                    ;;
+                SimpleX)
+                    clear
+                    install_pacman_packages chat.simplex.simplex
                     ;;
                 VirtManager)
                     clear
@@ -326,6 +346,7 @@ process_choice() {
         package_selection_dialog "Select Browser(s) to install:" \
         "Brave" "The web browser from Brave" OFF \
         "Firefox" "Fast, Private & Safe Web Browser" OFF \
+        "Filezilla" "Fast and reliable FTP client" OFF \
         "Vivaldi" "Feature-packed web browser" OFF \
         "Mullvad" "Mass surveillance free browser" OFF \
         "Floorp" "A Firefox-based Browser" OFF \
@@ -393,10 +414,14 @@ process_choice() {
         ;;
       7)
         package_selection_dialog "Select Social/Web Apps to install:" \
-        "Discord" "All-in-one IM for gamers" OFF \
-        "Ferdium" "Organize many apps into one" OFF \
-        "WebCord" "Customizable Discord Fork" OFF \
-        "Tokodon" "A Mastodon client for Plasma" OFF
+        "Vesktop" "Discord alternative with Wayland support" OFF \
+        "Ferdium" "Organize many web-apps into one" OFF \
+        "Telegram" "Official Telegram Desktop client" OFF \
+        "Tokodon" "A Mastodon client for Plasma" OFF \
+        "WhatsApp" "WhatsApp client called ZapZap" OFF \
+        "Chatterino" "A Chat client for twitch.tv" OFF \
+        "Element" "Matrix collaboration client" OFF \
+        "SimpleX" "A private & encrypted messenger" OFF
         echo
         gum style --foreground 35 "##########  Done ! ##########"
         sleep 3

@@ -31,7 +31,7 @@ display_menu() {
   gum style --foreground 35 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
   gum style --foreground 35 "2. Activate Flathub Repositories (Vanilla Arch Only)."
   gum style --foreground 35 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
-  gum style --foreground 35 "4. Install 3rd-Party GUI Package Manager (At Your Own Risk)."
+  gum style --foreground 35 "4. Install 3rd-Party GUI/TUI Package Manager (At Your Own Risk)."
   echo
   gum style --foreground 69 "5. Add & Enable the ChaoticAUR Repository (Recommended)."
   gum style --foreground 196 "6. Add & Enable the CachyOS Repositories (Advanced Users)."
@@ -152,13 +152,11 @@ install_gui_package_managers() {
   PACKAGES=$(dialog --checklist "Select GUI Package Managers to install:" 20 60 10 \
     "OctoPi" "Octopi Package Manager" off \
     "PacSeek" "PacSeek Package Manager" off \
-    "Pamac-All" "Pamac-All Package Manager" off \
     "BauhGUI" "Bauh GUI Package Manager" off 3>&1 1>&2 2>&3)
   for PACKAGE in $PACKAGES; do
     case $PACKAGE in
       "OctoPi") $AUR_HELPER -S --needed octopi alpm_octopi_utils ;;
       "PacSeek") $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
-      "Pamac-All") $AUR_HELPER -S --needed pamac-all pamac-cli libpamac-full ;;
       "BauhGUI") $AUR_HELPER -S --needed bauh ;;
     esac
   done

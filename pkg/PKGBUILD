@@ -1,13 +1,13 @@
 # Maintainer: DarkXero <info at techxero.com>
 
 pkgname='xlapit-cli'
-pkgver=r162.f3b9559
+pkgver=r163.90077c5
 pkgrel=1
 pkgdesc='XeroLinux Post Installation CLI Toolkit'
 arch=("any")
 license=('GPL')
 makedepends=('rustup')
-depends=('wget' 'curl' 'git' 'inxi')
+depends=('wget' 'curl' 'git' 'inxi' 'gum' 'dialog')
 
 pkgver() {
 	cd ..
