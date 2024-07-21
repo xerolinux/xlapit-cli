@@ -269,7 +269,7 @@ package_selection_dialog() {
                     ;;
                 SimpleX)
                     clear
-                    install_pacman_packages chat.simplex.simplex
+                    install_flatpak_packages chat.simplex.simplex
                     ;;
                 VirtManager)
                     clear
