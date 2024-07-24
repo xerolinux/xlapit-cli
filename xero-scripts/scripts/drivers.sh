@@ -26,12 +26,14 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 196 "1. GPU Drivers (Prompt)."
+  gum style --foreground 130 "1. GPU Drivers (Prompt)."
   echo
   gum style --foreground 35 "2. Printer Drivers and Tools."
   gum style --foreground 35 "3. Samba Tools (XeroLinux Repo)."
   gum style --foreground 35 "4. Scanner Drivers (XeroLinux Repo)."
   gum style --foreground 35 "5. DeckLink & StreamDeck Drivers/Tools (AUR)."
+  echo
+  gum style --foreground 196 "k. Install CachyOS Kernel Manager (CashyOS Repos)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -211,6 +213,16 @@ process_choice() {
         gum style --foreground 35 "DeckLink & StreamDeck Drivers/Tools installation complete!"
         sleep 3
         clear && exec "$0"
+        ;;
+      k)
+        gum style --foreground 35 "Installing the CachyOS Kernel Manager..."
+        sleep 2
+        echo
+        sudo pacman -S --noconfirm --needed cachyos-kernel-manager
+        echo
+        gum style --foreground 35 "All done enjoy..."
+        sleep 3
+        clear && exec xero-cli -m
         ;;
       q)
         clear && exec xero-cli -m

@@ -95,6 +95,12 @@ process_choice() {
         sleep 2
         echo
         sudo pacman -S --noconfirm --needed docker docker-compose docker-buildx || handle_error
+        $AUR_HELPER -S --noconfirm --needed lazydocker-bin
+        # Prompt the user
+        echo
+        gum confirm "Do you want to install Podman Desktop ?" && \
+            flatpak install io.podman_desktop.PodmanDesktop -y || \
+            echo "Podman Desktop installation skipped."
         sleep 2
         echo
         sudo systemctl enable --now docker || handle_error

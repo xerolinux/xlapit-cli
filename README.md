@@ -8,7 +8,8 @@ This toolkit aims to be an all-in-one solution for post-installation, expediting
 
 #### Activate either ChaoticAUR "OR" CachyOS Repos, NOT "Both".
 
-#### !!! CachyOS Repos are for Advanced Users Only !!!
+#### !!! CachyOS Repos are for Advanced Users Only !!! <br />
+#### (Activating them will convert your Arch to CachyOS)
 
 </div>
 
