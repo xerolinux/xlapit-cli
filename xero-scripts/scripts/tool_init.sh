@@ -79,7 +79,7 @@ open_wiki() {
   gum style --foreground 33 "Opening Wiki..."
   sleep 3
   xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-setup" > /dev/null 2>&1
-  clear and exec "$0"
+  clear && exec "$0"
 }
 
 # Function for each task
