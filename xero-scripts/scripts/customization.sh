@@ -89,7 +89,7 @@ process_choice() {
         gum style --foreground 35 "Setting up Fastfetch..."
         sleep 2
         echo
-        sudo pacman -S --noconfirm --needed fastfetch
+        sudo pacman -S --noconfirm --needed fastfetch imagemagick ffmpeg ffmpegthumbnailer ffmpegthumbs qt6-multimedia-ffmpeg
         fastfetch --gen-config
         # Change to the ~/.config/fastfetch directory
           cd "$HOME/.config/fastfetch" || exit
