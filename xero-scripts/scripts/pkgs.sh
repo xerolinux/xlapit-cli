@@ -46,7 +46,7 @@ handle_error() {
   echo
   case $choice in
     r|R) exec "$0" ;;
-    m|M) clear and exec xero-cli -m ;;
+    m|M) clear && exec xero-cli -m ;;
     *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
   esac
   sleep 3
@@ -332,7 +332,7 @@ process_choice() {
     case $CHOICE in
       i)
         xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#recommended-packages" > /dev/null 2>&1
-        clear and exec "$0"
+        clear && exec "$0"
         ;;
       1)
         sudo pacman -S --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
