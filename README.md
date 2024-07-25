@@ -44,6 +44,10 @@ It's crucial to clarify that this toolkit isn't intended for custom Arch-Based d
 
 When it comes to **GPU Drivers**, toolkit cover most common setups. There is a caveat that comes with that, it currently does **NOT** cover the AMD/nVidia Hybrid ones. For those you will have to consult online documentation, sorry. Anyway, by answering the prompts correctly you will have your system(s) up and running in no time at all. Even Kernel modiules will load for **nVidia**. If you have any issues let me know here...
 
+### 3rd Party Kernel Support
+
+No 3rd party Kernels are supported by this toolkit. Only Vanilla one. So if you install any, please remember to include their headers for seamless functionality of anything that relies on *DKMS* (Dynamic Kernel Modules). Keep that in mind while using this toolkit.
+
 ### How to Contribute
 
 If you can/want to Contribute your knowledge improving this toolkit taking it above and beyond, making it the defacto for every **Arch** user, please see [**Here**](https://github.com/xerolinux/xlapit-cli/wiki/User-Contribution) for more information.
