@@ -148,14 +148,42 @@ process_choice() {
         gum style --foreground 35 "Setting up Oh-My-Posh..."
         sleep 2
         echo
-        $AUR_HELPER -S --noconfirm --needed oh-my-posh-bin && sudo oh-my-posh upgrade
+        curl -s https://ohmyposh.dev/install.sh | bash -s
         mkdir -p "$HOME/.config/ohmyposh"
-        curl -o "$HOME/.config/ohmyposh/tokyonight_storm.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json
-        # Check if the line exists in ~/.bashrc, if not add it
-        if ! grep -Fxq 'eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' "$HOME/.bashrc"; then
-          echo '' >> "$HOME/.bashrc"
-          echo 'eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' >> "$HOME/.bashrc"
-        fi
+        curl -o "$HOME/.config/ohmyposh/tokyonight_storm.omp.json" https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/ohmyposh/tokyonight_storm.omp.json
+        echo "Injecting OMP to .bashrc"
+        # Define the lines to be added
+        line1='# Oh-My-Posh'
+        line2='PATH="$HOME/.local/bin:$PATH"'
+        line3='# Oh-My-Posh Config'
+        line4='eval "$(oh-my-posh init bash --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"'
+
+        # Define the .bashrc file
+        bashrc_file="$HOME/.bashrc"
+
+        # Function to add lines if not already present
+        add_lines() {
+          if ! grep -qxF "$line1" "$bashrc_file"; then
+            echo "" >> "$bashrc_file"  # Add an empty line before line1
+            echo "$line1" >> "$bashrc_file"
+          fi
+
+          if ! grep -qxF "$line2" "$bashrc_file"; then
+            echo "$line2" >> "$bashrc_file"
+            echo "" >> "$bashrc_file"  # Add an empty line after line2
+          fi
+
+          if ! grep -qxF "$line3" "$bashrc_file"; then
+            echo "$line3" >> "$bashrc_file"
+          fi
+
+          if ! grep -qxF "$line4" "$bashrc_file"; then
+            echo "$line4" >> "$bashrc_file"
+          fi
+        }
+
+        # Run the function to add lines
+        add_lines
         echo
         gum style --foreground 35 "Oh-My-Posh setup complete! Restart Shell."
         sleep 6
