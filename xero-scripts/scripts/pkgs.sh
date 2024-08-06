@@ -136,6 +136,10 @@ package_selection_dialog() {
                     clear
                     install_pacman_packages neovim tmux neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
                     ;;
+                Hexo)
+                    clear
+                    install_aur_packages hexo-cli
+                    ;;
                 Hugo)
                     clear
                     install_aur_packages gohugo-extended-bin
@@ -375,6 +379,7 @@ process_choice() {
         "neoVim" "Vim text editor" OFF \
         "Emacs" "An extensible & customizable text editor" OFF \
         "LazyGit" "Powerful terminal UI for git commands" OFF \
+        "Hexo" "A fast, simple & powerful blog framework" OFF \
         "Hugo" "The fastest Static Site Generator" OFF \
         "Github" "GitHub Desktop application" OFF \
         "VSCodium" "Telemetry-less code editing" OFF \
