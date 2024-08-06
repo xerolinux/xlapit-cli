@@ -243,7 +243,7 @@ process_choice() {
         gum style --foreground 35 "Select Hyprland Dots..."
         select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
           case $dots in
-            ML4W) xdg-open "https://gitlab.com/stephan-raabe/dotfiles" > /dev/null 2>&1 && break ;;
+            ML4W) xdg-open "https://github.com/mylinuxforwork/dotfiles" > /dev/null 2>&1 && break ;;
             JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland" > /dev/null 2>&1 && break ;;
             Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file" > /dev/null 2>&1 && break ;;
             Back) clear && exec "$0" && break ;;
