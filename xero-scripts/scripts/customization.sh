@@ -198,12 +198,12 @@ process_choice() {
         if [ ! -d "$HOME/.config/ohmyposh" ]; then
           mkdir -p "$HOME/.config/ohmyposh"
         fi
-        curl -o "$HOME/.config/ohmyposh/tokyonight_storm.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/tokyonight_storm.omp.json
+        curl -o "$HOME/.config/ohmyposh/xero.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/pararussel.omp.json
 
-        # Check if the line exists in ~/.bashrc, if not add it
-        if ! grep -Fxq 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' "$HOME/.zshrc"; then
+        # Check if the line exists in ~/.zshrc, if not add it
+        if ! grep -Fxq 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/xero.omp.json)"' "$HOME/.zshrc"; then
           echo '' >> "$HOME/.zshrc"
-          echo 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/tokyonight_storm.omp.json)"' >> "$HOME/.zshrc"
+          echo 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/xero.omp.json)"' >> "$HOME/.zshrc"
         fi
         sleep 2
         echo
