@@ -42,12 +42,11 @@ display_menu() {
 # Function to handle errors and prompt user
 handle_error() {
   echo
-  gum style --foreground 196 "An error occurred. Would you like to retry or go back to the main menu? (r/m)"
-  echo
+  gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
   read -rp "Enter your choice: " choice
   case $choice in
     r|R) exec "$0" ;;
-    m|M) clear && exec xero-cli -m ;;
+    e|E) exit 0 ;;
     *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
   esac
   sleep 3
