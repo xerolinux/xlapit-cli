@@ -33,6 +33,7 @@ display_options() {
   gum style --foreground 35 "5. Setup Gnome Extenstion Tools."
   gum style --foreground 35 "6. Top 3 Hyprland Advanced Dot Files."
   echo
+  gum style --foreground 153 "g. Layan GTK4 Patch (Xero Distro)."
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
@@ -241,6 +242,18 @@ process_choice() {
           esac
         done
         gum style --foreground 35 "Hyprland Dots setup complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      g)
+        gum style --foreground 200 "Applying Layan GTK4 Patch..."
+        sleep 2
+        echo
+        cd ~ && git clone https://github.com/vinceliuice/Layan-gtk-theme.git
+        cd ~/Layan-gtk-theme/ && sh install.sh -l -c dark
+        cd ~ && rm -Rf Layan-gtk-theme/
+        sleep 3
+        gum style --foreground 200 "GTK4 Pacthing complete!"
         sleep 3
         clear && exec "$0"
         ;;
