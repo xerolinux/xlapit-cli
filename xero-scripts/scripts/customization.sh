@@ -33,8 +33,8 @@ display_options() {
   gum style --foreground 35 "5. Setup Gnome Extenstion Tools."
   gum style --foreground 35 "6. Top 3 Hyprland Advanced Dot Files."
   echo
-  gum style --foreground 153 "g. Layan GTK4 Patch (Xero Distro)."
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
+  gum style --foreground 153 "u. Layan GTK4 Patch & Theme Update (Distro)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -245,19 +245,6 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      g)
-        gum style --foreground 200 "Applying Layan GTK4 Patch..."
-        sleep 2
-        echo
-        cd ~ && git clone https://github.com/vinceliuice/Layan-gtk-theme.git
-        cd ~/Layan-gtk-theme/ && sh install.sh -l -c dark
-        cd ~ && rm -Rf Layan-gtk-theme/
-        cp -R ~/.local/share/themes/. ~/.themes
-        sleep 3
-        gum style --foreground 200 "GTK4 Pacthing complete!"
-        sleep 3
-        clear && exec "$0"
-        ;;
       x)
         gum style --foreground 200 "Setting up XeroLinux KDE Rice..."
         sleep 2
@@ -265,6 +252,25 @@ process_choice() {
         cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
         cd ~/xero-layan-git/ && sh install.sh
         gum style --foreground 200 "XeroLinux KDE Rice setup complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      u)
+        gum style --foreground 200 "Applying Layan GTK4 Patch/Updating..."
+        sleep 2
+        echo
+        cd ~ && git clone https://github.com/vinceliuice/Layan-gtk-theme.git
+        cd ~/Layan-gtk-theme/ && sh install.sh -l -c dark -d $HOME/.themes
+        cd ~ && rm -Rf Layan-gtk-theme/
+        sleep 3
+        echo
+        gum style --foreground 200 "Updating Layan KDE Theme..."
+        echo
+        cd ~ && git clone https://github.com/vinceliuice/Layan-kde.git
+        cd ~/Layan-kde/ && sh install.sh
+        cd ~ && rm -Rf Layan-kde/
+        echo
+        gum style --foreground 200 "GTK4 Pacthing & Update Complete!"
         sleep 3
         clear && exec "$0"
         ;;
