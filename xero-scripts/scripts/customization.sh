@@ -34,7 +34,7 @@ display_options() {
   gum style --foreground 35 "6. Top 3 Hyprland Advanced Dot Files."
   echo
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
-  gum style --foreground 153 "u. Layan GTK4 Patch & Theme Update (Distro)."
+  gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
