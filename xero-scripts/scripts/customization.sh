@@ -252,6 +252,7 @@ process_choice() {
         cd ~ && git clone https://github.com/vinceliuice/Layan-gtk-theme.git
         cd ~/Layan-gtk-theme/ && sh install.sh -l -c dark
         cd ~ && rm -Rf Layan-gtk-theme/
+        cp -R ~/.local/share/themes/. ~/.themes
         sleep 3
         gum style --foreground 200 "GTK4 Pacthing complete!"
         sleep 3
