@@ -31,7 +31,7 @@ display_options() {
   gum style --foreground 35 "2. Printer Drivers and Tools."
   gum style --foreground 35 "3. Samba Tools (XeroLinux Repo)."
   gum style --foreground 35 "4. Scanner Drivers (XeroLinux Repo)."
-  gum style --foreground 35 "5. Install Tailscale w/XeroLinux fix."
+  gum style --foreground 35 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 35 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
   gum style --foreground 196 "k. Install CachyOS Kernel Manager (CashyOS Repos)."
@@ -210,9 +210,8 @@ process_choice() {
         gum style --foreground 35 "Installing Tailscale..."
         sleep 2
         echo
-        cd ~ && wget https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/install.sh
-        chmod +x ~/install.sh && sh install.sh
-        rm ~/install.sh
+        bash -c "$(curl -fsSL https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/install.sh)"
+        echo
         gum style --foreground 35 "Tailscale installation complete!"
         sleep 3
         clear && exec "$0"
