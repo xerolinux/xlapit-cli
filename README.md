@@ -4,15 +4,6 @@ This toolkit aims to be an all-in-one solution for post-installation, expediting
 
 ![XLAPiT](https://i.imgur.com/JuWceYE.png)
 
-<div align="center">
-
-#### Activate either ChaoticAUR "OR" CachyOS Repos, NOT "Both".
-
-#### !!! CachyOS Repos are for Advanced Users Only !!! <br />
-#### (Activating them will convert your Arch to CachyOS)
-
-</div>
-
 ### How to get it
 
 First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you the user. I will never force anything on you.

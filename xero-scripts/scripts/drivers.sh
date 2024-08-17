@@ -34,9 +34,7 @@ display_options() {
   gum style --foreground 35 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 35 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
-  gum style --foreground 196 "k. Install CachyOS Kernel Manager (CashyOS Repos)."
-  echo
-  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
+   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
@@ -222,16 +220,6 @@ process_choice() {
         echo
         package_selection_dialog "Decklink DeckMaster StreamDeckUI" "install_aur_packages"
         gum style --foreground 35 "DeckLink & StreamDeck Drivers/Tools installation complete!"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      k)
-        gum style --foreground 35 "Installing the CachyOS Kernel Manager..."
-        sleep 2
-        echo
-        sudo pacman -S --noconfirm --needed cachyos-kernel-manager
-        echo
-        gum style --foreground 35 "All done enjoy..."
         sleep 3
         clear && exec "$0"
         ;;

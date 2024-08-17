@@ -33,8 +33,7 @@ display_menu() {
   gum style --foreground 35 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
   gum style --foreground 35 "4. Install 3rd-Party GUI/TUI Package Manager (At Your Own Risk)."
   echo
-  gum style --foreground 69 "5. Add & Enable the ChaoticAUR Repository (Recommended)."
-  gum style --foreground 196 "6. Add & Enable the CachyOS Repositories (Advanced Users)."
+  gum style --foreground 69 "5. Add & Enable the Chaotic-AUR Repository (Vanilla Arch Only)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -179,18 +178,6 @@ add_chaotic_aur() {
   exec "$0"
 }
 
-add_cachyos() {
-  gum style --foreground 196 "Adding CachyOS Repositories..."
-  sleep 2
-  echo
-  cd ~ && curl https://mirror.cachyos.org/cachyos-repo.tar.xz -o cachyos-repo.tar.xz
-  tar xvf cachyos-repo.tar.xz && cd ~/cachyos-repo
-  sudo ./cachyos-repo.sh
-  gum style --foreground 196 "CachyOS Repositories added!"
-  sleep 3
-  exec "$0"
-}
-
 # Function to update system
 update_system() {
     echo "Select an update option:"
@@ -243,7 +230,6 @@ main() {
       3) enable_multithreaded_compilation ;;
       4) install_gui_package_managers ;;
       5) add_chaotic_aur ;;
-      6) add_cachyos ;;
       u) update_system ;;
       q) clear && exec xero-cli -m ;;
       *)
