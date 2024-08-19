@@ -26,7 +26,7 @@ display_menu() {
   gum style --foreground 35 "3.  Restart PipeWire/PipeWire-Pulse."
   gum style --foreground 35 "4.  Unlock Pacman DB (In case of DB error)."
   gum style --foreground 35 "5.  Activate v4l2loopback for OBS-VirtualCam."
-  gum style --foreground 35 "6.  Install XeroLinux Grub/GPU Hooks (Optional)."
+  gum style --foreground 35 "6.  Change Autologin Session X11/Wayland (SDDM)."
   echo
   gum style --foreground 227 "w. WayDroid Installation Guide."
   gum style --foreground 196 "f. Frogging Family/TKG nVidia-All Tool (Advanced)."
@@ -112,10 +112,42 @@ activate_v4l2loopback() {
   exec "$0"
 }
 
-install_grub_hooks() {
-  sudo pacman -S --needed --noconfirm grub-hooks xero-hooks
-  sudo mkinitcpio -P && sudo grub-mkconfig -o /boot/grub/grub.cfg
-  sleep 2
+change_sddm_autologin() {
+  # Define the SDDM configuration file path
+  SDDM_CONF="/etc/sddm.conf.d/kde_settings.conf"
+  # Function to prompt the user and update the SDDM configuration
+  switch_session() {
+    echo "Which session do you want to switch to?"
+    echo
+    echo "1) Wayland"
+    echo "2) Xorg (X11)"
+    echo
+    read -p "Enter your choice [1 or 2]: " choice
+    echo
+    case $choice in
+        1)
+            echo "Switching to Wayland..."
+            sudo sed -i 's|Session=plasmax11|Session=plasma|' "$SDDM_CONF"
+            echo
+            echo "Session switched to Wayland."
+            ;;
+        2)
+            echo "Switching to Xorg (X11)..."
+            sudo sed -i 's|Session=plasma|Session=plasmax11|' "$SDDM_CONF"
+            echo
+            echo "Session switched to Xorg (X11)."
+            ;;
+        *)
+            echo "Invalid choice. Please enter 1 or 2."
+            switch_session
+            ;;
+    esac
+}
+  # Run the session switch function
+  switch_session
+  echo
+  echo "Please reboot to apply..."
+  sleep 6
   exec "$0"
 }
 
@@ -200,7 +232,7 @@ main() {
       3) restart_pipewire ;;
       4) unlock_pacman_db ;;
       5) activate_v4l2loopback ;;
-      6) install_grub_hooks ;;
+      6) change_sddm_autologin ;;
       w) waydroid_guide ;;
       f) tkg_script ;;
       m) update_mirrorlist ;;
