@@ -378,8 +378,8 @@ process_choice() {
         clear && exec "$0"
         ;;
       4)
-        package_selection_dialog "Select Development Apps to install:" \
-	"AndroidStudio" "IDE for Android app development" OFF \        
+        package_selection_dialog "Select Development Apps to install :" \
+	"AndroidStudio" "IDE for Android app development" OFF \
 	"neoVim" "Vim Terminal based text editor" OFF \
         "Emacs" "An extensible & customizable text editor" OFF \
         "LazyGit" "Powerful terminal UI for git commands" OFF \
