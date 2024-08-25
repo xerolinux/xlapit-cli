@@ -28,17 +28,16 @@ display_header() {
 display_options() {
   gum style --foreground 215 "====== Docker/DistroBox ======"
   echo
-  gum style --foreground 35 "1. Install/Configure Docker."
-  gum style --foreground 35 "2. Install/Configure Distrobox."
+  gum style --foreground 35 "1. Install Docker."
+  gum style --foreground 35 "2. Install Distrobox."
   echo
   gum style --foreground 200 "====== DistroBox Images ======"
   echo
   gum style --foreground 35 "3. Pull Latest Debian Image."
   gum style --foreground 35 "4. Pull Latest Fedora Image."
-  gum style --foreground 35 "5. Pull Latest Void Linux Image."
-  gum style --foreground 35 "6. Pull Latest Tumbleweed Image."
+  gum style --foreground 35 "5. Pull Latest Tumbleweed Image."
   echo
-  gum style --foreground 35 "7. Update all Containers (Might take a while)."
+  gum style --foreground 35 "6. Update all Containers (Might take a while)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -142,16 +141,6 @@ process_choice() {
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 35 "Pulling Latest Void Linux Image with label 'VoidLinux'..."
-        sleep 2
-        echo
-        distrobox create -i ghcr.io/void-linux/void-linux:latest-full-x86_64 -n "VoidLinux" || handle_error
-        sleep 10
-        gum style --foreground 35 "Void Linux image pulled successfully!"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      6)
         gum style --foreground 35 "Pulling Latest Tumbleweed Image with label 'OpenSuse'..."
         sleep 2
         echo
@@ -161,7 +150,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      7)
+      6)
         gum style --foreground 35 "Upgrading all Containers..."
         sleep 2
         echo

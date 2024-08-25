@@ -96,8 +96,8 @@ prompt_user() {
     else
       read -rp "Are you using an NVIDIA Discrete GPU ? (y/n): " nvidia_gpu
       if [[ $nvidia_gpu =~ ^[Yy](es)?$ ]]; then
-        read -rp "Single GPU Desktop or Hybrid Laptop ? (desktop/hybrid): " nvidia_setup
-        if [[ $nvidia_setup == "desktop" ]]; then
+        read -rp "Single GPU Desktop or Hybrid Laptop ? (d/h): " nvidia_setup
+        if [[ $nvidia_setup == "d" ]]; then
           read -rp "900/1000 series or 20 series and up ? (900/1000/20): " nvidia_series
           if [[ $nvidia_series == "900" || $nvidia_series == "1000" ]]; then
             sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau
@@ -111,8 +111,8 @@ prompt_user() {
           if [[ $cuda =~ ^[Yy](es)?$ ]]; then
             sudo pacman -S --needed --noconfirm cuda
           fi
-        elif [[ $nvidia_setup == "hybrid" ]]; then
-          read -rp "900/1000 series or 2000 series and up ? (900/2000): " nvidia_series
+        elif [[ $nvidia_setup == "h" ]]; then
+          read -rp "900/1000 series or 2000 series and up ? (900/1000/20): " nvidia_series
           if [[ $nvidia_series == "900" || $nvidia_series == "1000" ]]; then
             sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
             sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
