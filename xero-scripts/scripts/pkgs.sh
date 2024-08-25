@@ -131,6 +131,10 @@ package_selection_dialog() {
                     clear
                     install_flatpak_packages org.torproject.torbrowser-launcher
                     ;;
+                AndroidStudio)
+                    clear
+                    install_flatpak_packages com.google.AndroidStudio
+                    ;;
                 neoVim)
                     clear
                     install_pacman_packages neovim tmux neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
@@ -375,7 +379,8 @@ process_choice() {
         ;;
       4)
         package_selection_dialog "Select Development Apps to install:" \
-        "neoVim" "Vim text editor" OFF \
+	"AndroidStudio" "IDE for Android app development" OFF \        
+	"neoVim" "Vim Terminal based text editor" OFF \
         "Emacs" "An extensible & customizable text editor" OFF \
         "LazyGit" "Powerful terminal UI for git commands" OFF \
         "Hexo" "A fast, simple & powerful blog framework" OFF \
