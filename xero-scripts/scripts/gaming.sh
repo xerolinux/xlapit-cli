@@ -31,12 +31,12 @@ install_aur_packages() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 137 ".::: Native Packages :::."
+  gum style --foreground 137 ".::: Main (Chaotic-AUR) :::."
   echo
   gum style --foreground 35 "1. Steam All-in-one."
   gum style --foreground 35 "2. Game Controllers."
   echo
-  gum style --foreground 93 ".::: Flatpak Packages :::."
+  gum style --foreground 93 ".::: Extras (Flatpaks) :::."
   echo
   gum style --foreground 35 "3. Heroic."
   gum style --foreground 35 "4. Lutris."
