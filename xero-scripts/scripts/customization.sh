@@ -234,9 +234,9 @@ process_choice() {
         gum style --foreground 35 "Select Hyprland Dots..."
         select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
           case $dots in
-            ML4W) xdg-open "https://github.com/mylinuxforwork/dotfiles" > /dev/null 2>&1 && break ;;
+            ML4W) $AUR_HELPER -Syyu --noconfirm --needed ml4w-hyprland && ml4w-hyprland-setup 2>&1 && break ;;
             JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland" > /dev/null 2>&1 && break ;;
-            Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots?tab=readme-ov-file" > /dev/null 2>&1 && break ;;
+            Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots" > /dev/null 2>&1 && break ;;
             Back) clear && exec "$0" && break ;;
             *) gum style --foreground 31 "Invalid option. Select 1, 2, or 3." ;;
           esac
