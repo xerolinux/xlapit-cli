@@ -34,7 +34,7 @@ display_options() {
   gum style --foreground 35 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 35 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
-   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
+  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
@@ -80,62 +80,84 @@ prompt_user() {
   gum style --foreground 33 "Above is your GPU setup, read carefully and answer prompts wisely."
   echo
 
-  gum style --foreground 196 "If Hybrid, only Intel/NVIDIA setup is supported."
-  echo
-  read -rp "Are you only using an AMD dGPU/iGPU ? (y/n): " amd_desktop
-  if [[ $amd_desktop =~ ^[Yy](es)?$ ]]; then
-    sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers libva-mesa-driver lib32-libva-mesa-driver
-    read -rp "Will you be using DaVinci Resolve ? (y/n): " davinci
-    if [[ $davinci =~ ^[Yy](es)?$ ]]; then
-      sudo pacman -S --needed --noconfirm mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime rocm-hip-runtime
-    fi
-  else
-    read -rp "Are you only using an Intel dGPU/iGPU ? (y/n): " intel_gpu
-    if [[ $intel_gpu =~ ^[Yy](es)?$ ]]; then
-      sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
-    else
-      read -rp "Are you using an NVIDIA Discrete GPU ? (y/n): " nvidia_gpu
-      if [[ $nvidia_gpu =~ ^[Yy](es)?$ ]]; then
-        read -rp "Single GPU Desktop or Hybrid Laptop ? (d/h): " nvidia_setup
-        if [[ $nvidia_setup == "d" ]]; then
-          read -rp "Older 900/1000 series or Newer 1650ti/1660ti/20 series and up ? (o/n): " nvidia_series
-          if [[ $nvidia_series == "o" || $nvidia_series == "1000" ]]; then
-            sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau
-          elif [[ $nvidia_series == "n" ]]; then
-            sudo pacman -S --needed --noconfirm linux-headers nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau
-          else
-            echo "Invalid selection."
-            return
-          fi
-          read -rp "Do you want to install CUDA for Machine Learning ? (y/n): " cuda
-          if [[ $cuda =~ ^[Yy](es)?$ ]]; then
-            sudo pacman -S --needed --noconfirm cuda
-          fi
-        elif [[ $nvidia_setup == "h" ]]; then
-          read -rp "Older 900/1000 series or Newer 1650ti/1660ti/20 series and up ? (o/n): " nvidia_series
-          if [[ $nvidia_series == "o" || $nvidia_series == "1000" ]]; then
-            sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
-            sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
-            $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
-          elif [[ $nvidia_series == "n" ]]; then
-            sudo pacman -S --needed --noconfirm linux-headers nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
-            sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
-            $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
-          else
-            echo "Invalid selection."
-            return
-          fi
+  # Prompt if the user has a Single GPU/iGPU or a Hybrid setup
+  read -rp "Do you have a Single dGPU/iGPU or Hybrid setup? (s/h): " setup_type
+  if [[ $setup_type == "s" ]]; then
+    # Prompt for the type of single GPU
+    read -rp "Is your GPU AMD, Intel, or NVIDIA? (amd/intel/nvidia): " gpu_type
+    case $gpu_type in
+      amd)
+        sudo pacman -S --needed --noconfirm mesa xf86-video-amdgpu lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers libva-mesa-driver lib32-libva-mesa-driver
+        read -rp "Will you be using DaVinci Resolve? (y/n): " davinci
+        if [[ $davinci =~ ^[Yy](es)?$ ]]; then
+          sudo pacman -S --needed --noconfirm mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime rocm-hip-runtime
+        fi
+        ;;
+      intel)
+        sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
+        ;;
+      nvidia)
+        read -rp "Older 900/1000 series or Newer 1650ti/1660ti/20 series and up? (o/n): " nvidia_series
+        if [[ $nvidia_series == "o" || $nvidia_series == "1000" ]]; then
+          sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau
+        elif [[ $nvidia_series == "n" ]]; then
+          sudo pacman -S --needed --noconfirm linux-headers nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau
         else
           echo "Invalid selection."
           return
         fi
-        sudo sed -i '/^MODULES=(/ s/)$/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
-        sudo systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service nvidia-powerd.service
-        echo -e 'options nvidia NVreg_UsePageAttributeTable=1 NVreg_InitializeSystemMemoryAllocations=0 NVreg_DynamicPowerManagement=0x02' | sudo tee -a /etc/modprobe.d/nvidia.conf
-        echo -e 'options nvidia_drm modeset=1 fbdev=1' | sudo tee -a /etc/modprobe.d/nvidia.conf && sudo mkinitcpio -P
-      fi
-    fi
+        read -rp "Do you want to install CUDA for Machine Learning? (y/n): " cuda
+        if [[ $cuda =~ ^[Yy](es)?$ ]]; then
+          sudo pacman -S --needed --noconfirm cuda
+        fi
+        ;;
+      *)
+        echo "Invalid selection."
+        return
+        ;;
+    esac
+  elif [[ $setup_type == "h" ]]; then
+    # For Hybrid setup, prompt if Intel/NVIDIA or Intel/AMD
+    read -rp "Is your Hybrid setup Intel/NVIDIA or Intel/AMD? (nvidia/amd): " hybrid_type
+    case $hybrid_type in
+      nvidia)
+        read -rp "Older 900/1000 series or Newer 1650ti/1660ti/20 series and up? (o/n): " nvidia_series
+        if [[ $nvidia_series == "o" || $nvidia_series == "1000" ]]; then
+          sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
+        elif [[ $nvidia_series == "n" ]]; then
+          sudo pacman -S --needed --noconfirm linux-headers nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
+        else
+          echo "Invalid selection."
+          return
+        fi
+        read -rp "Do you want to install CUDA for Machine Learning? (y/n): " cuda
+        if [[ $cuda =~ ^[Yy](es)?$ ]]; then
+          sudo pacman -S --needed --noconfirm cuda
+        fi
+        # Install Intel drivers for Hybrid setup
+        sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
+        $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
+        ;;
+      amd)
+        # Install both Intel and AMD drivers for Intel/AMD Hybrid setup
+        sudo pacman -S --needed --noconfirm mesa xf86-video-amdgpu lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau
+        sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
+        $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
+        read -rp "Will you be using DaVinci Resolve? (y/n): " davinci
+        if [[ $davinci =~ ^[Yy](es)?$ ]]; then
+          sudo pacman -S --needed --noconfirm mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime rocm-hip-runtime
+        fi
+        ;;
+      *)
+        echo "Invalid selection."
+        return
+        ;;
+    esac
+  else
+    echo "Invalid selection."
+    return
   fi
+
   echo
   gum style --foreground 196 "Time to reboot for everything to work."
   sleep 3
