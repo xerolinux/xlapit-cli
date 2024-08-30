@@ -1,49 +1,40 @@
 #!/usr/bin/env bash
 
-rerun_script=0
+# Check if figlet is installed; if not, install it
+if ! command -v figlet &> /dev/null; then
+  echo "Figlet not found, installing it..."
+  sudo pacman -S --noconfirm figlet
+fi
 
-if command -v figlet; then
-  m_figlet="Invalid distro! Only Arch (vanilla) and XeroLinux are supported!"
+source /etc/os-release
 
-  if [[ "$SECRET_FEATURE" == "1" ]]; then
-    m_figlet="Arg! Yee is not an Arch user! Nor are yee a XeroLinux user, scallywag!"
-  fi
+rerun_script="1" # Initialize a variable to control the loop
 
-  echo "$m_figlet" | figlet -f big
-else
-  is_arch=0
+while [[ "$rerun_script" == "1" ]]; do
+  if [ "$ID" != "arch" ] && [ "$ID" != "XeroLinux" ]; then
+    # Display the message with color
+    clear           # Clear the terminal window
 
-  if grep "ID_LIKE=" /etc/os-release > /dev/null 2>&1; then
-    id_like="$(cat /etc/os-release | grep 'ID_LIKE=' | sed 's/ID_LIKE=//' | sed 's/"//g')"
+    # Use figlet to create large ASCII text for the main message
+    figlet -c "Invalid Distro Plz use with"
 
-    if [[ "$id_like" == "arch" ]]; then
-      is_arch=1
-    fi
-  fi
+    # Set colors for "Vanilla Arch" and "XeroLinux"
+    tput bold
+    tput setaf 2  # Set text color to green for "Vanilla Arch"
+    figlet -c "Vanilla Arch"
 
-  if [[ "$is_arch" == "1" ]]; then
-    echo "Figlet not found! Would you like to install it?"
-    [[ "$SECRET_FEATURE" == "1" ]] && echo "Even if it is for this one dumb little script... 🙄"
+    tput setaf 4  # Set text color to blue for "&"
+    tput bold
+    figlet -c "& XeroLinux"
 
-    read -p "[y/n]: " answer
+    # Reset all attributes
+    tput sgr0
 
-    if [[ "$answer" == 'y' ]]; then
-      sudo pacman --noconfirm -S figlet && echo "Done! Re-running script..."
-      rerun_script=1
-      $0
-    elif [[ "$answer" == 'n' ]]; then
-      [[ "$SECRET_FEATURE" == "1" ]] && echo "Good choice! You and me buddy! - OgloTheNerd"
-    else
-      echo "Invalid answer... assuming 'n'..."
-      [[ "$SECRET_FEATURE" == "1" ]] && echo "How did you mess this up?"
-    fi
+    # Wait for user to press ENTER
+    read -p "Press ENTER to quit... " # Wait for user input
+    rerun_script="0" # Exit loop after user presses Enter
   else
-    echo "Figlet not found!"
-    [[ "$SECRET_FEATURE" == "1" ]] && echo "Oh hi non-Arch user! It is a bit strange that you are running this, but Arch sucks. I salute you! - OgloTheNerd"
+    # If the distro is compatible, exit the loop
+    rerun_script="0"
   fi
-fi
-
-if [[ "$rerun_script" == "0" ]]; then
-  echo " "
-  read -p "Press ENTER to quit... "
-fi
+done
