@@ -9,14 +9,17 @@
 # Set window title
 echo -ne "\033]0;Initial System Setup\007"
 
-# Function to check and install gum if not present
-check_gum() {
-  command -v gum >/dev/null 2>&1 || { echo >&2 "Gum is not installed. Installing..."; sudo pacman -S --noconfirm gum; }
-}
-
-# Function to check and install dialog if not present
-check_dialog() {
-  command -v dialog >/dev/null 2>&1 || { echo >&2 "Dialog is not installed. Installing..."; sudo pacman -S --noconfirm dialog; }
+# Function to check and install dependencies
+check_dependency() {
+  local dependency="$1"
+  if ! pacman --query "$dependency"; then
+	echo >&2 "$dependency is not installed. Installing..."
+	sudo pacman -S --noconfirm $dependency
+  fi
+  if ! pacman --query "$dependency"; then
+	echo >&2 "failed to install $dependency. Exiting..."
+	exit 1
+  fi
 }
 
 # Function to display the menu
@@ -215,8 +218,8 @@ update_system() {
 }
 
 main() {
-  check_gum
-  check_dialog
+  check_dependency gum
+  check_dependency dialog
   while :; do
     display_menu
     echo

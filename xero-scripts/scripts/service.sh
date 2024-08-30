@@ -9,9 +9,17 @@
 # Set window title
 echo -ne "\033]0;Fixes & Tweaks\007"
 
-# Function to check and install gum if not present
-check_gum() {
-  command -v gum >/dev/null 2>&1 || { echo >&2 "Gum is not installed. Installing..."; sudo pacman -S --noconfirm gum; }
+# Function to check and install dependencies
+check_dependency() {
+  local dependency="$1"
+  if ! pacman --query "$dependency"; then
+	echo >&2 "$dependency is not installed. Installing..."
+	sudo pacman -S --noconfirm $dependency
+  fi
+  if ! pacman --query "$dependency"; then
+	echo >&2 "failed to install $dependency. Exiting..."
+	exit 1
+  fi
 }
 
 # Function to display the menu
@@ -219,7 +227,7 @@ fix_gpg_keyring() {
 }
 
 main() {
-  check_gum
+  check_dependency gum
   while :; do
     display_menu
     echo
