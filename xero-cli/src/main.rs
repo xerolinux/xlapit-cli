@@ -86,6 +86,17 @@ fn app() -> ExitCode {
         };
     }
 
+    let scripts = Path::new(&args.scripts_path.unwrap_or("/usr/share/xero-scripts".to_string()));
+
+    if scripts.exists() == false {
+        piglog::fatal!("The directory ({}) containing all the scripts does not exist!", scripts.to_string().bright_red().bold());
+
+        return ExitCode::Fail;
+    }
+
+    // Export environment variable.
+    std::env::set_var("SCRIPTS_PATH", scripts.to_string());
+
     let os_release = match file::read(&Path::new("/etc/os-release")) {
         Ok(o) => o,
         Err(e) => {
@@ -111,21 +122,12 @@ fn app() -> ExitCode {
     }
 
     if valid_distro == false {
-        piglog::fatal!("Not a valid distro! Please run on either vanilla Arch, or XeroLinux! (Found: {found})");
+        if run_script("invalid_distro") == false {
+            piglog::fatal!("Not a valid distro! Please run on either vanilla Arch, or XeroLinux! (Found: {found})");
+        }
 
         return ExitCode::Fail;
     }
-
-    let scripts = Path::new(&args.scripts_path.unwrap_or("/usr/share/xero-scripts".to_string()));
-
-    if scripts.exists() == false {
-        piglog::fatal!("The directory ({}) containing all the scripts does not exist!", scripts.to_string().bright_red().bold());
-
-        return ExitCode::Fail;
-    }
-
-    // Export environment variable.
-    std::env::set_var("SCRIPTS_PATH", scripts.to_string());
 
     // Options.
     let options = vec![
