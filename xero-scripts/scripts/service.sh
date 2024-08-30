@@ -9,30 +9,6 @@
 # Set window title
 echo -ne "\033]0;Fixes & Tweaks\007"
 
-check_distro() {
-  # Check if figlet is installed; if not, install it
-  if ! command -v figlet &> /dev/null; then
-    echo "Figlet not found, installing it..."
-    sudo pacman -S --noconfirm figlet
-  fi
-  source /etc/os-release
-  if [ "$ID" != "arch" ] && [ "$ID" != "XeroLinux" ]; then
-    # Display the message in blinking red and centered
-    tput setaf 3    # Set text color to red
-    #tput blink     # Enable blinking text
-    clear           # Clear the terminal window
-
-    # Use figlet to create large ASCII text
-    message="This toolkit is only compatible with Vanilla Arch & XeroLinux!"
-    echo "$(tput cup $(($(tput lines) / 2)) $(($(tput cols) / 2 - ${#message} / 2)))"
-    figlet -c "$message"
-
-    tput sgr0      # Reset all attributes
-    sleep 10
-    exit 1
-  fi
-}
-
 # Function to check and install gum if not present
 check_gum() {
   command -v gum >/dev/null 2>&1 || { echo >&2 "Gum is not installed. Installing..."; sudo pacman -S --noconfirm gum; }
@@ -271,5 +247,4 @@ main() {
   done
 }
 
-check_distro
 main

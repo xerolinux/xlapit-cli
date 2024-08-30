@@ -19,9 +19,9 @@ echo "Deleting the work folder if one exists"
 git add --all .
 
 # Give a comment to the commit if you want
-echo "####################################"
-echo "Write your commit comment!"
-echo "####################################"
+echo "##############################"
+echo "# Write your commit comment! #"
+echo "##############################"
 
 read input
 

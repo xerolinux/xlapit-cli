@@ -86,6 +86,36 @@ fn app() -> ExitCode {
         };
     }
 
+    let os_release = match file::read(&Path::new("/etc/os-release")) {
+        Ok(o) => o,
+        Err(e) => {
+            eprintln!("Failed to read os-release file: {}", e);
+
+            return ExitCode::Fail;
+        },
+    };
+
+    let mut valid_distro = false;
+    let mut found = String::new();
+
+    for line in os_release.trim().lines() {
+        let check = line.trim().replace(" ", "").replace("\"", "");
+
+        if check.starts_with("ID=") {
+            found = check.replace("ID=", "").trim().to_string();
+
+            if found == "arch" || found == "XeroLinux" {
+                valid_distro = true;
+            }
+        }
+    }
+
+    if valid_distro == false {
+        piglog::fatal!("Not a valid distro! Please run on either vanilla Arch, or XeroLinux! (Found: {found})");
+
+        return ExitCode::Fail;
+    }
+
     let scripts = Path::new(&args.scripts_path.unwrap_or("/usr/share/xero-scripts".to_string()));
 
     if scripts.exists() == false {

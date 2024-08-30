@@ -9,30 +9,6 @@
 # Set window title
 echo -ne "\033]0;Gaming Tools\007"
 
-check_distro() {
-  # Check if figlet is installed; if not, install it
-  if ! command -v figlet &> /dev/null; then
-    echo "Figlet not found, installing it..."
-    sudo pacman -S --noconfirm figlet
-  fi
-  source /etc/os-release
-  if [ "$ID" != "arch" ] && [ "$ID" != "XeroLinux" ]; then
-    # Display the message in blinking red and centered
-    tput setaf 3    # Set text color to red
-    #tput blink     # Enable blinking text
-    clear           # Clear the terminal window
-
-    # Use figlet to create large ASCII text
-    message="This toolkit is only compatible with Vanilla Arch & XeroLinux!"
-    echo "$(tput cup $(($(tput lines) / 2)) $(($(tput cols) / 2 - ${#message} / 2)))"
-    figlet -c "$message"
-
-    tput sgr0      # Reset all attributes
-
-    exit 1
-  fi
-}
-
 # Function to check and install dependencies
 check_dependency() {
   local dependency=$1
@@ -263,7 +239,6 @@ process_choice() {
 }
 
 # Main execution
-check_distro
 check_dependency gum
 display_header
 display_options
