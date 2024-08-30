@@ -9,6 +9,14 @@
 # Set window title
 echo -ne "\033]0;System Customization\007"
 
+check_distro() {
+  source /etc/os-release
+  if [ "$ID" != "arch" ]; then
+    echo "$0 only supports archlinx. Exiting..." >&2
+    exit 1;
+  fi
+}
+
 # Function to check and install dependencies
 check_dependency() {
   local dependency=$1
@@ -287,6 +295,7 @@ process_choice() {
 }
 
 # Main execution
+check_distro
 check_dependency gum
 display_header
 display_options

@@ -9,6 +9,14 @@
 # Set window title
 echo -ne "\033]0;Fixes & Tweaks\007"
 
+check_distro() {
+  source /etc/os-release
+  if [ "$ID" != "arch" ]; then
+    echo "$0 only supports archlinx. Exiting..." >&2
+    exit 1;
+  fi
+}
+
 # Function to check and install gum if not present
 check_gum() {
   command -v gum >/dev/null 2>&1 || { echo >&2 "Gum is not installed. Installing..."; sudo pacman -S --noconfirm gum; }
@@ -247,4 +255,5 @@ main() {
   done
 }
 
+check_distro
 main
