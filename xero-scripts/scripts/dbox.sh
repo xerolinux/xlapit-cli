@@ -28,6 +28,7 @@ check_distro() {
     figlet -c "$message"
 
     tput sgr0      # Reset all attributes
+    sleep 10
     exit 1
   fi
 }
