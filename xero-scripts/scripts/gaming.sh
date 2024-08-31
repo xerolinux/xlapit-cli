@@ -11,6 +11,26 @@ echo -ne "\033]0;Gaming Tools\007"
 
 # Function to check and install dependencies
 check_dependency() {
+  local dependency="$1"
+  if ! pacman --query "$dependency"; then
+	echo >&2 "$dependency is not installed. Installing..."
+	sudo pacman -S --noconfirm $dependency
+  fi
+  if ! pacman --query "$dependency"; then
+	echo >&2 "failed to install $dependency. Exiting..."
+	exit 1
+  fi
+}
+
+# Function to display header
+display_header() {
+  clear
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "System Customization"
+  echo
+  gum style --foreground 33 "Hello $USER, please select an option. Press 'i' for the Wiki."
+  echo
+}
+check_dependency() {
   local dependency=$1
   command -v $dependency >/dev/null 2>&1 || { echo >&2 "$dependency is not installed. Installing..."; sudo pacman -S --noconfirm $dependency; }
 }

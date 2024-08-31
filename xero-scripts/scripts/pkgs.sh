@@ -11,8 +11,15 @@ echo -ne "\033]0;Essential Package Installer\007"
 
 # Function to check and install dependencies
 check_dependency() {
-  local dependency=$1
-  command -v $dependency >/dev/null 2>&1 || { echo >&2 "$dependency is not installed. Installing..."; sudo pacman -S --noconfirm $dependency; }
+  local dependency="$1"
+  if ! pacman --query "$dependency"; then
+	echo >&2 "$dependency is not installed. Installing..."
+	sudo pacman -S --noconfirm $dependency
+  fi
+  if ! pacman --query "$dependency"; then
+	echo >&2 "failed to install $dependency. Exiting..."
+	exit 1
+  fi
 }
 
 # Function to display header
