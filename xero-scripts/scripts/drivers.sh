@@ -84,7 +84,7 @@ prompt_user() {
   echo
   inxi -G
   echo
-  gum style --foreground 33 "Above is your GPU setup, read carefully and answer prompts wisely."
+  gum style --foreground 33 "Answer below prompts wisely. No Legacy GPU Support."
   echo
 
   # Prompt if the user has a Single GPU/iGPU or a Hybrid setup
@@ -146,6 +146,10 @@ prompt_user() {
         $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
         ;;
       amd)
+        echo
+        gum style --foreground 196 "Currently Unverified. Use At Own Risk !"
+        sleep 6
+        echo
         # Install both Intel and AMD drivers for Intel/AMD Hybrid setup
         sudo pacman -S --needed --noconfirm mesa xf86-video-amdgpu lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau amdvlk
         sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
