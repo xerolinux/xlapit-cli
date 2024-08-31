@@ -1,13 +1,13 @@
 # Maintainer: DarkXero <info at techxero.com>
 
 pkgname='xlapit-cli'
-pkgver=r211.130f122
+pkgver=r212.001d4a0
 pkgrel=1
 pkgdesc='XeroLinux Post Installation CLI Toolkit'
 arch=("any")
 license=('GPL')
 makedepends=('rustup')
-depends=('wget' 'curl' 'git' 'inxi' 'gum' 'dialog')
+depends=('wget' 'curl' 'git' 'inxi' 'gum' 'dialog' 'figlet')
 
 pkgver() {
 	cd ..
@@ -21,7 +21,7 @@ prepare() {
 }
 
 build() {
-	rustup default || rustup default stable
+	rustup default || rustup default nightly
 
 	cd "$srcdir"
 
