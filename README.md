@@ -39,3 +39,7 @@ No 3rd party Kernels are provided by this toolkit. So if you install any, please
 ### How to Contribute
 
 If you can/want to Contribute your knowledge improving this toolkit taking it above and beyond, making it the defacto for every **Arch** user, please see [**Here**](https://github.com/xerolinux/xlapit-cli/wiki/User-Contribution) for more information.
+
+### Credits
+
+Main menu is written in **Rust** thanks to [**OgloTheNerd**](https://github.com/Oglo12). And some contributions were made by a friend of the project [**It-A-Me**](https://github.com/it-a-me). Thanks to them this Toolkit wouldn't have reached this point. Thanks guys!
