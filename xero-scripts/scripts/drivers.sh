@@ -88,14 +88,14 @@ prompt_user() {
   echo
 
   # Prompt if the user has a Single GPU/iGPU or a Hybrid setup
-  read -rp "Do you have a Single dGPU/iGPU or Hybrid setup? (s/h): " setup_type
+  read -rp "Single or Dual (Hybrid) GPU/iGPU Setup ? (s/d): " setup_type
   if [[ $setup_type == "s" ]]; then
     # Prompt for the type of single GPU
     read -rp "Is your GPU AMD, Intel, or NVIDIA? (amd/intel/nvidia): " gpu_type
     case $gpu_type in
       amd)
         sudo pacman -S --needed --noconfirm mesa xf86-video-amdgpu amdvlk lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers libva-mesa-driver lib32-libva-mesa-driver
-        read -rp "Will you be using DaVinci Resolve? (y/n): " davinci
+        read -rp "Will you be using DaVinci Resolve and/or Machine Learning? (y/n): " davinci
         if [[ $davinci =~ ^[Yy](es)?$ ]]; then
           sudo pacman -S --needed --noconfirm mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime rocm-hip-runtime
         fi
@@ -107,7 +107,7 @@ prompt_user() {
         read -rp "Older 900/1000 series or Newer 1650ti/1660ti/20 series and up? (o/n): " nvidia_series
         if [[ $nvidia_series == "o" || $nvidia_series == "1000" ]]; then
           sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau
-        elif [[ $nvidia_series == "n" ]]; then
+        elif [[ $nvidia_series == "d" ]]; then
           sudo pacman -S --needed --noconfirm linux-headers nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau
         else
           echo "Invalid selection."
@@ -123,49 +123,14 @@ prompt_user() {
         return
         ;;
     esac
-  elif [[ $setup_type == "h" ]]; then
-    # For Hybrid setup, prompt if Intel/NVIDIA or Intel/AMD
-    read -rp "Is your Hybrid setup Intel/NVIDIA or Intel/AMD? (nvidia/amd): " hybrid_type
-    case $hybrid_type in
-      nvidia)
-        read -rp "Older 900/1000 series or Newer 1650ti/1660ti/20 series and up? (o/n): " nvidia_series
-        if [[ $nvidia_series == "o" || $nvidia_series == "1000" ]]; then
-          sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
-        elif [[ $nvidia_series == "n" ]]; then
-          sudo pacman -S --needed --noconfirm linux-headers nvidia-open-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader egl-wayland opencl-nvidia lib32-opencl-nvidia libvdpau-va-gl libvdpau nvidia-prime
-        else
-          echo "Invalid selection."
-          return
-        fi
-        read -rp "Do you want to install CUDA for Machine Learning? (y/n): " cuda
-        if [[ $cuda =~ ^[Yy](es)?$ ]]; then
-          sudo pacman -S --needed --noconfirm cuda
-        fi
-        # Install Intel drivers for Hybrid setup
-        sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
-        $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
-        ;;
-      amd)
-        echo
-        gum style --foreground 196 "Currently Unverified. Use At Own Risk !"
-        sleep 6
-        echo
-        # Install both Intel and AMD drivers for Intel/AMD Hybrid setup
-        sudo pacman -S --needed --noconfirm mesa xf86-video-amdgpu lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau lib32-mesa-vdpau amdvlk
-        sudo pacman -S --needed --noconfirm mesa lib32-mesa vulkan-intel lib32-vulkan-intel intel-media-driver intel-gmmlib onevpl-intel-gpu mesa-vdpau lib32-mesa-vdpau gstreamer-vaapi libva-mesa-driver lib32-libva-mesa-driver intel-gmmlib
-        $AUR_HELPER -S --noconfirm --needed supergfxctl plasma6-applets-supergfxctl && sudo systemctl enable --now supergfxd.service
-        read -rp "Will you be using DaVinci Resolve? (y/n): " davinci
-        if [[ $davinci =~ ^[Yy](es)?$ ]]; then
-          sudo pacman -S --needed --noconfirm mesa-vdpau lib32-mesa-vdpau rocm-opencl-runtime rocm-hip-runtime
-        fi
-        ;;
-      *)
-        echo "Invalid selection."
-        return
-        ;;
-    esac
   else
-    echo "Invalid selection."
+    echo
+    gum style --foreground 196 "Only Single GPU setups are supported by the toolkit."
+    sleep 6
+    echo
+    gum style --foreground 45 "Opening the the ArchWiki."
+    sleep 3
+    xdg-open "https://wiki.archlinux.org/title/Hybrid_graphics" > /dev/null 2>&1
     return
   fi
 
