@@ -30,7 +30,7 @@ It's crucial to clarify that this toolkit isn't intended for custom Arch-Based d
 
 ### GPU Driver Notes
 
-When it comes to **GPU Drivers**, toolkit covers most common setups. It currently does **NOT** cover the AMD+nVidia Hybrid ones. For those you will have to consult online documentation, sorry. Anyway, by answering the prompts correctly you will have your system(s) up and running in no time at all. Even Kernel modules will load for **nVidia**. If you have any issues let me know here...
+When it comes to **GPU Drivers**, toolkit covers most common setups. It currently does **NOT** cover Hybrid ones. For those you will have to consult online documentation, sorry. Anyway, by answering the prompts correctly you will have your system(s) up and running in no time at all. Even Kernel modules will load for **nVidia**. If you have any issues let me know here...
 
 ### 3rd Party Kernel Support
 
