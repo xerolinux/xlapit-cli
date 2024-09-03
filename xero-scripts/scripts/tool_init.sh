@@ -36,8 +36,6 @@ display_menu() {
   gum style --foreground 35 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
   gum style --foreground 35 "4. Install 3rd-Party GUI/TUI Package Manager (At Your Own Risk)."
   echo
-  gum style --foreground 69 "5. Add & Enable the Chaotic-AUR Repository (Vanilla Arch Only)."
-  echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
@@ -166,21 +164,6 @@ install_gui_package_managers() {
   exec "$0"
 }
 
-add_chaotic_aur() {
-  gum style --foreground 69 "Adding Chaotic-AUR Repository..."
-  sleep 2
-  echo
-  sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
-  sudo pacman-key --lsign-key 3056513887B78AEB
-  sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
-  sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
-  echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf
-  sudo pacman -Syy
-  gum style --foreground 69 "Chaotic-AUR Repository added!"
-  sleep 3
-  exec "$0"
-}
-
 # Function to update system
 update_system() {
     echo "Select an update option:"
@@ -232,7 +215,6 @@ main() {
       2) activate_flathub_repositories ;;
       3) enable_multithreaded_compilation ;;
       4) install_gui_package_managers ;;
-      5) add_chaotic_aur ;;
       u) update_system ;;
       q) clear && exec xero-cli -m ;;
       *)
