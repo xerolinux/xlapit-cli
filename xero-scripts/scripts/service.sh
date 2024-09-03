@@ -185,7 +185,7 @@ update_mirrorlist() {
     $AUR_HELPER -S --noconfirm --needed rate-mirrors-bin
   fi
 
-  if gum confirm "Have you activated the Chaotic-AUR repos?"; then
+  if gum confirm "Do you want to update Chaotic-AUR mirrorlist too?"; then
     rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist
     echo
     rate-mirrors --allow-root --protocol https chaotic-aur | sudo tee /etc/pacman.d/chaotic-mirrorlist
