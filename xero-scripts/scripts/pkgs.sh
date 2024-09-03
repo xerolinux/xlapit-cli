@@ -7,7 +7,29 @@
 ######################################
 
 # Set window title
-echo -ne "\033]0;Essential Package Installer\007"
+echo -ne "\033]0;XerOlinux Package Installer\007"
+
+# Function to check if Chaotic-AUR is enabled
+is_chaotic_aur_enabled() {
+    grep -q "\[chaotic-aur\]" /etc/pacman.conf
+}
+
+# Function to add Chaotic-AUR repository
+add_chaotic_aur() {
+  echo
+  gum style --foreground 69 "Chaotic-AUR Repository Not Enabled Adding It..."
+  sleep 2
+  echo
+  sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+  sudo pacman-key --lsign-key 3056513887B78AEB
+  sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+  sudo pacman -U --noconfirm 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+  echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf
+  sudo pacman -Syy
+  echo
+  gum style --foreground 69 "Chaotic-AUR Repository added! Resuming..."
+  sleep 3
+}
 
 # Function to check and install dependencies
 check_dependency() {
@@ -22,11 +44,20 @@ check_dependency() {
   fi
 }
 
+# Check if Chaotic-AUR is enabled before proceeding with other tasks
+check_and_add_chaotic_aur() {
+  if is_chaotic_aur_enabled; then
+    gum style --foreground 69 "Chaotic-AUR repository is already enabled."
+  else
+    add_chaotic_aur
+  fi
+}
+
 # Function to display header
 display_header() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Essential Package Installer"
-  gum style --foreground 33 "Hello $USER, this will install extra packages. Press 'i' for the Wiki."
+  gum style --foreground 33 "Hello $USER, this is a curated list of packages. Press 'i' for the Wiki."
   echo
 }
 
@@ -481,6 +512,7 @@ process_choice() {
 # Main execution
 check_dependency gum
 check_dependency dialog
+check_and_add_chaotic_aur
 display_header
 display_options
 process_choice
