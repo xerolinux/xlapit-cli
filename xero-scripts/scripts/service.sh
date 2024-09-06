@@ -159,7 +159,6 @@ build_archiso() {
   sudo mkarchiso -v -w ~/ArchWork -o ~/ArchOut /usr/share/archiso/configs/releng
   echo
   echo "Step 3 - Cleaning up...."
-  echo
   sudo rm -rf ~/ArchWork/
   echo
   gum style --foreground 7 "##########  Done ! Check ~/ArchOut  ##########"
