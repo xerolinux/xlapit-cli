@@ -9,36 +9,23 @@
 # Set window title
 echo -ne "\033]0;System Customization\007"
 
-# Function to check and install dependencies
-check_dependency() {
-  local dependency="$1"
-  if ! pacman --query "$dependency"; then
-	echo >&2 "$dependency is not installed. Installing..."
-	sudo pacman -S --noconfirm $dependency
-  fi
-  if ! pacman --query "$dependency"; then
-	echo >&2 "failed to install $dependency. Exiting..."
-	exit 1
-  fi
-}
-
 # Function to display header
 display_header() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "System Customization"
   echo
-  gum style --foreground 33 "Hello $USER, please select an option. Press 'i' for the Wiki."
+  gum style --foreground 141 "Hello $USER, please select an option. Press 'i' for the Wiki."
   echo
 }
 
 # Function to display options
 display_options() {
-  gum style --foreground 35 "1. Setup Fastfetch."
-  gum style --foreground 35 "2. Setup Fish Shell."
-  gum style --foreground 35 "3. Setup Oh-My-Posh (Bash)."
-  gum style --foreground 35 "4. Setup ZSH All in one w/OMP."
-  gum style --foreground 35 "5. Setup Gnome Extenstion Tools."
-  gum style --foreground 35 "6. Top 3 Hyprland Advanced Dot Files."
+  gum style --foreground 7 "1. Setup Fastfetch."
+  gum style --foreground 7 "2. Setup Fish Shell."
+  gum style --foreground 7 "3. Setup Oh-My-Posh (Bash)."
+  gum style --foreground 7 "4. Setup ZSH All in one w/OMP."
+  gum style --foreground 7 "5. Setup Gnome Extenstion Tools."
+  gum style --foreground 7 "6. Top 3 Hyprland Advanced Dot Files."
   echo
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro)."
@@ -94,7 +81,7 @@ process_choice() {
         clear && exec "$0"
         ;;
       1)
-        gum style --foreground 35 "Setting up Fastfetch..."
+        gum style --foreground 7 "Setting up Fastfetch..."
         sleep 2
         echo
         sudo pacman -S --noconfirm --needed fastfetch imagemagick ffmpeg ffmpegthumbnailer ffmpegthumbs qt6-multimedia-ffmpeg
@@ -137,23 +124,23 @@ process_choice() {
             ;;
         esac
         echo
-        gum style --foreground 35 "Fastfetch setup complete!"
+        gum style --foreground 7 "Fastfetch setup complete!"
         sleep 3
         clear && exec "$0"
         ;;
       2)
-        gum style --foreground 35 "Setting up Fish Shell..."
+        gum style --foreground 7 "Setting up Fish Shell..."
         sleep 2
         echo
         sudo pacman -S --needed --noconfirm fish fastfetch
         fastfetch --gen-config
         sudo chsh $USER -s /bin/fish
-        gum style --foreground 35 "Fish shell setup complete! Log out and back in."
+        gum style --foreground 7 "Fish shell setup complete! Log out and back in."
         sleep 3
         clear && exec "$0"
         ;;
       3)
-        gum style --foreground 35 "Setting up Oh-My-Posh..."
+        gum style --foreground 7 "Setting up Oh-My-Posh..."
         sleep 2
         echo
         $AUR_HELPER -S --noconfirm --needed oh-my-posh-bin
@@ -183,12 +170,12 @@ process_choice() {
         # Run the function to add lines
         add_lines
         echo
-        gum style --foreground 35 "Oh-My-Posh setup complete! Restart Shell."
+        gum style --foreground 7 "Oh-My-Posh setup complete! Restart Shell."
         sleep 6
         clear && exec "$0"
         ;;
       4)
-        gum style --foreground 35 "Setting up ZSH with OMP & OMZ Plugins..."
+        gum style --foreground 7 "Setting up ZSH with OMP & OMZ Plugins..."
         sleep 2
         echo
         sudo pacman -S --needed --noconfirm zsh grml-zsh-config fastfetch
@@ -223,22 +210,22 @@ process_choice() {
             sed -i 's|Command=/bin/bash|Command=/bin/zsh|' "$HOME/.local/share/konsole/XeroLinux.profile"
         fi
         echo
-        gum style --foreground 35 "ZSH setup complete! Log out and back in."
+        gum style --foreground 7 "ZSH setup complete! Log out and back in."
         sleep 3
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 35 "Setting up Gnome Extension Tools..."
+        gum style --foreground 7 "Setting up Gnome Extension Tools..."
         sleep 2
         echo
         $AUR_HELPER -S --noconfirm --needed extension-manager dconf-editor gnome-tweaks gnome-shell-extensions
         echo
-        gum style --foreground 35 "Done ! Have fun tweaking Gnome ;)"
+        gum style --foreground 7 "Done ! Have fun tweaking Gnome ;)"
         sleep 3
         clear && exec "$0"
         ;;
       6)
-        gum style --foreground 35 "Select Hyprland Dots..."
+        gum style --foreground 7 "Select Hyprland Dots..."
         select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
           case $dots in
             ML4W) $AUR_HELPER -Syyu --noconfirm --needed ml4w-hyprland && ml4w-hyprland-setup 2>&1 && break ;;
@@ -248,7 +235,7 @@ process_choice() {
             *) gum style --foreground 31 "Invalid option. Select 1, 2, or 3." ;;
           esac
         done
-        gum style --foreground 35 "Hyprland Dots setup complete!"
+        gum style --foreground 7 "Hyprland Dots setup complete!"
         sleep 3
         clear && exec "$0"
         ;;
@@ -294,7 +281,6 @@ process_choice() {
 }
 
 # Main execution
-check_dependency gum
 display_header
 display_options
 process_choice

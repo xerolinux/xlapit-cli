@@ -9,32 +9,19 @@
 # Set window title
 echo -ne "\033]0;Initial System Setup\007"
 
-# Function to check and install dependencies
-check_dependency() {
-  local dependency="$1"
-  if ! pacman --query "$dependency"; then
-	echo >&2 "$dependency is not installed. Installing..."
-	sudo pacman -S --noconfirm $dependency
-  fi
-  if ! pacman --query "$dependency"; then
-	echo >&2 "failed to install $dependency. Exiting..."
-	exit 1
-  fi
-}
-
 # Function to display the menu
 display_menu() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Initial System Setup"
   echo
-  gum style --foreground 142 "Hello $USER, please select an option. Press 'i' for the Wiki."
+  gum style --foreground 141 "Hello $USER, please select an option. Press 'i' for the Wiki."
   echo
-  gum style --foreground 199 "u. Update System (Simple/Extended/Adv.)."
+  gum style --foreground 46 "u. Update System (Simple/Extended/Adv.)."
   echo
-  gum style --foreground 35 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
-  gum style --foreground 35 "2. Activate Flathub Repositories (Vanilla Arch Only)."
-  gum style --foreground 35 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
-  gum style --foreground 35 "4. Install 3rd-Party GUI/TUI Package Manager (At Your Own Risk)."
+  gum style --foreground 7 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
+  gum style --foreground 7 "2. Activate Flathub Repositories (Vanilla Arch Only)."
+  gum style --foreground 7 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
+  gum style --foreground 7 "4. Install 3rd-Party GUI/TUI Package Manager (At Your Own Risk)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -83,53 +70,53 @@ open_wiki() {
 
 # Function for each task
 install_pipewire_bluetooth() {
-  gum style --foreground 35 "Installing PipeWire/Bluetooth Packages..."
+  gum style --foreground 7 "Installing PipeWire/Bluetooth Packages..."
   sleep 2
   echo
   sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack pipewire-support ffmpeg ffmpegthumbs ffnvcodec-headers
   sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
   sudo systemctl enable --now bluetooth.service
-  gum style --foreground 35 "PipeWire/Bluetooth Packages installation complete!"
+  gum style --foreground 7 "PipeWire/Bluetooth Packages installation complete!"
   sleep 3
   exec "$0"
 }
 
 install_topgrade_aio_updater() {
   if ! command -v topgrade &> /dev/null; then
-    gum style --foreground 35 "Topgrade not installed, installing it..."
+    gum style --foreground 7 "Topgrade not installed, installing it..."
     sleep 2
     echo
     $AUR_HELPER -S --noconfirm --needed topgrade-bin
   fi
-  gum style --foreground 35 "Running Topgrade..."
+  gum style --foreground 7 "Running Topgrade..."
   topgrade
   echo
-  gum style --foreground 35 "Done, Systemm updated."
+  gum style --foreground 7 "Done, Systemm updated."
   sleep 3
   exec "$0"
 }
 
 activate_flathub_repositories() {
-  gum style --foreground 35 "Activating Flathub Repositories..."
+  gum style --foreground 7 "Activating Flathub Repositories..."
   sleep 2
   echo
   sudo pacman -S --noconfirm --needed flatpak
   sudo flatpak remote-modify --default-branch=23.08 flathub system
   echo
-  gum style --foreground 35 "##########    Activating Flatpak Theming.    ##########"
+  gum style --foreground 7 "##########    Activating Flatpak Theming.    ##########"
   sudo flatpak override --filesystem="$HOME/.themes"
   sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
   sudo flatpak override --filesystem=xdg-config/gtk-4.0:ro
   echo
-  gum style --foreground 35 "##########     Flatpak Theming Activated     ##########"
+  gum style --foreground 7 "##########     Flatpak Theming Activated     ##########"
   echo
-  gum style --foreground 35 "Flathub Repositories activated! Please reboot."
+  gum style --foreground 7 "Flathub Repositories activated! Please reboot."
   sleep 3
   exec "$0"
 }
 
 enable_multithreaded_compilation() {
-  gum style --foreground 35 "Enabling Multithreaded Compilation..."
+  gum style --foreground 7 "Enabling Multithreaded Compilation..."
   sleep 2
   echo
   numberofcores=$(grep -c ^processor /proc/cpuinfo)
@@ -139,13 +126,13 @@ enable_multithreaded_compilation() {
     sudo sed -i "s/COMPRESSZST=(zstd -c -z -q -)/COMPRESSZST=(zstd -c -z -q - --threads=0)/" /etc/makepkg.conf
     sudo sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
   fi
-  gum style --foreground 35 "Multithreaded Compilation enabled!"
+  gum style --foreground 7 "Multithreaded Compilation enabled!"
   sleep 3
   exec "$0"
 }
 
 install_gui_package_managers() {
-  gum style --foreground 35 "Installing 3rd-Party GUI Package Managers..."
+  gum style --foreground 7 "Installing 3rd-Party GUI Package Managers..."
   sleep 2
   echo
   PACKAGES=$(dialog --checklist "Select GUI Package Managers to install:" 20 60 10 \
@@ -159,7 +146,7 @@ install_gui_package_managers() {
       "BauhGUI") $AUR_HELPER -S --needed bauh ;;
     esac
   done
-  gum style --foreground 35 "3rd-Party GUI Package Managers installation complete!"
+  gum style --foreground 7 "3rd-Party GUI Package Managers installation complete!"
   sleep 3
   exec "$0"
 }
@@ -201,8 +188,6 @@ update_system() {
 }
 
 main() {
-  check_dependency gum
-  check_dependency dialog
   while :; do
     display_menu
     echo

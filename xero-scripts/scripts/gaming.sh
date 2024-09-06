@@ -9,25 +9,12 @@
 # Set window title
 echo -ne "\033]0;Gaming Tools\007"
 
-# Function to check and install dependencies
-check_dependency() {
-  local dependency="$1"
-  if ! pacman --query "$dependency"; then
-	echo >&2 "$dependency is not installed. Installing..."
-	sudo pacman -S --noconfirm $dependency
-  fi
-  if ! pacman --query "$dependency"; then
-	echo >&2 "failed to install $dependency. Exiting..."
-	exit 1
-  fi
-}
-
 # Function to display header
 display_header() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "System Customization"
   echo
-  gum style --foreground 33 "Hello $USER, please select an option. Press 'i' for the Wiki."
+  gum style --foreground 141 "Hello $USER, please select an option. Press 'i' for the Wiki."
   echo
 }
 check_dependency() {
@@ -51,17 +38,17 @@ install_aur_packages() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 137 ".::: Main (Chaotic-AUR) :::."
+  gum style --foreground 40 ".::: Main (Chaotic-AUR) :::."
   echo
-  gum style --foreground 35 "1. Steam All-in-one."
-  gum style --foreground 35 "2. Game Controllers."
+  gum style --foreground 7 "1. Steam All-in-one."
+  gum style --foreground 7 "2. Game Controllers."
   echo
-  gum style --foreground 93 ".::: Extras (Flatpaks) :::."
+  gum style --foreground 226 ".::: Extras (Flatpaks) :::."
   echo
-  gum style --foreground 35 "3. Heroic."
-  gum style --foreground 35 "4. Lutris."
-  gum style --foreground 35 "5. Bottles."
-  gum style --foreground 35 "6. ProtonUp-QT."
+  gum style --foreground 7 "3. Heroic."
+  gum style --foreground 7 "4. Lutris."
+  gum style --foreground 7 "5. Bottles."
+  gum style --foreground 7 "6. ProtonUp-QT."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -182,7 +169,7 @@ process_choice() {
         clear && exec "$0"
         ;;
       1)
-        gum style --foreground 35 "Installing Steam + Mangohud + Gamemode + Gamescope..."
+        gum style --foreground 7 "Installing Steam + Mangohud + Gamemode + Gamescope..."
         sleep 2
         echo
         install_gaming_packages steam
@@ -197,7 +184,7 @@ process_choice() {
         echo
         echo "vm.max_map_count=2147483642" | sudo tee /etc/sysctl.d/99-sysctl.conf >/dev/null
         sleep 3
-        gum style --foreground 35 "Steam installation complete!"
+        gum style --foreground 7 "Steam installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
@@ -206,43 +193,43 @@ process_choice() {
         "DualSense" "DualSence Driver" OFF \
         "DualShock4" "DualShock 4 Driver" OFF \
         "XBoxOne" "XBOX One Controller Driver" OFF
-        gum style --foreground 35 "Game Controller Drivers installation complete!"
+        gum style --foreground 7 "Game Controller Drivers installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       3)
-        gum style --foreground 35 "Installing Heroic Games Launcher..."
+        gum style --foreground 7 "Installing Heroic Games Launcher..."
         sleep 2
         echo
         install_gaming_packages heroic
-        gum style --foreground 35 "Heroic Games Launcher installation complete!"
+        gum style --foreground 7 "Heroic Games Launcher installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       4)
-        gum style --foreground 35 "Installing Lutris..."
+        gum style --foreground 7 "Installing Lutris..."
         sleep 2
         echo
         install_gaming_packages lutris
-        gum style --foreground 35 "Lutris installation complete!"
+        gum style --foreground 7 "Lutris installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 35 "Installing Bottles..."
+        gum style --foreground 7 "Installing Bottles..."
         sleep 2
         echo
         install_gaming_packages bottles
-        gum style --foreground 35 "Bottles installation complete!"
+        gum style --foreground 7 "Bottles installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       6)
-        gum style --foreground 35 "Installing ProtonUp-QT..."
+        gum style --foreground 7 "Installing ProtonUp-QT..."
         sleep 2
         echo
         install_gaming_packages protonupQT
-        gum style --foreground 35 "ProtonUp-QT installation complete!"
+        gum style --foreground 7 "ProtonUp-QT installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
@@ -259,8 +246,6 @@ process_choice() {
 }
 
 # Main execution
-check_dependency gum
-check_dependency dialog
 display_header
 display_options
 process_choice

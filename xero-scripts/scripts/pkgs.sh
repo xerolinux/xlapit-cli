@@ -9,38 +9,25 @@
 # Set window title
 echo -ne "\033]0;XerOlinux Package Installer\007"
 
-# Function to check and install dependencies
-check_dependency() {
-  local dependency="$1"
-  if ! pacman --query "$dependency"; then
-	echo >&2 "$dependency is not installed. Installing..."
-	sudo pacman -S --noconfirm $dependency
-  fi
-  if ! pacman --query "$dependency"; then
-	echo >&2 "failed to install $dependency. Exiting..."
-	exit 1
-  fi
-}
-
 # Function to display header
 display_header() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Essential Package Installer"
-  gum style --foreground 33 "Hello $USER, this is a curated list of packages. Press 'i' for the Wiki."
+  gum style --foreground 141 "Hello $USER, this is a curated list of packages. Press 'i' for the Wiki."
   echo
 }
 
 # Function to display options
 display_options() {
-  gum style --foreground 35 "1. LibreOffice."
-  gum style --foreground 35 "2. Web Browsers."
-  gum style --foreground 35 "3. System Tools."
-  gum style --foreground 35 "4. Development Tools."
-  gum style --foreground 35 "5. Photo and 3D Tools."
-  gum style --foreground 35 "6. Music & Audio Tools."
-  gum style --foreground 35 "7. Social & Chat Tools."
-  gum style --foreground 35 "8. Virtualization Tools."
-  gum style --foreground 35 "9. Video Tools & Software."
+  gum style --foreground 7 "1. LibreOffice."
+  gum style --foreground 7 "2. Web Browsers."
+  gum style --foreground 7 "3. System Tools."
+  gum style --foreground 7 "4. Development Tools."
+  gum style --foreground 7 "5. Photo and 3D Tools."
+  gum style --foreground 7 "6. Music & Audio Tools."
+  gum style --foreground 7 "7. Social & Chat Tools."
+  gum style --foreground 7 "8. Virtualization Tools."
+  gum style --foreground 7 "9. Video Tools & Software."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -352,7 +339,7 @@ process_choice() {
         sudo pacman -S --noconfirm --needed libreoffice-fresh hunspell hunspell-en_us ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts libreoffice-extension-texmaths libreoffice-extension-writer2latex
         install_aur_packages ttf-gentium-basic hsqldb2-java libreoffice-extension-languagetool
         echo
-        gum style --foreground 35 "##########  Done, Please Reboot !  ##########"
+        gum style --foreground 7 "##########  Done, Please Reboot !  ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -368,19 +355,19 @@ process_choice() {
         "Chromium" "Ungoogled Chromium Browser" OFF \
         "Tor" "Tor Browser Bundle" OFF
         echo
-        gum style --foreground 35 "##########  Done ! ##########"
+        gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
         ;;
       3)
-        gum style --foreground 35 "########## Installing Recommended Tools ##########"
+        gum style --foreground 7 "########## Installing Recommended Tools ##########"
         echo
         gum style --foreground 200 "Be patient while this installs the many recommended packages..."
         echo
         sleep 6
         install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo hardinfo2 arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
         echo
-        gum style --foreground 35 "##########  Done ! ##########"
+        gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -399,7 +386,7 @@ process_choice() {
         "Eclipse" "Java bytecode compiler" OFF \
         "IntelliJ" "IntelliJ IDEA IDE for Java" OFF
         echo
-        gum style --foreground 35 "##########  Done ! ##########"
+        gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -411,7 +398,7 @@ process_choice() {
         "GoDot" "Cross-platform 3D game engine" OFF \
         "Unreal" "Advanced 3D Game-Engine" OFF
         echo
-        gum style --foreground 35 "##########  Done ! ##########"
+        gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -424,7 +411,7 @@ process_choice() {
         "Spotube" " An Open source Spotify client" OFF \
         "Cider" "An open source Apple Music client" OFF
         echo
-        gum style --foreground 35 "##########  Done ! ##########"
+        gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -439,7 +426,7 @@ process_choice() {
         "Element" "Matrix collaboration client" OFF \
         "SimpleX" "A private & encrypted messenger" OFF
         echo
-        gum style --foreground 35 "##########  Done ! ##########"
+        gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -448,7 +435,7 @@ process_choice() {
         "VirtManager" "Manage QEMU virtual machines" OFF \
         "VirtualBox" "Powerful x86 virtualization" OFF
         echo
-        gum style --foreground 35 "########## Done! Please Reboot. ##########"
+        gum style --foreground 7 "########## Done! Please Reboot. ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -462,7 +449,7 @@ process_choice() {
         "MakeMKV" "DVD and Blu-ray to MKV converter" OFF \
         "Avidemux" "Graphical tool to edit video" OFF
         echo
-        gum style --foreground 35 "##########  Done ! ##########"
+        gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
         clear && exec "$0"
         ;;
@@ -479,8 +466,6 @@ process_choice() {
 }
 
 # Main execution
-check_dependency gum
-check_dependency dialog
 display_header
 display_options
 process_choice

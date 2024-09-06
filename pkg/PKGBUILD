@@ -7,7 +7,7 @@ pkgdesc='XeroLinux Post Installation CLI Toolkit'
 arch=("any")
 license=('GPL')
 makedepends=('rustup')
-depends=('wget' 'curl' 'git' 'inxi' 'gum' 'dialog' 'figlet')
+depends=('wget' 'curl' 'git' 'inxi' 'gum' 'dialog' 'figlet' 'archiso' 'mkinitcpio-archiso')
 
 pkgver() {
 	cd ..

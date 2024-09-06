@@ -9,37 +9,24 @@
 # Set window title
 echo -ne "\033]0;Fixes & Tweaks\007"
 
-# Function to check and install dependencies
-check_dependency() {
-  local dependency="$1"
-  if ! pacman --query "$dependency"; then
-	echo >&2 "$dependency is not installed. Installing..."
-	sudo pacman -S --noconfirm $dependency
-  fi
-  if ! pacman --query "$dependency"; then
-	echo >&2 "failed to install $dependency. Exiting..."
-	exit 1
-  fi
-}
-
 # Function to display the menu
 display_menu() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "System Fixes & Tweaks"
   echo
-  gum style --foreground 33 "Hello $USER, what would you like to do today?"
+  gum style --foreground 141 "Hello $USER, what would you like to do today?"
   echo
-  gum style --foreground 35 "1.  Install & Activate Firewalld."
-  gum style --foreground 35 "2.  Clear Pacman Cache (Free Space)."
-  gum style --foreground 35 "3.  Restart PipeWire/PipeWire-Pulse."
-  gum style --foreground 35 "4.  Unlock Pacman DB (In case of DB error)."
-  gum style --foreground 35 "5.  Activate v4l2loopback for OBS-VirtualCam."
-  gum style --foreground 35 "6.  Change Autologin Session X11/Wayland (SDDM)."
+  gum style --foreground 7 "1.  Install & Activate Firewalld."
+  gum style --foreground 7 "2.  Clear Pacman Cache (Free Space)."
+  gum style --foreground 7 "3.  Restart PipeWire/PipeWire-Pulse."
+  gum style --foreground 7 "4.  Unlock Pacman DB (In case of DB error)."
+  gum style --foreground 7 "5.  Activate v4l2loopback for OBS-VirtualCam."
+  gum style --foreground 7 "6.  Change Autologin Session X11/Wayland (SDDM)."
   echo
-  gum style --foreground 227 "w. WayDroid Installation Guide."
-  gum style --foreground 196 "f. Frogging Family/TKG nVidia-All Tool (Advanced)."
-  gum style --foreground 159 "m. Update Arch Mirrorlist, for faster download speeds."
-  gum style --foreground 46 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
+  gum style --foreground 39 "a.  Build Updated Arch ISO."
+  gum style --foreground 40 "w.  WayDroid Installation Guide."
+  gum style --foreground 172 "m.  Update Arch Mirrorlist, for faster download speeds."
+  gum style --foreground 111 "g.  Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -81,7 +68,7 @@ trap 'handle_interrupt' SIGINT
 install_firewalld() {
   sudo pacman -S --needed --noconfirm firewalld python-pyqt5 python-capng
   sudo systemctl enable --now firewalld.service
-  gum style --foreground 35 "##########  All Done, Enjoy!  ##########"
+  gum style --foreground 7 "##########  All Done, Enjoy!  ##########"
   sleep 3
   exec "$0"
 }
@@ -93,12 +80,12 @@ clear_pacman_cache() {
 }
 
 restart_pipewire() {
-  gum style --foreground 35 "##########  Restarting PipeWire   ##########"
+  gum style --foreground 7 "##########  Restarting PipeWire   ##########"
   sleep 1.5
   systemctl --user restart pipewire
   systemctl --user restart pipewire-pulse
   sleep 1.5
-  gum style --foreground 35 "##########  All Done, Try now  ##########"
+  gum style --foreground 7 "##########  All Done, Try now  ##########"
   sleep 2
   exec "$0"
 }
@@ -110,12 +97,12 @@ unlock_pacman_db() {
 }
 
 activate_v4l2loopback() {
-  gum style --foreground 35 "##########    Setting up v4l2loopback   ##########"
+  gum style --foreground 7 "##########    Setting up v4l2loopback   ##########"
   sudo pacman -S --noconfirm --needed v4l2loopback-dkms v4l2loopback-utils
   echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null
   echo 'options v4l2loopback exclusive_caps=1 card_label="OBS Virtual Camera"' | sudo tee /etc/modprobe.d/v4l2loopback.conf > /dev/null
   echo
-  gum style --foreground 35 "Please reboot your system for changes to take effect."
+  gum style --foreground 7 "Please reboot your system for changes to take effect."
   sleep 2
   exec "$0"
 }
@@ -159,20 +146,31 @@ change_sddm_autologin() {
   exec "$0"
 }
 
+build_archiso() {
+  gum style --foreground 7 "##########  Arch ISO Builder   ##########"
+  sleep 3
+  echo
+  echo "Step 1 - Creating Build Environment..."
+  mkdir ~/ArchWork && mkdir ~/ArchOut
+  sleep 3
+  echo
+  echo "Step 2 - Starting Long Build Process..."
+  echo
+  sudo mkarchiso -v -w ~/ArchWork -o ~/ArchOut /usr/share/archiso/configs/releng
+  echo
+  echo "Step 3 - Cleaning up...."
+  echo
+  sudo rm -rf ~/ArchWork/
+  echo
+  gum style --foreground 7 "##########  Done ! Check ~/ArchOut  ##########"
+  sleep 6
+  exec "$0"
+}
+
 waydroid_guide() {
   gum style --foreground 36 "Opening Guide..."
   sleep 3
   xdg-open "https://xerolinux.xyz/posts/waydroid-guide/" > /dev/null 2>&1
-  sleep 3
-  exec "$0"
-}
-
-tkg_script() {
-  gum style --foreground 36 "Cloning & Running Script..."
-  sleep 3
-  cd ~ && git clone https://github.com/Frogging-Family/nvidia-all
-  cd ~/nvidia-all/ && makepkg -rsi
-  cd ~ && sudo rm -rf ~/nvidia-all/
   sleep 3
   exec "$0"
 }
@@ -227,7 +225,6 @@ fix_gpg_keyring() {
 }
 
 main() {
-  check_dependency gum
   while :; do
     display_menu
     echo
@@ -241,8 +238,8 @@ main() {
       4) unlock_pacman_db ;;
       5) activate_v4l2loopback ;;
       6) change_sddm_autologin ;;
+      a) build_archiso ;;
       w) waydroid_guide ;;
-      f) tkg_script ;;
       m) update_mirrorlist ;;
       g) fix_gpg_keyring ;;
       q) clear && exec xero-cli -m ;;

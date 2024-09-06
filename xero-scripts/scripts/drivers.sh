@@ -9,37 +9,23 @@
 # Set window title
 echo -ne "\033]0;Device Drivers\007"
 
-# Function to check and install dependencies
-check_dependency() {
-  local dependency="$1"
-  if ! pacman --query "$dependency"; then
-	echo >&2 "$dependency is not installed. Installing..."
-	sudo pacman -S --noconfirm $dependency
-  fi
-  if ! pacman --query "$dependency"; then
-	echo >&2 "failed to install $dependency. Exiting..."
-	exit 1
-  fi
-}
-
 # Function to display header
 display_header() {
   clear
   gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "Device Drivers"
   echo
-  gum style --foreground 33 "Hello $USER, please select what drivers to install. Press 'i' for the Wiki."
+  gum style --foreground 141 "Hello $USER, please select what drivers to install. Press 'i' for the Wiki."
   echo
 }
 
 # Function to display options
 display_options() {
-  gum style --foreground 130 "1. GPU Drivers (Prompt)."
-  echo
-  gum style --foreground 35 "2. Printer Drivers and Tools."
-  gum style --foreground 35 "3. Samba Tools (XeroLinux Repo)."
-  gum style --foreground 35 "4. Scanner Drivers (XeroLinux Repo)."
-  gum style --foreground 35 "5. Setup Tailscale Incl. fix for XeroLinux."
-  gum style --foreground 35 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
+  gum style --foreground 85 "1. GPU Drivers (Prompt)."
+  gum style --foreground 7 "2. Printer Drivers and Tools."
+  gum style --foreground 7 "3. Samba Tools (XeroLinux Repo)."
+  gum style --foreground 7 "4. Scanner Drivers (XeroLinux Repo)."
+  gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
+  gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
   gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
@@ -174,50 +160,50 @@ process_choice() {
         clear && exec "$0"
         ;;
       2)
-        gum style --foreground 35 "Installing Printer Drivers and Tools..."
+        gum style --foreground 7 "Installing Printer Drivers and Tools..."
         sleep 2
         echo
         sudo pacman -S --needed --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
         sudo systemctl enable --now avahi-daemon cups.socket
         sudo groupadd lp && sudo groupadd cups and sudo usermod -aG sys,lp,cups "$(whoami)"
-        gum style --foreground 35 "Printer Drivers and Tools installation complete!"
+        gum style --foreground 7 "Printer Drivers and Tools installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       3)
-        gum style --foreground 35 "Installing Samba Tools..."
+        gum style --foreground 7 "Installing Samba Tools..."
         sleep 2
         echo
         sudo pacman -S --needed samba-support
-        gum style --foreground 35 "Samba Tools installation complete!"
+        gum style --foreground 7 "Samba Tools installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       4)
-        gum style --foreground 35 "Installing Scanner Drivers..."
+        gum style --foreground 7 "Installing Scanner Drivers..."
         sleep 2
         echo
         sudo pacman -S --noconfirm --needed scanner-support
-        gum style --foreground 35 "Scanner Drivers installation complete!"
+        gum style --foreground 7 "Scanner Drivers installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 35 "Installing Tailscale..."
+        gum style --foreground 7 "Installing Tailscale..."
         sleep 2
         echo
         bash -c "$(curl -fsSL https://raw.githubusercontent.com/xerolinux/xero-fixes/main/conf/install.sh)"
         echo
-        gum style --foreground 35 "Tailscale installation complete!"
+        gum style --foreground 7 "Tailscale installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       6)
-        gum style --foreground 35 "Installing DeckLink & StreamDeck Drivers/Tools..."
+        gum style --foreground 7 "Installing DeckLink & StreamDeck Drivers/Tools..."
         sleep 2
         echo
         package_selection_dialog "Decklink DeckMaster StreamDeckUI" "install_aur_packages"
-        gum style --foreground 35 "DeckLink & StreamDeck Drivers/Tools installation complete!"
+        gum style --foreground 7 "DeckLink & StreamDeck Drivers/Tools installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
@@ -234,7 +220,6 @@ process_choice() {
 }
 
 # Main execution
-check_dependency gum
 display_header
 display_options
 process_choice
