@@ -332,7 +332,7 @@ process_choice() {
 
     case $CHOICE in
       i)
-        xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#recommended-packages" > /dev/null 2>&1
+        xdg-open "https://wiki.xerolinux.xyz/xlapit/#recommended-packages" > /dev/null 2>&1
         clear && exec "$0"
         ;;
       1)

@@ -64,7 +64,7 @@ trap 'handle_interrupt' SIGINT
 open_wiki() {
   gum style --foreground 33 "Opening Wiki..."
   sleep 3
-  xdg-open "https://github.com/xerolinux/xlapit-cli/wiki/Toolkit-Features#system-setup" > /dev/null 2>&1
+  xdg-open "https://wiki.xerolinux.xyz/xlapit/#system-setup" > /dev/null 2>&1
   clear && exec "$0"
 }
 
