@@ -1,6 +1,6 @@
 ### What it is
 
-This toolkit aims to be an all-in-one solution for post-installation, expediting your Arch setup. It's offered as *use at your own risk* type of thing, without much support. You will have to rely on yourself and your own knowledge and ability to do research your setup. For more detailed info visit the [**Wiki**](https://github.com/xerolinux/xlapit-cli/wiki).
+This toolkit aims to be an all-in-one solution for post-installation, expediting your Arch setup. It's offered as *use at your own risk* type of thing, without much support. You will have to rely on yourself and your own knowledge and ability to do research your setup. For more detailed info visit the [**Wiki**](https://wiki.xerolinux.xyz/xlapit/).
 
 ![XLAPiT](https://i.imgur.com/JuWceYE.png)
 
@@ -23,18 +23,6 @@ It will prompt you before injecting as in adding the XeroLinux repository, where
 ### Acessing Toolkit
 
 You can access toolkit by either typing `xero-cli -m` in terminal or from the application menu via the **XeroLinux Post Installation Toolkit** shortcut.. Just close terminal window once done using it lol ;)
-
-### Toolkit Notes
-
-It's crucial to clarify that this toolkit isn't intended for custom Arch-Based distros. While some elements might function, I can't ensure seamless compatibility due to potential conflicts arising from differing tweaks and repositories. To ensure optimal performance, it's strongly recommended for use on a clean Pure-Arch install executed through the **ArchInstall** script.
-
-### GPU Driver Notes
-
-When it comes to **GPU Drivers**, toolkit covers most common setups. It currently does **NOT** cover Hybrid ones. For those you will have to consult online documentation, sorry. Anyway, by answering the prompts correctly you will have your system(s) up and running in no time at all. Even Kernel modules will load for **nVidia**. If you have any issues let me know here...
-
-### 3rd Party Kernel Support
-
-No 3rd party Kernels are provided by this toolkit. So if you install any, please remember to include their headers for seamless functionality of anything that relies on *DKMS* (Dynamic Kernel Modules).
 
 ### How to Contribute
 
