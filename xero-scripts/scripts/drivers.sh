@@ -99,6 +99,12 @@ prompt_user() {
           echo "Invalid selection."
           return
         fi
+        # Insert these commands before CUDA installation
+        sudo sed -i '/^MODULES=(/ s/)$/ nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+        sudo systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service nvidia-powerd.service
+        echo -e 'options nvidia NVreg_UsePageAttributeTable=1 NVreg_InitializeSystemMemoryAllocations=0 NVreg_DynamicPowerManagement=0x02' | sudo tee -a /etc/modprobe.d/nvidia.conf
+        echo -e 'options nvidia_drm modeset=1 fbdev=1' | sudo tee -a /etc/modprobe.d/nvidia.conf && sudo mkinitcpio -P
+        echo
         read -rp "Do you want to install CUDA for Machine Learning? (y/n): " cuda
         if [[ $cuda =~ ^[Yy](es)?$ ]]; then
           sudo pacman -S --needed --noconfirm cuda
