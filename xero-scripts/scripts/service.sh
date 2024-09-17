@@ -18,13 +18,13 @@ display_menu() {
   echo
   gum style --foreground 7 "1.  Install & Activate Firewalld."
   gum style --foreground 7 "2.  Clear Pacman Cache (Free Space)."
-  gum style --foreground 7 "3.  Restart PipeWire/PipeWire-Pulse."
-  gum style --foreground 7 "4.  Unlock Pacman DB (In case of DB error)."
-  gum style --foreground 7 "5.  Activate v4l2loopback for OBS-VirtualCam."
-  gum style --foreground 7 "6.  Change Autologin Session X11/Wayland (SDDM)."
+  gum style --foreground 7 "3.  Unlock Pacman DB (In case of DB error)."
+  gum style --foreground 7 "4.  Activate v4l2loopback for OBS-VirtualCam."
+  gum style --foreground 7 "5.  Change Autologin Session X11/Wayland (SDDM)."
   echo
   gum style --foreground 39 "a.  Build Updated Arch ISO."
-  gum style --foreground 40 "w.  WayDroid Installation Guide."
+  gum style --foreground 196 "r.  Reset Distro back to Factory."
+  gum style --foreground 40 "w.  WayDroid Installation Guide (Link)."
   gum style --foreground 172 "m.  Update Arch Mirrorlist, for faster download speeds."
   gum style --foreground 111 "g.  Fix Arch GnuPG Keyring in case of pkg signature issues."
   echo
@@ -75,17 +75,6 @@ install_firewalld() {
 
 clear_pacman_cache() {
   sudo pacman -Scc
-  sleep 2
-  exec "$0"
-}
-
-restart_pipewire() {
-  gum style --foreground 7 "##########  Restarting PipeWire   ##########"
-  sleep 1.5
-  systemctl --user restart pipewire
-  systemctl --user restart pipewire-pulse
-  sleep 1.5
-  gum style --foreground 7 "##########  All Done, Try now  ##########"
   sleep 2
   exec "$0"
 }
@@ -166,6 +155,24 @@ build_archiso() {
   exec "$0"
 }
 
+reset_everything() {
+  gum style --foreground 7 "##########  System Reset  ##########"
+  sleep 3
+  cp -Rf ~/.config ~/.config-backup-$(date +%Y.%m.%d-%H.%M) && cp -aT /etc/skel/. $HOME/
+  # Countdown from 10 to 1
+  for i in {15..1}; do
+      dialog --infobox "Rebooting in $i seconds..." 3 30
+      sleep 1
+  done
+
+  # Reboot after the countdown
+  reboot
+  sleep 3
+  gum style --foreground 7 "##########  All Done !  ##########"
+  sleep 2
+  exec "$0"
+}
+
 waydroid_guide() {
   gum style --foreground 36 "Opening Guide..."
   sleep 3
@@ -233,11 +240,11 @@ main() {
     case $CHOICE in
       1) install_firewalld ;;
       2) clear_pacman_cache ;;
-      3) restart_pipewire ;;
-      4) unlock_pacman_db ;;
-      5) activate_v4l2loopback ;;
-      6) change_sddm_autologin ;;
+      3) unlock_pacman_db ;;
+      4) activate_v4l2loopback ;;
+      5) change_sddm_autologin ;;
       a) build_archiso ;;
+      r) reset_everything ;;
       w) waydroid_guide ;;
       m) update_mirrorlist ;;
       g) fix_gpg_keyring ;;
