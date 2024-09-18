@@ -139,7 +139,7 @@ package_selection_dialog() {
                     ;;
                 Hugo)
                     clear
-                    install_aur_packages gohugo-extended-bin
+                    install_pacman_packages hugo
                     ;;
                 Github)
                     clear
