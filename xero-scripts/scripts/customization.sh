@@ -245,9 +245,18 @@ process_choice() {
         echo
         cd ~ && git clone https://github.com/xerolinux/xero-layan-git.git
         cd ~/xero-layan-git/ && sh install.sh
+        echo
         gum style --foreground 200 "XeroLinux KDE Rice setup complete!"
         sleep 3
-        clear && exec "$0"
+        # Countdown from 15 to 1
+        for i in {15..1}; do
+            dialog --infobox "Rebooting in $i seconds..." 3 30
+            sleep 1
+        done
+
+        # Reboot after the countdown
+        reboot
+        sleep 3
         ;;
       u)
         gum style --foreground 200 "Applying Layan GTK4 Patch/Updating..."

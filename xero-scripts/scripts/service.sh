@@ -23,7 +23,7 @@ display_menu() {
   gum style --foreground 7 "5.  Change Autologin Session X11/Wayland (SDDM)."
   echo
   gum style --foreground 39 "a.  Build Updated Arch ISO."
-  gum style --foreground 196 "r.  Reset Distro back to Factory."
+  gum style --foreground 196 "r.  Reset Settings back to Factory."
   gum style --foreground 40 "w.  WayDroid Installation Guide (Link)."
   gum style --foreground 172 "m.  Update Arch Mirrorlist, for faster download speeds."
   gum style --foreground 111 "g.  Fix Arch GnuPG Keyring in case of pkg signature issues."
@@ -156,10 +156,17 @@ build_archiso() {
 }
 
 reset_everything() {
-  gum style --foreground 7 "##########  System Reset  ##########"
-  sleep 3
-  cp -Rf ~/.config ~/.config-backup-$(date +%Y.%m.%d-%H.%M) && cp -aT /etc/skel/. $HOME/
-  # Countdown from 10 to 1
+  gum style --foreground 69 "##########  Settings Reset Tool  ##########"
+  echo
+
+  if gum confirm "Are you using the XeroLinux Distro ?"; then
+    cp -Rf ~/.config ~/.config-backup-$(date +%Y.%m.%d-%H.%M) && cp -aT /etc/skel/. $HOME/
+  else
+    cp -Rf ~/.config ~/.config-backup-$(date +%Y.%m.%d-%H.%M) && rm -rf $HOME/.config
+  fi
+
+  echo
+  # Countdown from 15 to 1
   for i in {15..1}; do
       dialog --infobox "Rebooting in $i seconds..." 3 30
       sleep 1
@@ -168,9 +175,6 @@ reset_everything() {
   # Reboot after the countdown
   reboot
   sleep 3
-  gum style --foreground 7 "##########  All Done !  ##########"
-  sleep 2
-  exec "$0"
 }
 
 waydroid_guide() {
