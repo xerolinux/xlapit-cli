@@ -141,9 +141,9 @@ install_gui_package_managers() {
     "BauhGUI" "Bauh GUI Package Manager" off 3>&1 1>&2 2>&3)
   for PACKAGE in $PACKAGES; do
     case $PACKAGE in
-      "OctoPi") $AUR_HELPER -S --needed octopi alpm_octopi_utils ;;
-      "PacSeek") $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
-      "BauhGUI") $AUR_HELPER -S --needed bauh ;;
+      "OctoPi") clear && $AUR_HELPER -S --needed octopi alpm_octopi_utils ;;
+      "PacSeek") clear && $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
+      "BauhGUI") clear && $AUR_HELPER -S --needed bauh ;;
     esac
   done
   gum style --foreground 7 "3rd-Party GUI Package Managers installation complete!"
