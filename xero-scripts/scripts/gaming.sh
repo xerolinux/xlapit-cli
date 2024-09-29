@@ -49,8 +49,6 @@ display_options() {
   gum style --foreground 7 "4. Lutris."
   gum style --foreground 7 "5. Bottles."
   gum style --foreground 7 "6. ProtonUp-QT."
-  echo
-  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
@@ -158,7 +156,7 @@ install_gaming_packages() {
 process_choice() {
   while :; do
     echo
-    read -rp "Enter your choice: " CHOICE
+    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
     echo
 
     case $CHOICE in

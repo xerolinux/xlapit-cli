@@ -26,8 +26,6 @@ display_options() {
   gum style --foreground 7 "4. Scanner Drivers (XeroLinux Repo)."
   gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
-  echo
-  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
@@ -150,7 +148,7 @@ package_selection_dialog() {
 process_choice() {
   while :; do
     echo
-    read -rp "Enter your choice: " CHOICE
+    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
     echo
 
     case $CHOICE in

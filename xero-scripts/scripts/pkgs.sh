@@ -28,8 +28,6 @@ display_options() {
   gum style --foreground 7 "7. Social & Chat Tools."
   gum style --foreground 7 "8. Virtualization Tools."
   gum style --foreground 7 "9. Video Tools & Software."
-  echo
-  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
@@ -50,7 +48,7 @@ handle_error() {
 handle_interrupt() {
   echo
   gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
-  read -rp "Enter your choice: " choice
+  read -rp "Enter your choice : " choice
   case $choice in
     e|E) exit 1 ;;
     r|R) exec "$0" ;;
@@ -327,7 +325,7 @@ package_selection_dialog() {
 process_choice() {
   while :; do
     echo
-    read -rp "Enter your choice: " CHOICE
+    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
     echo
 
     case $CHOICE in

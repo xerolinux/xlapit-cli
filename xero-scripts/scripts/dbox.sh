@@ -45,8 +45,6 @@ display_options() {
   gum style --foreground 7 "5. Pull Latest Tumbleweed Image."
   echo
   gum style --foreground 196 "6. Update all Containers (Might take a while)."
-  echo
-  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
@@ -86,7 +84,7 @@ trap 'handle_interrupt' SIGINT
 process_choice() {
   while :; do
     echo
-    read -rp "Enter your choice: " CHOICE
+    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
     echo
 
     case $CHOICE in

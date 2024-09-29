@@ -29,15 +29,13 @@ display_options() {
   echo
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro)."
-  echo
-  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
 handle_error() {
   echo
   gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
-  read -rp "Enter your choice: " choice
+  read -rp "Enter your choice : " choice
   case $choice in
     r|R) exec "$0" ;;
     e|E) exit 0 ;;
@@ -70,7 +68,7 @@ trap 'handle_interrupt' SIGINT
 process_choice() {
   while :; do
     echo
-    read -rp "Enter your choice: " CHOICE
+    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
     echo
 
     case $CHOICE in
