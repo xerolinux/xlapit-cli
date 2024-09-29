@@ -22,8 +22,6 @@ display_menu() {
   gum style --foreground 7 "2. Activate Flathub Repositories (Vanilla Arch Only)."
   gum style --foreground 7 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
   gum style --foreground 7 "4. Install 3rd-Party GUI/TUI Package Manager (At Your Own Risk)."
-  echo
-  gum style --foreground 33 "Type your selection or 'q' to return to main menu."
 }
 
 # Function to handle errors and prompt user
@@ -191,7 +189,7 @@ main() {
   while :; do
     display_menu
     echo
-    read -rp "Enter your choice: " CHOICE
+    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
     echo
 
     case $CHOICE in
