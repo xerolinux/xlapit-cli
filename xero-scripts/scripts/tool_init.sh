@@ -21,7 +21,9 @@ display_menu() {
   gum style --foreground 7 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
   gum style --foreground 7 "2. Activate Flathub Repositories (Vanilla Arch Only)."
   gum style --foreground 7 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
-  gum style --foreground 7 "4. Install 3rd-Party GUI/TUI Package Manager (At Your Own Risk)."
+  gum style --foreground 7 "4. Install 3rd-Party GUI/TUI Package Manager (Pamac not included)."
+  echo
+  gum style --foreground 196 "k. Install CachyOS Kernel Manager (At Your Own Risk)."
 }
 
 # Function to handle errors and prompt user
@@ -149,6 +151,20 @@ install_gui_package_managers() {
   exec "$0"
 }
 
+install_kernel_manager() {
+  gum style --foreground 7 "Building & Installing Kernel Manager..."
+  sleep 2
+  echo
+  sudo pacman -Sy --noconfirm --needed base-devel cmake pkg-config make qt6-base qt6-tools polkit-qt6 python
+  cd ~ && git clone https://github.com/CachyOS/kernel-manager.git && cd kernel-manager
+  sh configure.sh --prefix=/usr && sh build.sh && cd build/ && cmake .. && make
+  sudo make install
+  echo
+  gum style --foreground 7 "All Done ! Run it from App Menu/Launcher."
+  sleep 3
+  exec "$0"
+}
+
 # Function to update system
 update_system() {
     echo "Select an update option:"
@@ -198,6 +214,7 @@ main() {
       2) activate_flathub_repositories ;;
       3) enable_multithreaded_compilation ;;
       4) install_gui_package_managers ;;
+      k) install_kernel_manager ;;
       u) update_system ;;
       q) clear && exec xero-cli -m ;;
       *)
