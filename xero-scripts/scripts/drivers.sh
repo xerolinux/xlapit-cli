@@ -26,6 +26,8 @@ display_options() {
   gum style --foreground 7 "4. Scanner Drivers (XeroLinux Repo)."
   gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
+  echo
+  gum style --foreground 196 "b. Install CachyOS Bore Kernel (Chaotic-AUR)."
 }
 
 # Function to handle errors and prompt user
@@ -156,6 +158,7 @@ process_choice() {
         gum style --foreground 33 "Opening Wiki..."
         sleep 3
         xdg-open "https://wiki.xerolinux.xyz/xlapit/#system-drivers" > /dev/null 2>&1
+        echo
         clear && exec "$0"
         ;;
       1)
@@ -170,6 +173,7 @@ process_choice() {
         sudo pacman -S --needed --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
         sudo systemctl enable --now avahi-daemon cups.socket
         sudo groupadd lp && sudo groupadd cups and sudo usermod -aG sys,lp,cups "$(whoami)"
+        echo
         gum style --foreground 7 "Printer Drivers and Tools installation complete!"
         sleep 3
         clear && exec "$0"
@@ -179,6 +183,7 @@ process_choice() {
         sleep 2
         echo
         sudo pacman -S --needed samba-support
+        echo
         gum style --foreground 7 "Samba Tools installation complete!"
         sleep 3
         clear && exec "$0"
@@ -188,6 +193,7 @@ process_choice() {
         sleep 2
         echo
         sudo pacman -S --noconfirm --needed scanner-support
+        echo
         gum style --foreground 7 "Scanner Drivers installation complete!"
         sleep 3
         clear && exec "$0"
@@ -207,8 +213,19 @@ process_choice() {
         sleep 2
         echo
         package_selection_dialog "Decklink DeckMaster StreamDeckUI" "install_aur_packages"
+        echo
         gum style --foreground 7 "DeckLink & StreamDeck Drivers/Tools installation complete!"
         sleep 3
+        clear && exec "$0"
+        ;;
+      b)
+        gum style --foreground 7 "Installing CachyOS Bore Kernel..."
+        sleep 2
+        echo
+        sudo pacman -S --noconfirm --needed linux-cachyos-bore linux-cachyos-bore-headers
+        echo
+        gum style --foreground 7 "Bore Kernel installation complete. Please Reboot & Select from Grub!"
+        sleep 6
         clear && exec "$0"
         ;;
       q)
