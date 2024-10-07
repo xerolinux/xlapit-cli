@@ -275,9 +275,10 @@ package_selection_dialog() {
                     sudo pacman -Rdd --noconfirm iptables
                     install_pacman_packages virt-manager-meta vde2 ebtables dmidecode
                     echo -e "options kvm-intel nested=1" | sudo tee -a /etc/modprobe.d/kvm-intel.conf
-                    sudo virsh net-define /etc/libvirt/qemu/networks/default.xml
-                    sudo virsh net-autostart default
                     sudo systemctl restart libvirtd.service
+                    echo
+                    echo "Please reboot before using..."
+                    sleep 5
                     ;;
                 VirtualBox)
                     clear
