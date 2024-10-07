@@ -27,6 +27,7 @@ display_menu() {
     gum style --foreground 7 "3. Unlock Pacman DB (In case of DB error)."
     gum style --foreground 7 "4. Activate v4l2loopback for OBS-VirtualCam."
     gum style --foreground 7 "5. Change Autologin Session X11/Wayland (SDDM)."
+    gum style --foreground 7 "6. Unlock Gnome's Wayland Session (nVidia/GDM)."
     echo
     gum style --foreground 39 "a. Build Updated Arch ISO."
     gum style --foreground 196 "r. Reset Settings back to Factory."
@@ -93,6 +94,17 @@ clear_pacman_cache() {
 unlock_pacman_db() {
     echo
     sudo rm /var/lib/pacman/db.lck || handle_error
+    sleep 2
+    main
+}
+
+unlock_nvidia_wayland() {
+    echo
+    gum style --foreground 7 "########## Unlocking Wayland Session ##########"
+    echo
+    sudo ln -s /dev/null /etc/udev/rules.d/61-gdm.rules
+    echo
+    gum style --foreground 7 "Please reboot your system for changes to take effect."
     sleep 2
     main
 }
@@ -247,6 +259,7 @@ main() {
            3) unlock_pacman_db ;;
            4) activate_v4l2loopback ;;
            5) change_sddm_autologin ;;
+           6) unlock_nvidia_wayland ;;
            a) build_archiso ;;
            r) reset_everything ;;
            w) waydroid_guide ;;
