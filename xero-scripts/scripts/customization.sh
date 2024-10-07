@@ -21,7 +21,7 @@ display_header() {
 # Function to display options
 display_options() {
   gum style --foreground 7 "1. Setup Fastfetch."
-  gum style --foreground 7 "2. Setup Fish Shell."
+  gum style --foreground 7 "2. Setup ble.sh for Bash."
   gum style --foreground 7 "3. Setup Oh-My-Posh (Bash)."
   gum style --foreground 7 "4. Setup ZSH All in one w/OMP."
   gum style --foreground 7 "5. Setup Gnome Extenstion Tools."
@@ -127,13 +127,14 @@ process_choice() {
         clear && exec "$0"
         ;;
       2)
-        gum style --foreground 7 "Setting up Fish Shell..."
+        gum style --foreground 7 "Setting up ble.sh for Bash..."
         sleep 2
         echo
-        sudo pacman -S --needed --noconfirm fish fastfetch
-        fastfetch --gen-config
-        sudo chsh $USER -s /bin/fish
-        gum style --foreground 7 "Fish shell setup complete! Log out and back in."
+        curl -L https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar xJf -
+        bash ble-nightly/ble.sh --install ~/.local/share
+        echo 'source ~/.local/share/blesh/ble.sh' >> ~/.bashrc
+        echo
+        gum style --foreground 7 "Setup complete! Log out and back in."
         sleep 3
         clear && exec "$0"
         ;;
