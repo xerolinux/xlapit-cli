@@ -272,13 +272,15 @@ package_selection_dialog() {
                     ;;
                 VirtManager)
                     clear
-                    sudo pacman -Rdd --noconfirm iptables gnu-netcat
-                    install_pacman_packages virt-manager-meta
+                    for pkg in iptables gnu-netcat; do
+                        if pacman -Q $pkg &>/dev/null; then
+                            sudo pacman -Rdd --noconfirm $pkg
+                        fi
+                    done;
+                    install_pacman_packages virt-manager-meta openbsd-netcat
                     echo -e "options kvm-intel nested=1" | sudo tee -a /etc/modprobe.d/kvm-intel.conf
                     sudo systemctl restart libvirtd.service
                     echo
-                    echo "Please reboot before using..."
-                    sleep 5
                     ;;
                 VirtualBox)
                     clear
