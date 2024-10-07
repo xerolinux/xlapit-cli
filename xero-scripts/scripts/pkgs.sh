@@ -272,8 +272,8 @@ package_selection_dialog() {
                     ;;
                 VirtManager)
                     clear
-                    sudo pacman -Rdd --noconfirm iptables
-                    install_pacman_packages virt-manager-meta vde2 ebtables dmidecode
+                    sudo pacman -Rdd --noconfirm iptables gnu-netcat
+                    install_pacman_packages virt-manager-meta
                     echo -e "options kvm-intel nested=1" | sudo tee -a /etc/modprobe.d/kvm-intel.conf
                     sudo systemctl restart libvirtd.service
                     echo
