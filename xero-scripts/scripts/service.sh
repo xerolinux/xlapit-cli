@@ -30,7 +30,7 @@ display_menu() {
     gum style --foreground 7 "6. Unlock Gnome's Wayland Session (nVidia/GDM)."
     echo
     gum style --foreground 39 "a. Build Updated Arch ISO."
-    gum style --foreground 196 "r. Reset Settings back to Factory."
+    gum style --foreground 196 "r. Reset Xero Layout back to Stock"
     gum style --foreground 40 "w. WayDroid Installation Guide (Link)."
     gum style --foreground 172 "m. Update Arch Mirrorlist, for faster download speeds."
     gum style --foreground 111 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."

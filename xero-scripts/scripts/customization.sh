@@ -27,6 +27,7 @@ display_options() {
   gum style --foreground 7 "5. Setup Gnome Extenstion Tools."
   gum style --foreground 7 "6. Top 3 Hyprland Advanced Dot Files."
   echo
+  gum style --foreground 156 "s. Apply XeroDark SDDM Theme Fix."
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro)."
 }
@@ -237,6 +238,17 @@ process_choice() {
         gum style --foreground 7 "Hyprland Dots setup complete!"
         sleep 3
         clear && exec "$0"
+        ;;
+      s)
+        gum style --foreground 200 "Applying Xero SDDM Fix..."
+        sleep 2
+        echo
+        sudo rm /usr/share/sddm/themes/XeroDark/Main.qml
+        sleep 2
+        cd /usr/share/sddm/themes/ && sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Main.qml
+        echo
+        gum style --foreground 200 "Xero SDDM fix applied !"
+        sleep 3
         ;;
       x)
         gum style --foreground 200 "Setting up XeroLinux KDE Rice..."
