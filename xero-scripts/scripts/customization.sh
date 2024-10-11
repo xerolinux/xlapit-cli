@@ -244,8 +244,15 @@ process_choice() {
         sleep 2
         echo
         sudo rm /usr/share/sddm/themes/XeroDark/Main.qml
+        sudo rm /usr/share/sddm/themes/XeroDark/KeyboardButton.qml
+        sudo rm /usr/share/sddm/themes/XeroDark/Login.qml
+        sudo rm /usr/share/sddm/themes/XeroDark/SessionButton.qml
         sleep 2
-        cd /usr/share/sddm/themes/XeroDark/ && sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Main.qml
+        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Main.qml -O /usr/share/sddm/themes/XeroDark/Main.qml > /dev/null 2>&1
+        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/KeyboardButton.qml -O /usr/share/sddm/themes/XeroDark/KeyboardButton.qml > /dev/null 2>&1
+        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Login.qml -O /usr/share/sddm/themes/XeroDark/Login.qml > /dev/null 2>&1
+        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/SessionButton.qml -O /usr/share/sddm/themes/XeroDark/SessionButton.qml > /dev/null 2>&1
+        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Messages.sh -O /usr/share/sddm/themes/XeroDark/Messages.sh > /dev/null 2>&1
         echo
         gum style --foreground 200 "Xero SDDM fix applied !"
         sleep 3
