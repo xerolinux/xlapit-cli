@@ -245,10 +245,11 @@ process_choice() {
         echo
         sudo rm /usr/share/sddm/themes/XeroDark/Main.qml
         sleep 2
-        cd /usr/share/sddm/themes/ && sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Main.qml
+        cd /usr/share/sddm/themes/XeroDark/ && sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Main.qml
         echo
         gum style --foreground 200 "Xero SDDM fix applied !"
         sleep 3
+        clear && exec "$0"
         ;;
       x)
         gum style --foreground 200 "Setting up XeroLinux KDE Rice..."
