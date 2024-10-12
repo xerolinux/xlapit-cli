@@ -27,6 +27,7 @@ display_options() {
   gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
+  gum style --foreground 180 "r. Repair Xero InitRamfs (October 2024)."
   gum style --foreground 196 "b. Install CachyOS Bore Kernel (Chaotic-AUR)."
 }
 
@@ -215,6 +216,17 @@ process_choice() {
         echo
         gum style --foreground 7 "DeckLink & StreamDeck Drivers/Tools installation complete!"
         sleep 3
+        clear && exec "$0"
+        ;;
+      r)
+        gum style --foreground 7 "Repairing Xero InitRamfs..."
+        sleep 2
+        echo
+        sudo rm -rf /etc/mkinitcpio.conf.d/
+        sudo mkinitcpio -P && sudo update-grub
+        echo
+        gum style --foreground 7 "Repaired ! You can now install custom Kernels again."
+        sleep 6
         clear && exec "$0"
         ;;
       b)
