@@ -102,7 +102,7 @@ prompt_user() {
         # Insert these commands before CUDA installation
         sudo sed -i '/^MODULES=(/ s/)$/nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
         sudo systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service
-        echo -e 'options nvidia NVreg_PreserveVideoMemoryAllocations=1 NVreg_TemporaryFilePath=/var/tmp' | sudo tee -a /etc/modprobe.d/nvidia-sleep.conf
+        sudo mkinitcpio -P
         echo
         read -rp "Do you want to install CUDA for Machine Learning? (y/n): " cuda
         if [[ $cuda =~ ^[Yy](es)?$ ]]; then
