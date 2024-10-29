@@ -27,7 +27,7 @@ display_options() {
   gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
-  gum style --foreground 180 "r. Repair Xero InitRamfs (October 2024)."
+  gum style --foreground 180 "r. Repair Xero InitRamfs (October 2024 ISO)."
   gum style --foreground 196 "b. Install CachyOS Bore Kernel (Chaotic-AUR)."
 }
 

@@ -97,7 +97,7 @@ package_selection_dialog() {
                     ;;
                 Filezilla)
                     clear
-                    install_pacman_packages filezilla
+                    install_flatpak_packages org.filezillaproject.Filezilla
                     ;;
                 Vivaldi)
                     clear
@@ -130,10 +130,6 @@ package_selection_dialog() {
                 neoVim)
                     clear
                     install_pacman_packages neovim tmux neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
-                    ;;
-                Hexo)
-                    clear
-                    install_aur_packages hexo-cli
                     ;;
                 Hugo)
                     clear
@@ -365,8 +361,10 @@ process_choice() {
         echo
         gum style --foreground 200 "Be patient while this installs the many recommended packages..."
         echo
-        sleep 6
+        sleep 3
         install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo hardinfo2 arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
+        echo
+        install_flatpak_packages io.github.flattool.Warehouse
         echo
         gum style --foreground 7 "##########  Done ! ##########"
         sleep 3
@@ -374,11 +372,10 @@ process_choice() {
         ;;
       4)
         package_selection_dialog "Select Development Apps to install :" \
-	"AndroidStudio" "IDE for Android app development" OFF \
-	"neoVim" "Vim Terminal based text editor" OFF \
+        "AndroidStudio" "IDE for Android app development" OFF \
+        "neoVim" "Vim Terminal based text editor" OFF \
         "Emacs" "An extensible & customizable text editor" OFF \
         "LazyGit" "Powerful terminal UI for git commands" OFF \
-        "Hexo" "A fast, simple & powerful blog framework" OFF \
         "Hugo" "The fastest Static Site Generator" OFF \
         "Github" "GitHub Desktop application" OFF \
         "VSCodium" "Telemetry-less code editing" OFF \
