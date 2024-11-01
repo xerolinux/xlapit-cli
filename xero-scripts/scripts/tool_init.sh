@@ -71,7 +71,8 @@ install_pipewire_bluetooth() {
   gum style --foreground 7 "Installing PipeWire/Bluetooth Packages..."
   sleep 2
   echo
-  sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol lib32-pipewire-jack pipewire-support ffmpeg ffmpegthumbs ffnvcodec-headers
+  sudo pacman -Rdd --noconfirm jack2
+  sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol pipewire-jack lib32-pipewire-jack pipewire-support ffmpeg ffmpegthumbs ffnvcodec-headers
   sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
   sudo systemctl enable --now bluetooth.service
   gum style --foreground 7 "PipeWire/Bluetooth Packages installation complete!"
