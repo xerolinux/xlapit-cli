@@ -27,7 +27,7 @@ display_options() {
   gum style --foreground 7 "5. Setup Gnome Extenstion Tools."
   gum style --foreground 7 "6. Top 3 Hyprland Advanced Dot Files."
   echo
-  gum style --foreground 156 "s. Apply XeroDark SDDM Theme Fix."
+  gum style --foreground 156 "s. XeroDark SDDM Fix (Oct. ISO)."
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro)."
 }

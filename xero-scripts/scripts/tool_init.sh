@@ -101,6 +101,8 @@ activate_flathub_repositories() {
   sudo pacman -S --noconfirm --needed flatpak
   sudo flatpak remote-modify --default-branch=23.08 flathub system
   echo
+  flatpak install io.github.flattool.Warehouse -y
+  echo
   gum style --foreground 7 "##########    Activating Flatpak Theming.    ##########"
   sudo flatpak override --filesystem="$HOME/.themes"
   sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
