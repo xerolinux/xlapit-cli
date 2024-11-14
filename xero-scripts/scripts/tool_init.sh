@@ -19,9 +19,9 @@ display_menu() {
   gum style --foreground 46 "u. Update System (Simple/Extended/Adv.)."
   echo
   gum style --foreground 7 "1. Fix PipeWire & Bluetooth (Vanilla Arch)."
-  gum style --foreground 7 "2. Activate Flathub Repositories (Vanilla Arch Only)."
-  gum style --foreground 7 "3. Enable Fast Multithreaded Package Compilation (Makepkg)."
-  gum style --foreground 7 "4. Install 3rd-Party GUI/TUI Package Manager (Pamac not included)."
+  gum style --foreground 7 "2. Activate Flathub Repositories (Vanilla Arch)."
+  gum style --foreground 7 "3. Enable Multithreaded Compilation (Vanilla Arch)."
+  gum style --foreground 7 "4. Install 3rd-Party GUI or TUI Package Manager(s)."
 }
 
 # Function to handle errors and prompt user
@@ -139,12 +139,14 @@ install_gui_package_managers() {
   PACKAGES=$(dialog --checklist "Select GUI Package Managers to install:" 20 60 10 \
     "OctoPi" "Octopi Package Manager" off \
     "PacSeek" "PacSeek Package Manager" off \
-    "BauhGUI" "Bauh GUI Package Manager" off 3>&1 1>&2 2>&3)
+    "BauhGUI" "Bauh GUI Package Manager" off \
+    "EasyFlatpak" "Flatpak Package Manager" off 3>&1 1>&2 2>&3)
   for PACKAGE in $PACKAGES; do
     case $PACKAGE in
       "OctoPi") clear && $AUR_HELPER -S --needed octopi alpm_octopi_utils ;;
       "PacSeek") clear && $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
       "BauhGUI") clear && $AUR_HELPER -S --needed bauh ;;
+      "EasyFlatpak") clear && flatpak install org.dupot.easyflatpak -y ;;
     esac
   done
   gum style --foreground 7 "3rd-Party GUI Package Managers installation complete!"

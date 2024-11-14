@@ -20,10 +20,10 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 85 "1. GPU Drivers (Prompt)."
-  gum style --foreground 7 "2. Printer Drivers and Tools."
-  gum style --foreground 7 "3. Samba Tools (XeroLinux Repo)."
-  gum style --foreground 7 "4. Scanner Drivers (XeroLinux Repo)."
+  gum style --foreground 85 "1. GPU Drivers (Intel/AMD/nVidia)."
+  gum style --foreground 7 "2. Printer Drivers (Vanilla Arch)."
+  gum style --foreground 7 "3. Samba Sharing Tools (Vanilla Arch)."
+  gum style --foreground 7 "4. Scanner Drivers & Tools (Vanilla Arch)."
   gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo

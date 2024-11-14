@@ -21,13 +21,13 @@ display_header() {
 display_options() {
   gum style --foreground 7 "1. LibreOffice."
   gum style --foreground 7 "2. Web Browsers."
-  gum style --foreground 7 "3. System Tools."
-  gum style --foreground 7 "4. Development Tools."
-  gum style --foreground 7 "5. Photo and 3D Tools."
-  gum style --foreground 7 "6. Music & Audio Tools."
-  gum style --foreground 7 "7. Social & Chat Tools."
-  gum style --foreground 7 "8. Virtualization Tools."
-  gum style --foreground 7 "9. Video Tools & Software."
+  gum style --foreground 7 "3. Development Tools."
+  gum style --foreground 7 "4. Photo and 3D Tools."
+  gum style --foreground 7 "5. Music & Audio Tools."
+  gum style --foreground 7 "6. Social & Chat Tools."
+  gum style --foreground 7 "7. Virtualization Tools."
+  gum style --foreground 7 "8. Video Tools & Software."
+  gum style --foreground 7 "9. System Tools (Vanilla Arch)."
 }
 
 # Function to handle errors and prompt user
@@ -357,18 +357,6 @@ process_choice() {
         clear && exec "$0"
         ;;
       3)
-        gum style --foreground 7 "########## Installing Recommended Tools ##########"
-        echo
-        gum style --foreground 200 "Be patient while this installs the many recommended packages..."
-        echo
-        sleep 3
-        install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo hardinfo2 arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
-        echo
-        gum style --foreground 7 "##########  Done ! ##########"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      4)
         package_selection_dialog "Select Development Apps to install :" \
         "AndroidStudio" "IDE for Android app development" OFF \
         "neoVim" "Vim Terminal based text editor" OFF \
@@ -386,7 +374,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      5)
+      4)
         package_selection_dialog "Select Photography & 3D Apps to install:" \
         "GiMP" "GNU Image Manipulation Program" OFF \
         "Krita" "Edit and paint images" OFF \
@@ -398,7 +386,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      6)
+      5)
         package_selection_dialog "Select Music & Media Apps to install:" \
         "MPV" "An OpenSource media player" OFF \
         "Spotify" "Online music streaming service" OFF \
@@ -411,7 +399,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      7)
+      6)
         package_selection_dialog "Select Social/Web Apps to install:" \
         "Vesktop" "Discord alternative with Wayland support" OFF \
         "Ferdium" "Organize many web-apps into one" OFF \
@@ -426,7 +414,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      8)
+      7)
         package_selection_dialog "Select Virtualization System to install:" \
         "VirtManager" "Manage QEMU virtual machines" OFF \
         "VirtualBox" "Powerful x86 virtualization" OFF
@@ -435,7 +423,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      9)
+      8)
         package_selection_dialog "Select App(s) to install (DaVinci-Resolve will take a while to compile, don't interrupt the process):" \
         "KDEnLive" "A non-linear video editor" OFF \
         "DaVinci" "Professional A/V post-production Soft" OFF \
@@ -444,6 +432,18 @@ process_choice() {
         "MKVToolNix" "Matroska files creator and tools" OFF \
         "MakeMKV" "DVD and Blu-ray to MKV converter" OFF \
         "Avidemux" "Graphical tool to edit video" OFF
+        echo
+        gum style --foreground 7 "##########  Done ! ##########"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      9)
+        gum style --foreground 7 "########## Installing Recommended Tools ##########"
+        echo
+        gum style --foreground 200 "Be patient while this installs the many recommended packages..."
+        echo
+        sleep 3
+        install_aur_packages linux-headers downgrade mkinitcpio-firmware hw-probe pkgstats alsi update-grub expac linux-firmware-marvell eza numlockx lm_sensors appstream-glib bat bat-extras pacman-contrib pacman-bintrans yt-dlp gnustep-base parallel dex make libxinerama logrotate bash-completion gtk-update-icon-cache gnome-disk-utility appmenu-gtk-module dconf-editor dbus-python lsb-release asciinema playerctl s3fs-fuse vi duf gcc yad zip xdo inxi lzop nmon mkinitcpio-archiso mkinitcpio-nfs-utils tree vala btop lshw expac fuse3 meson unace unrar unzip p7zip rhash sshfs vnstat nodejs cronie hwinfo hardinfo2 arandr assimp netpbm wmctrl grsync libmtp polkit sysprof gparted hddtemp mlocate fuseiso gettext node-gyp graphviz inetutils appstream cifs-utils ntfs-3g nvme-cli exfatprogs f2fs-tools man-db man-pages tldr python-pip python-cffi python-numpy python-docopt python-pyaudio xdg-desktop-portal-gtk
         echo
         gum style --foreground 7 "##########  Done ! ##########"
         sleep 3

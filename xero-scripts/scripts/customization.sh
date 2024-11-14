@@ -20,12 +20,11 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 7 "1. Setup Fastfetch."
-  gum style --foreground 7 "2. Setup ble.sh for Bash."
-  gum style --foreground 7 "3. Setup Oh-My-Posh (Bash)."
-  gum style --foreground 7 "4. Setup ZSH All in one w/OMP."
-  gum style --foreground 7 "5. Setup Gnome Extenstion Tools."
-  gum style --foreground 7 "6. Top 3 Hyprland Advanced Dot Files."
+  gum style --foreground 7 "1. Setup Fastfetch (Vanilla Arch)."
+  gum style --foreground 7 "2. Setup ble.sh tools for Bash Shell."
+  gum style --foreground 7 "3. Setup Oh-My-Posh prompt (Vanilla Arch)."
+  gum style --foreground 7 "4. Setup ZSH All in one with Oh-My-Posh/Plugs."
+  gum style --foreground 7 "5. Top 3 Hyprland Advanced Dot Files and Configs."
   echo
   gum style --foreground 156 "s. XeroDark SDDM Fix (Oct. ISO)."
   gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
@@ -215,16 +214,6 @@ process_choice() {
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 7 "Setting up Gnome Extension Tools..."
-        sleep 2
-        echo
-        $AUR_HELPER -S --noconfirm --needed extension-manager dconf-editor gnome-tweaks gnome-shell-extensions
-        echo
-        gum style --foreground 7 "Done ! Have fun tweaking Gnome ;)"
-        sleep 3
-        clear && exec "$0"
-        ;;
-      6)
         gum style --foreground 7 "Select Hyprland Dots..."
         select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
           case $dots in
