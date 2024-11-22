@@ -42,13 +42,14 @@ display_options() {
   echo
   gum style --foreground 7 "1. Steam All-in-one."
   gum style --foreground 7 "2. Game Controllers."
+  gum style --foreground 7 "3. LACT GPU-Overclock."
   echo
   gum style --foreground 226 ".::: Extras (Flatpaks) :::."
   echo
-  gum style --foreground 7 "3. Heroic."
-  gum style --foreground 7 "4. Lutris."
-  gum style --foreground 7 "5. Bottles."
-  gum style --foreground 7 "6. ProtonUp-QT."
+  gum style --foreground 7 "4. Heroic."
+  gum style --foreground 7 "5. Lutris."
+  gum style --foreground 7 "6. Bottles."
+  gum style --foreground 7 "7. ProtonUp-QT."
 }
 
 # Function to handle errors and prompt user
@@ -196,37 +197,51 @@ process_choice() {
         clear && exec "$0"
         ;;
       3)
-        gum style --foreground 7 "Installing Heroic Games Launcher..."
+        gum style --foreground 7 "Installing LACT GPU OC Utility..."
         sleep 2
         echo
-        install_gaming_packages heroic
-        gum style --foreground 7 "Heroic Games Launcher installation complete!"
+        install_aur_packages lact && sudo systemctl enable --now lactd
+        echo
+        gum style --foreground 7 "LACT GPU OC Utility installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       4)
-        gum style --foreground 7 "Installing Lutris..."
+        gum style --foreground 7 "Installing Heroic Games Launcher..."
         sleep 2
         echo
-        install_gaming_packages lutris
-        gum style --foreground 7 "Lutris installation complete!"
+        install_gaming_packages heroic
+        echo
+        gum style --foreground 7 "Heroic Games Launcher installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 7 "Installing Bottles..."
+        gum style --foreground 7 "Installing Lutris..."
         sleep 2
         echo
-        install_gaming_packages bottles
-        gum style --foreground 7 "Bottles installation complete!"
+        install_gaming_packages lutris
+        echo
+        gum style --foreground 7 "Lutris installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
       6)
+        gum style --foreground 7 "Installing Bottles..."
+        sleep 2
+        echo
+        install_gaming_packages bottles
+        echo
+        gum style --foreground 7 "Bottles installation complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      7)
         gum style --foreground 7 "Installing ProtonUp-QT..."
         sleep 2
         echo
         install_gaming_packages protonupQT
+        echo
         gum style --foreground 7 "ProtonUp-QT installation complete!"
         sleep 3
         clear && exec "$0"

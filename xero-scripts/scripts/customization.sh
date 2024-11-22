@@ -27,8 +27,8 @@ display_options() {
   gum style --foreground 7 "5. Top 3 Hyprland Advanced Dot Files and Configs."
   echo
   gum style --foreground 156 "s. XeroDark SDDM Fix (Oct. ISO)."
-  gum style --foreground 200 "x. XeroLinux's Layan Plasma 6 Rice."
-  gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro)."
+  gum style --foreground 200 "x. XeroLinux's Layan Rice (Vanilla KDE)."
+  gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro Only)."
 }
 
 # Function to handle errors and prompt user

@@ -29,8 +29,8 @@ display_menu() {
     gum style --foreground 7 "5. Change Autologin Session X11/Wayland (SDDM)."
     echo
     gum style --foreground 39 "a. Build Updated Arch ISO."
-    gum style --foreground 196 "r. Reset Xero Layout back to Stock"
-    gum style --foreground 40 "w. WayDroid Installation Guide (Link)."
+    gum style --foreground 196 "r. Reset KDE/Xero Layout back to Stock."
+    gum style --foreground 40 "w. WayDroid Installation Guide (Website Link)."
     gum style --foreground 172 "m. Update Arch Mirrorlist, for faster download speeds."
     gum style --foreground 111 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
 }
