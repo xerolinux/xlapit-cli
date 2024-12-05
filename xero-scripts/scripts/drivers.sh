@@ -235,7 +235,7 @@ process_choice() {
         echo
         sudo pacman -S --noconfirm --needed archlinux-kernel-manager python-tomlkit
         echo
-        gum style --foreground 7 "Kernel Manager installation complete. Please Reboot & Select from Grub!"
+        gum style --foreground 7 "Kernel Manager installation complete."
         sleep 6
         clear && exec "$0"
         ;;
