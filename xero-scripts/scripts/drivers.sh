@@ -28,7 +28,7 @@ display_options() {
   gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
   gum style --foreground 180 "r. Repair Xero InitRamfs (October 2024 ISO)."
-  gum style --foreground 196 "b. Install CachyOS Bore Kernel (Chaotic-AUR)."
+  gum style --foreground 196 "k. Install Arch Kernel Manager (XeroLinux Repo)."
 }
 
 # Function to handle errors and prompt user
@@ -229,13 +229,13 @@ process_choice() {
         sleep 6
         clear && exec "$0"
         ;;
-      b)
-        gum style --foreground 7 "Installing CachyOS Bore Kernel..."
+      k)
+        gum style --foreground 7 "Installing Arch Kernel Manager..."
         sleep 2
         echo
-        sudo pacman -S --noconfirm --needed linux-cachyos-bore linux-cachyos-bore-headers
+        sudo pacman -S --noconfirm --needed archlinux-kernel-manager python-tomlkit
         echo
-        gum style --foreground 7 "Bore Kernel installation complete. Please Reboot & Select from Grub!"
+        gum style --foreground 7 "Kernel Manager installation complete. Please Reboot & Select from Grub!"
         sleep 6
         clear && exec "$0"
         ;;
