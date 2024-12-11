@@ -84,7 +84,7 @@ trap 'handle_interrupt' SIGINT
 process_choice() {
   while :; do
     echo
-    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
+    read -rp "Enter your choice, 'r' to reboot or 'q' for main menu : " CHOICE
     echo
 
     case $CHOICE in
@@ -163,6 +163,19 @@ process_choice() {
         gum style --foreground 7 "All containers upgraded successfully!"
         sleep 3
         clear && exec "$0"
+        ;;
+      r)
+        gum style --foreground 33 "Rebooting System..."
+        sleep 3
+        # Countdown from 5 to 1
+        for i in {5..1}; do
+            dialog --infobox "Rebooting in $i seconds..." 3 30
+            sleep 1
+        done
+
+        # Reboot after the countdown
+        reboot
+        sleep 3
         ;;
       q)
         clear && exec xero-cli -m

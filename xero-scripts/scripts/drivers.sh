@@ -27,7 +27,6 @@ display_options() {
   gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
   gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
   echo
-  gum style --foreground 180 "r. Repair Xero InitRamfs (October 2024 ISO)."
   gum style --foreground 196 "k. Install Arch Kernel Manager (XeroLinux Repo)."
 }
 
@@ -150,7 +149,7 @@ package_selection_dialog() {
 process_choice() {
   while :; do
     echo
-    read -rp "Enter your choice, or 'q' to return to main menu : " CHOICE
+    read -rp "Enter your choice, 'r' to reboot or 'q' for main menu : " CHOICE
     echo
 
     case $CHOICE in
@@ -219,15 +218,17 @@ process_choice() {
         clear && exec "$0"
         ;;
       r)
-        gum style --foreground 7 "Repairing Xero InitRamfs..."
-        sleep 2
-        echo
-        sudo rm -rf /etc/mkinitcpio.conf.d/
-        sudo mkinitcpio -P && sudo update-grub
-        echo
-        gum style --foreground 7 "Repaired ! You can now install custom Kernels again."
-        sleep 6
-        clear && exec "$0"
+        gum style --foreground 33 "Rebooting System..."
+        sleep 3
+        # Countdown from 5 to 1
+        for i in {5..1}; do
+            dialog --infobox "Rebooting in $i seconds..." 3 30
+            sleep 1
+        done
+
+        # Reboot after the countdown
+        reboot
+        sleep 3
         ;;
       k)
         gum style --foreground 7 "Installing Arch Kernel Manager..."
