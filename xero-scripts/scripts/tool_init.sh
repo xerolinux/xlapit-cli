@@ -190,20 +190,21 @@ update_system() {
     esac
 }
 
-reboot() {
-   gum style --foreground 69 "Rebooting System..."
-   sleep 3
-   # Countdown from 5 to 1
-   for i in {5..1}; do
+restart() {
+    # Notify the user that the system is rebooting
+    gum style --foreground 69 "Rebooting System..."
+    sleep 3
+
+    # Countdown from 5 to 1
+    for i in {5..1}; do
         dialog --infobox "Rebooting in $i seconds..." 3 30
         sleep 1
-   done
+    done
 
-   # Reboot after the countdown
-   reboot
-   sleep 3
-   echo
+    # Execute the reboot command
+    reboot
 }
+
 
 main() {
   while :; do
@@ -219,7 +220,7 @@ main() {
       3) enable_multithreaded_compilation ;;
       4) install_gui_package_managers ;;
       u) update_system ;;
-      r) reboot ;;
+      r) restart ;;
       q) clear && exec xero-cli -m ;;
       *)
         gum style --foreground 50 "Invalid choice. Please select a valid option."

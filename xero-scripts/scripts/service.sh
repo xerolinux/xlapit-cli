@@ -235,20 +235,19 @@ fix_gpg_keyring() {
    main
 }
 
-reboot() {
-   echo
-   gum style --foreground 69 "Rebooting System..."
-   sleep 3
-   # Countdown from 5 to 1
-   for i in {5..1}; do
+restart() {
+    # Notify the user that the system is rebooting
+    gum style --foreground 69 "Rebooting System..."
+    sleep 3
+
+    # Countdown from 5 to 1
+    for i in {5..1}; do
         dialog --infobox "Rebooting in $i seconds..." 3 30
         sleep 1
-   done
+    done
 
-   # Reboot after the countdown
-   reboot
-   sleep 3
-   echo
+    # Execute the reboot command
+    reboot
 }
 
 main() {
@@ -268,7 +267,7 @@ main() {
            w) waydroid_guide ;;
            m) update_mirrorlist ;;
            g) fix_gpg_keyring ;;
-           r) reboot ;;
+           r) restart ;;
            q) clear && exec xero-cli -m ;;
            *) gum style --foreground 31 "Invalid choice. Please select a valid option." ;;
        esac
