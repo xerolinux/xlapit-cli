@@ -237,6 +237,7 @@ fix_gpg_keyring() {
 
 restart() {
     # Notify the user that the system is rebooting
+    echo
     gum style --foreground 69 "Rebooting System..."
     sleep 3
 

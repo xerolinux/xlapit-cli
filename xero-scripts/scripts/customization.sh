@@ -26,7 +26,7 @@ display_options() {
   gum style --foreground 7 "4. Setup ZSH All in one with Oh-My-Posh/Plugs."
   gum style --foreground 7 "5. Top 3 Hyprland Advanced Dot Files and Configs."
   echo
-  gum style --foreground 156 "s. XeroDark SDDM Fix (Oct. ISO)."
+  gum style --foreground 178 "g. Change Grub Theme (Xero Script)."
   gum style --foreground 200 "x. XeroLinux's Layan Rice (Vanilla KDE)."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro Only)."
 }
@@ -228,22 +228,14 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      s)
-        gum style --foreground 200 "Applying Xero SDDM Fix..."
+      g)
+        gum style --foreground 7 "XeroLinug Grub Themes..."
         sleep 2
         echo
-        sudo rm /usr/share/sddm/themes/XeroDark/Main.qml
-        sudo rm /usr/share/sddm/themes/XeroDark/KeyboardButton.qml
-        sudo rm /usr/share/sddm/themes/XeroDark/Login.qml
-        sudo rm /usr/share/sddm/themes/XeroDark/SessionButton.qml
-        sleep 2
-        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Main.qml -O /usr/share/sddm/themes/XeroDark/Main.qml > /dev/null 2>&1
-        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/KeyboardButton.qml -O /usr/share/sddm/themes/XeroDark/KeyboardButton.qml > /dev/null 2>&1
-        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Login.qml -O /usr/share/sddm/themes/XeroDark/Login.qml > /dev/null 2>&1
-        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/SessionButton.qml -O /usr/share/sddm/themes/XeroDark/SessionButton.qml > /dev/null 2>&1
-        sudo wget https://raw.githubusercontent.com/xerolinux/xero-layan-git/refs/heads/main/Configs/System/usr/share/sddm/themes/XeroDark/Messages.sh -O /usr/share/sddm/themes/XeroDark/Messages.sh > /dev/null 2>&1
+        cd ~ && git clone https://github.com/xerolinux/xero-grubs
+        cd ~/xero-grubs/ && sh install.sh
         echo
-        gum style --foreground 200 "Xero SDDM fix applied !"
+        rm -rf ~/xero-grubs/
         sleep 3
         clear && exec "$0"
         ;;
