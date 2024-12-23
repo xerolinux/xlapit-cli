@@ -267,6 +267,7 @@ disable_debug() {
                     echo
                     echo "Debugging is already off - nothing to do"
 	else
+                    echo
                     echo "Disabling !debug"
                     echo
                     sudo sed -i "s/debug lto/!debug lto/g" /etc/makepkg.conf;
