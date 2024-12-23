@@ -27,6 +27,7 @@ display_menu() {
     gum style --foreground 7 "3. Unlock Pacman DB (In case of DB error)."
     gum style --foreground 7 "4. Activate v4l2loopback for OBS-VirtualCam."
     gum style --foreground 7 "5. Change Autologin Session X11/Wayland (SDDM)."
+    gum style --foreground 7 "6. Disable Debug flag in MAKEPKG (Package Devs)."
     echo
     gum style --foreground 39 "a. Build Updated Arch ISO."
     gum style --foreground 196 "s. Reset KDE/Xero Layout back to Stock."
@@ -251,6 +252,34 @@ restart() {
     reboot
 }
 
+disable_debug() {
+    # Disable Debug Flag in /etc/makepkg.conf
+    echo
+    gum style --foreground 69 "Makepkg Debug disabler..."
+    sleep 3
+    echo
+    echo "This script will disable pkg debug flag"
+    echo
+    read -p "Are you sure you want to proceed? (y/n) " response
+    if [[ $response =~ ^[Yy]$ ]]; then
+
+            if grep -q "!debug lto" /etc/makepkg.conf; then
+                    echo
+                    echo "Debugging is already off - nothing to do"
+	else
+                    echo "Disabling !debug"
+                    echo
+                    sudo sed -i "s/debug lto/!debug lto/g" /etc/makepkg.conf;
+            fi
+
+    else
+        echo
+        echo "Operation canceled."
+
+    fi
+
+}
+
 main() {
    while :; do
        display_menu
@@ -263,6 +292,7 @@ main() {
            3) unlock_pacman_db ;;
            4) activate_v4l2loopback ;;
            5) change_sddm_autologin ;;
+           6) disable_debug ;;
            a) build_archiso ;;
            s) reset_everything ;;
            w) waydroid_guide ;;
