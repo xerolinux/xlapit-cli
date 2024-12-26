@@ -290,6 +290,10 @@ package_selection_dialog() {
                     clear
                     install_aur_packages davinci-resolve
                     ;;
+                LosslessCut)
+                    clear
+                    install_aur_packages losslesscut-bin
+                    ;;
                 OBS-Studio)
                     clear
                     install_flatpak_packages com.obsproject.Studio com.obsproject.Studio.Plugin.waveform com.obsproject.Studio.Plugin.WebSocket com.obsproject.Studio.Plugin.TransitionTable com.obsproject.Studio.Plugin.SceneSwitcher com.obsproject.Studio.Plugin.ScaleToSound com.obsproject.Studio.Plugin.OBSVkCapture com.obsproject.Studio.Plugin.OBSLivesplitOne com.obsproject.Studio.Plugin.NDI com.obsproject.Studio.Plugin.MoveTransition com.obsproject.Studio.Plugin.Gstreamer com.obsproject.Studio.Plugin.GStreamerVaapi com.obsproject.Studio.Plugin.DroidCam com.obsproject.Studio.Plugin.BackgroundRemoval
@@ -427,6 +431,7 @@ process_choice() {
         package_selection_dialog "Select App(s) to install (DaVinci-Resolve will take a while to compile, don't interrupt the process):" \
         "KDEnLive" "A non-linear video editor" OFF \
         "DaVinci" "Professional A/V post-production Soft" OFF \
+        "LosslessCut" "GUI tool for lossless trimming of videos" OFF \
         "OBS-Studio" "Includes many Plugins (Flatpak)" OFF \
         "Mystiq" "FFmpeg GUI front-end based on Qt5" OFF \
         "MKVToolNix" "Matroska files creator and tools" OFF \
