@@ -214,7 +214,8 @@ process_choice() {
         clear && exec "$0"
         ;;
       5)
-        gum style --foreground 7 "Select Hyprland Dots..."
+        gum style --foreground 7 "Select Hyprland Dots. Please run in Active HyprLand session."
+        echo
         select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
           case $dots in
             ML4W) $AUR_HELPER -Syyu --noconfirm --needed ml4w-hyprland && ml4w-hyprland-setup 2>&1 && break ;;
