@@ -24,7 +24,6 @@ display_options() {
   gum style --foreground 7 "2. Setup ble.sh tools for Bash Shell."
   gum style --foreground 7 "3. Setup Oh-My-Posh prompt (Vanilla Arch)."
   gum style --foreground 7 "4. Setup ZSH All in one with Oh-My-Posh/Plugs."
-  gum style --foreground 7 "5. Top 3 Hyprland Advanced Dot Files and Configs."
   echo
   gum style --foreground 178 "g. Change Grub Theme (Xero Script)."
   gum style --foreground 200 "x. XeroLinux's Layan Rice (Vanilla KDE)."
@@ -210,22 +209,6 @@ process_choice() {
         fi
         echo
         gum style --foreground 7 "ZSH setup complete! Log out and back in."
-        sleep 3
-        clear && exec "$0"
-        ;;
-      5)
-        gum style --foreground 7 "Select Hyprland Dots. Please run in Active HyprLand session."
-        echo
-        select dots in "ML4W" "JaKooLit" "Prasanth" "Back"; do
-          case $dots in
-            ML4W) $AUR_HELPER -Syyu --noconfirm --needed ml4w-hyprland && ml4w-hyprland-setup 2>&1 && break ;;
-            JaKooLit) xdg-open "https://github.com/JaKooLit/Arch-Hyprland" > /dev/null 2>&1 && break ;;
-            Prasanth) xdg-open "https://github.com/prasanthrangan/hyprdots" > /dev/null 2>&1 && break ;;
-            Back) clear && exec "$0" && break ;;
-            *) gum style --foreground 31 "Invalid option. Select 1, 2, or 3." ;;
-          esac
-        done
-        gum style --foreground 7 "Hyprland Dots setup complete!"
         sleep 3
         clear && exec "$0"
         ;;
