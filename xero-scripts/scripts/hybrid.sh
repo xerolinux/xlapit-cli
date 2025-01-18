@@ -34,7 +34,7 @@ install_nvidia_amd() {
 # Main script
 if check_dual_gpu; then
     if lspci | grep -E "VGA|3D" | grep -q "NVIDIA" && lspci | grep -E "VGA|3D" | grep -q "Intel"; then
-        gum style --foreground 196 "Intel/nVidia detected, Setup should work for everyone."
+        gum style --foreground 33 "Intel/nVidia detected, Setup should work for everyone."
         echo
         read -p "Do you want Closed or Open Module nVidia drivers? (c/o): " driver_choice
         if [ "$driver_choice" = "c" ]; then
@@ -58,9 +58,8 @@ if check_dual_gpu; then
             exit 1
         fi
     fi
-
-    echo "A reboot is required. Do you want to reboot now?"
-    read -p "Reboot? (y/n): " reboot_choice
+    echo
+    read -p "A reboot is required. Do you want to reboot now ? (y/n): " reboot_choice
     if [ "$reboot_choice" = "y" ]; then
         sudo reboot
     else
