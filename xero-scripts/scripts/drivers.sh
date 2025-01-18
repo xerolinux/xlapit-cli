@@ -60,11 +60,11 @@ trap 'handle_interrupt' SIGINT
 
 # Function to prompt user for GPU drivers
 prompt_user() {
-    gum style --foreground 33 "Gathering information about your connected GPUs..."
+    gum style --foreground 123 "Gathering information about your connected GPUs..."
     echo
     inxi -G
     echo
-    gum style --foreground 33 "Answer below prompts wisely. No Legacy GPU Support."
+    gum style --foreground 154 "Answer below prompts wisely. No Legacy GPU Support."
     echo
     read -rp "Single or Dual (Hybrid) GPU/iGPU Setup ? (s/d): " setup_type
     if [[ $setup_type == "s" ]]; then

@@ -36,7 +36,7 @@ if check_dual_gpu; then
     if lspci | grep -E "VGA|3D" | grep -q "NVIDIA" && lspci | grep -E "VGA|3D" | grep -q "Intel"; then
         gum style --foreground 33 "Intel/nVidia detected, Setup should work for everyone."
         echo
-        read -p "Do you want Closed or Open Module nVidia drivers? (c/o): " driver_choice
+        read -p "Do you want (C)losed or (O)pen Module nVidia drivers? (c/o): " driver_choice
         if [ "$driver_choice" = "c" ]; then
             install_nvidia_intel "closed"
         elif [ "$driver_choice" = "o" ]; then
@@ -48,12 +48,13 @@ if check_dual_gpu; then
     elif lspci | grep -E "VGA|3D" | grep -q "NVIDIA" && lspci | grep -E "VGA|3D" | grep -q "AMD"; then
         gum style --foreground 196 "nVidia/AMD detected, Setup should work for everyone."
         echo
-        read -p "Do you want Closed or Open drivers? (closed/open): " driver_choice
+        read -p "Do you want (C)losed or (O)pen drivers? (closed/open): " driver_choice
         if [ "$driver_choice" = "closed" ]; then
             install_nvidia_amd "closed"
         elif [ "$driver_choice" = "open" ]; then
             install_nvidia_amd "open"
         else
+            echo
             echo "Invalid input. Please choose 'closed' or 'open'."
             exit 1
         fi
@@ -63,8 +64,10 @@ if check_dual_gpu; then
     if [ "$reboot_choice" = "y" ]; then
         sudo reboot
     else
+        echo
         echo "Please remember to reboot your system to apply the changes."
     fi
 else
+    echo
     echo "No dual GPU configuration detected."
 fi
