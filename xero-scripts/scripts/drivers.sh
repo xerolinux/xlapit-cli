@@ -106,12 +106,7 @@ prompt_user() {
         esac
     else
         echo
-        gum style --foreground 196 "Only Single GPU setups are supported by the toolkit."
-        sleep 6
-        echo
-        gum style --foreground 45 "Opening the the ArchWiki."
-        sleep 3
-        xdg-open "https://wiki.archlinux.org/title/Hybrid_graphics" > /dev/null 2>&1
+        sh /usr/share/xero-scripts/hybrid.sh
         return
     fi
     echo
@@ -214,8 +209,7 @@ process_choice() {
                         if [[ "$response" =~ ^[Yy]$ ]]; then
                             sudo pacman -Rdd --noconfirm nvidia-open-dkms
                             sudo pacman -S --noconfirm nvidia-dkms
-                            echo "options nvidia-drm modeset=1 fbdev=1" | sudo tee /etc/modprobe.d/nvidia-modeset.conf
-                            echo "options nvidia NVreg_EnableGpuFirmware=0" | sudo tee -a /etc/modprobe.d/nvidia-modeset.conf
+                            echo -e "options nvidia-drm modeset=1 fbdev=1\noptions nvidia NVreg_EnableGpuFirmware=0" | sudo tee -a /etc/modprobe.d/nvidia-modeset.conf
                             sudo mkinitcpio -P
                             echo
                             gum style --foreground 33 "Closed drivers installed and GSP Firmware fix applied."
@@ -224,10 +218,9 @@ process_choice() {
                             gum style --foreground 33 "No changes made."
                         fi
                     else
-                        echo
                         read -p "Apply GSP Firmware fix for closed drivers? (y/n): " response
                         if [[ "$response" =~ ^[Yy]$ ]]; then
-                            echo "options nvidia NVreg_EnableGpuFirmware=0" | sudo tee -a /etc/modprobe.d/nvidia-modeset.conf
+                            echo -e "options nvidia-drm modeset=1 fbdev=1\noptions nvidia NVreg_EnableGpuFirmware=0" | sudo tee -a /etc/modprobe.d/nvidia-modeset.conf
                             sudo mkinitcpio -P
                             echo
                             gum style --foreground 33 "GSP Firmware fix applied."
@@ -236,6 +229,7 @@ process_choice() {
                             gum style --foreground 33 "No changes made."
                         fi
                     fi
+                    echo
                     read -p "Do you want to reboot now? (y/n): " reboot_response
                     if [[ "$reboot_response" =~ ^[Yy]$ ]]; then
                         reboot
