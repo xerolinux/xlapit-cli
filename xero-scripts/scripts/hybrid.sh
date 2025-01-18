@@ -34,7 +34,7 @@ install_nvidia_amd() {
 # Main script
 if check_dual_gpu; then
     if lspci | grep -E "VGA|3D" | grep -q "NVIDIA" && lspci | grep -E "VGA|3D" | grep -q "Intel"; then
-        gum style --foreground 33 "Intel/nVidia detected, Setup should work for everyone."
+        gum style --foreground 33 "Intel/nVidia detected, Setup should work for most."
         echo
         read -p "Do you want (C)losed or (O)pen Module nVidia drivers? (c/o): " driver_choice
         if [ "$driver_choice" = "c" ]; then
@@ -46,7 +46,7 @@ if check_dual_gpu; then
             exit 1
         fi
     elif lspci | grep -E "VGA|3D" | grep -q "NVIDIA" && lspci | grep -E "VGA|3D" | grep -q "AMD"; then
-        gum style --foreground 196 "nVidia/AMD detected, Setup should work for everyone."
+        gum style --foreground 196 "nVidia/AMD detected, Setup should work for most."
         echo
         read -p "Do you want (C)losed or (O)pen drivers? (closed/open): " driver_choice
         if [ "$driver_choice" = "closed" ]; then
