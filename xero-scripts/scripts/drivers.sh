@@ -207,7 +207,7 @@ process_choice() {
                 gum style --foreground 7 "Installing ASUS ROG Laptop Drivers/Tools..."
                 sleep 2
                 echo
-                install_aur_packages rog-control-center asusctl supergfx supergfxctl
+                install_aur_packages rog-control-center asusctl supergfxctl
                 echo
                 echo "Enabling relevant services"
                 echo
