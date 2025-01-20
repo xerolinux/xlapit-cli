@@ -3,6 +3,8 @@
 # Set window title
 echo -ne "\033]0;Device Drivers\007"
 
+SCRIPTS="/usr/share/xero-scripts/"
+
 # Function to display header
 display_header() {
     clear
@@ -20,6 +22,7 @@ display_options() {
     gum style --foreground 7 "4. Scanner Drivers & Tools (Vanilla Arch)."
     gum style --foreground 7 "5. Setup Tailscale Incl. fix for XeroLinux."
     gum style --foreground 7 "6. DeckLink & StreamDeck Drivers/Tools (AUR)."
+    gum style --foreground 7 "7. ASUS ROG Laptop Tools by ASUS-Linux team (AUR)."
     echo
     gum style --foreground 190 "g. Apply nVidia GSP Firmware Fix (Closed Drivers)."
     gum style --foreground 196 "k. Install Arch Kernel Manager Tool (XeroLinux Repo)."
@@ -106,7 +109,7 @@ prompt_user() {
         esac
     else
         echo
-        sh /usr/share/xero-scripts/hybrid.sh
+        sh $SCRIPTS/hybrid.sh
         return
     fi
     echo
@@ -197,6 +200,20 @@ process_choice() {
                 package_selection_dialog "Decklink DeckMaster StreamDeckUI" "install_aur_packages"
                 echo
                 gum style --foreground 7 "DeckLink & StreamDeck Drivers/Tools installation complete!"
+                sleep 3
+                clear && exec "$0"
+                ;;
+            7)
+                gum style --foreground 7 "Installing ASUS ROG Laptop Drivers/Tools..."
+                sleep 2
+                echo
+                install_aur_packages rog-control-center asusctl supergfx supergfxctl
+                echo
+                echo "Enabling relevant services"
+                echo
+                sudo systemctl enable --now asusd supergfxd
+                echo
+                gum style --foreground 7 "Installation complete!"
                 sleep 3
                 clear && exec "$0"
                 ;;
