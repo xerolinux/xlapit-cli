@@ -6,7 +6,7 @@ This toolkit aims to be an all-in-one solution for post-installation, expediting
 
 ### How to get it
 
-First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you the user. I will never force anything on you.
+First off let me say that everything this awesome toolkit provides is and will forever be optional and up to you, the user. It will never force anything on you. & That's a promise.
 
 <div align="center">
 
