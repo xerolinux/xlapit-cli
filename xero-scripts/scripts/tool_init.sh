@@ -127,111 +127,83 @@ install_gui_package_managers() {
 }
 
 install_ollama_ai() {
-  # Check if Ollama is already installed
-  if command -v ollama &> /dev/null; then
-    gum style --foreground 46 "Ollama is already installed!"
-    echo
-  else
-    gum style --foreground 7 "Installing Ollama..."
-    sleep 2
-    echo
-    curl -fsSL https://ollama.com/install.sh | sh
-    sleep 3
-  fi
+  echo
+  gum style --foreground 33 "Install (i) or remove (r) Ollama, DeepSeek and OpenWebUI?"
+  read -rp "Enter choice (i/r): " choice
+  case $choice in
+    r|R)
+      gum style --foreground 196 "Warning: This will remove Ollama, DeepSeek, and OpenWebUI!"
+      if gum confirm "Are you sure you want to proceed ?"; then
+        # Remove OpenWebUI if installed
+        if pacman -Qs open-webui > /dev/null; then
+          gum style --foreground 7 "Removing OpenWebUI..."
+          "$AUR_HELPER" -Rns --noconfirm open-webui
+        fi
+        
+        # Remove Ollama and models if installed
+        if command -v ollama &> /dev/null; then
+          gum style --foreground 7 "Removing Ollama and AI models..."
+          sudo systemctl stop ollama
+          sudo rm -rf ~/.ollama
+          sudo rm -f /usr/local/bin/ollama
+        fi
+        
+        gum style --foreground 46 "Uninstallation complete!"
+        sleep 3
+      fi
+      exec "$0"
+      ;;
+    i|I)
+      # Rest of installation proceeds as normal
+      if command -v ollama &> /dev/null; then
+        gum style --foreground 46 "Ollama is already installed!"
+        echo
+      else
+        gum style --foreground 7 "Installing Ollama..."
+        echo
+        sleep 2
+        curl -fsSL https://ollama.com/install.sh | sh
+        sleep 3
+      fi
 
-  # Check if deepseek model is already pulled
-  if ollama list | grep -q "deepseek-r1:32b"; then
-    gum style --foreground 46 "DeepSeek-R1 32b model is already installed!"
-    echo
-  else
-    gum style --foreground 196 "Grabbing the DeepSeek-R1 32b Model."
-    echo
-    gum style --foreground 196 "Download Size : 20GB, Decent System Recommended !"
-    echo
-    sleep 3
-    ollama pull deepseek-r1:32b
-  fi
+      # Check if deepseek model is already pulled
+      if ollama list | grep -q "deepseek-r1:32b"; then
+        gum style --foreground 46 "DeepSeek-R1 32b model is already installed!"
+        echo
+      else
+        gum style --foreground 196 "Downloading DeepSeek-R1 (20GB/Good PC required)..."
+        echo
+        sleep 3
+        ollama pull deepseek-r1:32b
+      fi
 
-  echo
-  gum style --foreground 7 "Type the following command to use it :"
-  echo
-  gum style --foreground 39 "ollama run deepseek-r1:32b"
-  echo
-  sleep 3
-
-  # Prompt for OpenWebUI installation
-  echo
-  gum style --foreground 33 "Would you like to install OpenWebUI (a user-friendly interface for Ollama)?"
-  gum style --foreground 196 "This will also install Docker if not already present."
-  echo
-  if gum confirm "Install OpenWebUI?"; then
-    # Install Docker if not present
-    if ! command -v docker &> /dev/null; then
-      gum style --foreground 7 "Installing Docker..."
-      sudo pacman -S --needed --noconfirm docker
-      sudo systemctl enable --now docker.service
-      sudo usermod -aG docker "$USER"
-      gum style --foreground 46 "Docker installed and enabled!"
+      # Prompt for additional models
       echo
-      gum style --foreground 196 "Note: You'll need to log out and back in for Docker permissions to take effect."
-      sleep 3
-    fi
-    
-    gum style --foreground 7 "Installing OpenWebUI via Docker..."
-    echo
-    docker run -d -p 3000:8080 \
-      --add-host=host.docker.internal:host-gateway \
-      -v open-webui:/app/backend/data \
-      --name open-webui \
-      --restart always \
-      ghcr.io/open-webui/open-webui:main
-    
-    echo
-    gum style --foreground 46 "OpenWebUI has been installed!"
-    gum style --foreground 46 "You can access it at: http://localhost:3000"
-    
-    # Create the systemd service
-    echo
-    gum style --foreground 33 "Creating systemd service for OpenWebUI..."
-    
-    # Create the systemd service file
-    sudo tee /etc/systemd/system/open-webui.service > /dev/null << 'EOF'
-[Unit]
-Description=Open WebUI Container Service
-After=docker.service ollama.service network-online.target
-Requires=docker.service
-Wants=network-online.target
+      gum style --foreground 33 "Would you like to explore additional AI models for Ollama?"
+      if gum confirm "View more models?"; then
+        gum style --foreground 39 "Opening Ollama models page..."
+        xdg-open "https://ollama.com/search" > /dev/null 2>&1
+      fi
 
-[Service]
-Restart=always
-ExecStartPre=-/usr/bin/docker rm -f open-webui
-ExecStart=/usr/bin/docker start -a open-webui
-ExecStop=/usr/bin/docker stop -t 10 open-webui
+      # Prompt for OpenWebUI installation
+      echo
+      gum style --foreground 33 "Would you like to install OpenWebUI ?"
+      if gum confirm "Install OpenWebUI?"; then
+        echo
+        gum style --foreground 7 "Installing OpenWebUI from AUR..."
+        $AUR_HELPER -S --needed open-webui
 
-[Install]
-WantedBy=multi-user.target
-EOF
-
-    # Enable and start the service
-    sudo systemctl daemon-reload
-    sudo systemctl enable open-webui.service
-    sudo systemctl start open-webui.service
-      
-    gum style --foreground 46 "OpenWebUI service has been created and enabled!"
-    gum style --foreground 46 "It will automatically start on system boot."
-    sleep 3
-  fi
-
-  # Prompt for additional models
-  echo
-  gum style --foreground 33 "Would you like to explore additional AI models for Ollama?"
-  if gum confirm "View more models?"; then
-    gum style --foreground 39 "Opening Ollama models page..."
-    xdg-open "https://ollama.com/search" > /dev/null 2>&1
-  fi
-  
-  sleep 3
-  exec "$0"
+        gum style --foreground 46 "OpenWebUI has been installed!"
+        gum style --foreground 46 "You can access it at: http://localhost:3000"
+        sleep 3
+      fi
+      ;;
+    *)
+      gum style --foreground 196 "Invalid choice. Please try again."
+      sleep 2
+      exec "$0"
+      ;;
+  esac
 }
 
 # Function to update system
