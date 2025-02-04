@@ -147,9 +147,9 @@ package_selection_dialog() {
                     clear
                     install_pacman_packages meld
                     ;;
-                Zed)
+                Cursor)
                     clear
-                    install_pacman_packages zed
+                    install_aur_packages cursor-extracted
                     ;;
                 Emacs)
                     clear
@@ -370,7 +370,7 @@ process_choice() {
         "Github" "GitHub Desktop application" OFF \
         "VSCodium" "Telemetry-less code editing" OFF \
         "Meld" "Visual diff and merge tool" OFF \
-        "Zed" "Zed IDE by ATOM Devs" OFF \
+        "Cursor" "The AI Code Editor" OFF \
         "Eclipse" "Java bytecode compiler" OFF \
         "IntelliJ" "IntelliJ IDEA IDE for Java" OFF
         echo

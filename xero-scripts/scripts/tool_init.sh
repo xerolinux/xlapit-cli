@@ -22,6 +22,8 @@ display_menu() {
   gum style --foreground 7 "2. Activate Flathub Repositories (Vanilla Arch)."
   gum style --foreground 7 "3. Enable Multithreaded Compilation (Vanilla Arch)."
   gum style --foreground 7 "4. Install 3rd-Party GUI or TUI Package Manager(s)."
+  echo
+  gum style --foreground 39 "d. Set-up Self-Hosted Ollama with DeepSeek-R1 A.I Tool."
 }
 
 # Function to handle errors and prompt user
@@ -154,6 +156,32 @@ install_gui_package_managers() {
   exec "$0"
 }
 
+install_ollama_ai() {
+  gum style --foreground 7 "Installing Ollama..."
+  sleep 2
+  echo
+  curl -fsSL https://ollama.com/install.sh | sh
+  sleep 3
+  echo
+  gum style --foreground 196 "Grabbing the DeepSeek-R1 32b Model."
+  echo
+  gum style --foreground 196 "Download Size : 20GB, Decent System Recommended !"
+  echo
+  sleep 3
+  ollama pull deepseek-r1:32b
+  echo
+  gum style --foreground 7 "Type the following command to use it :"
+  echo
+  gum style --foreground 39 "ollama run deepseek-r1:32b"
+  echo
+  sleep 10
+  gum style --foreground 39 "Opening pages for more models & OpenWebUI Guide..."
+  xdg-open "https://ollama.com/search" > /dev/null 2>&1
+  xdg-open "https://github.com/open-webui/open-webui" > /dev/null 2>&1
+  sleep 3
+  exec "$0"
+}
+
 # Function to update system
 update_system() {
     echo "Select an update option:"
@@ -219,6 +247,7 @@ main() {
       2) activate_flathub_repositories ;;
       3) enable_multithreaded_compilation ;;
       4) install_gui_package_managers ;;
+      d) install_ollama_ai ;;
       u) update_system ;;
       r) restart ;;
       q) clear && exec xero-cli -m ;;
