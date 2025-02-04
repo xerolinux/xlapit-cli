@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
-# Set window title
-echo -ne "\033]0;Device Drivers\007"
+# Add this at the start of the script, right after the shebang
+trap 'clear && exec "$0"' INT
+
+# Check if being run from xero-cli
+if [ -z "$AUR_HELPER" ]; then
+    echo "Error: This script must be run through xero-cli"
+    echo "Please use: xero-cli -m"
+    exit 1
+fi
 
 SCRIPTS="/usr/share/xero-scripts/"
 
@@ -28,39 +35,6 @@ display_options() {
     gum style --foreground 196 "k. Install Arch Kernel Manager Tool (XeroLinux Repo)."
 }
 
-# Function to handle errors and prompt user
-handle_error() {
-    echo
-    gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
-    read -rp "Enter your choice: " choice
-    case $choice in
-        r|R) exec "$0" ;;
-        e|E) exit 0 ;;
-        *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-    esac
-    sleep 3
-    clear && exec "$0"
-}
-
-# Function to handle Ctrl+C
-handle_interrupt() {
-    echo
-    gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
-    read -rp "Enter your choice: " choice
-    echo
-    case $choice in
-        e|E) exit 1 ;;
-        r|R) exec "$0" ;;
-        *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-    esac
-    sleep 3
-    clear && exec "$0"
-}
-
-# Trap errors and Ctrl+C
-trap 'handle_error' ERR
-trap 'handle_interrupt' SIGINT
-
 # Function to prompt user for GPU drivers
 prompt_user() {
     gum style --foreground 123 "Gathering information about your connected GPUs..."
@@ -69,9 +43,23 @@ prompt_user() {
     echo
     gum style --foreground 154 "Answer below prompts wisely. No Legacy GPU Support."
     echo
-    read -rp "Single or Dual (Hybrid) GPU/iGPU Setup ? (s/d): " setup_type
+    while true; do
+        read -rp "Single or Dual (Hybrid) GPU/iGPU Setup ? (s/d): " setup_type
+        if [[ $setup_type =~ ^[sd]$ ]]; then
+            break
+        fi
+        gum style --foreground 196 "Invalid input. Please enter 's' or 'd'."
+    done
+
     if [[ $setup_type == "s" ]]; then
-        read -rp "Is your GPU AMD, Intel, or NVIDIA? (amd/intel/nvidia): " gpu_type
+        while true; do
+            read -rp "Is your GPU AMD, Intel, or NVIDIA? (amd/intel/nvidia): " gpu_type
+            gpu_type=$(echo "$gpu_type" | tr '[:upper:]' '[:lower:]')
+            if [[ $gpu_type =~ ^(amd|intel|nvidia)$ ]]; then
+                break
+            fi
+            gum style --foreground 196 "Invalid input. Please enter 'amd', 'intel', or 'nvidia'."
+        done
         case $gpu_type in
             amd)
                 sudo pacman -S --needed --noconfirm mesa xf86-video-amdgpu amdvlk lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader vulkan-mesa-layers lib32-vulkan-mesa-layers
@@ -93,7 +81,19 @@ prompt_user() {
                     echo "Invalid selection."
                     return
                 fi
-                sudo sed -i '/^MODULES=(/s/)$/nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf
+                # Check if modules are already present and add only missing ones
+                if ! grep -q "^MODULES=(.*nvidia.*nvidia_modeset.*nvidia_uvm.*nvidia_drm.*)" /etc/mkinitcpio.conf; then
+                    # First, ensure MODULES=( exists
+                    if ! grep -q "^MODULES=(" /etc/mkinitcpio.conf; then
+                        sudo sed -i '1i\MODULES=()' /etc/mkinitcpio.conf
+                    fi
+                    # Add missing modules
+                    for module in nvidia nvidia_modeset nvidia_uvm nvidia_drm; do
+                        if ! grep -q "^MODULES=(.*${module}.*)" /etc/mkinitcpio.conf; then
+                            sudo sed -i "/^MODULES=(/s/)$/${module} &/" /etc/mkinitcpio.conf
+                        fi
+                    done
+                fi
                 sudo systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service
                 sudo mkinitcpio -P
                 echo
@@ -119,6 +119,14 @@ prompt_user() {
 
 # Function to install AUR packages
 install_aur_packages() {
+    if [[ -z "$AUR_HELPER" ]]; then
+        gum style --foreground 196 "Error: AUR helper not defined"
+        return 1
+    fi
+    if ! command -v "$AUR_HELPER" &> /dev/null; then
+        gum style --foreground 196 "Error: AUR helper ($AUR_HELPER) not found"
+        return 1
+    fi
     $AUR_HELPER -S --noconfirm --needed "$@"
 }
 
@@ -218,7 +226,7 @@ process_choice() {
                 clear && exec "$0"
                 ;;
             g)
-                gum style --foreground 7 "Applying nVidia GSP Firmware fix..."
+                gum style --foreground 7 "nVidia GSP Firmware Fix Management..."
                 echo
                 if pacman -Qq | grep -qE 'nvidia-dkms|nvidia-open-dkms'; then
                     if pacman -Qq | grep -q 'nvidia-open-dkms'; then
@@ -235,16 +243,42 @@ process_choice() {
                             gum style --foreground 33 "No changes made."
                         fi
                     else
-                        read -p "Apply GSP Firmware fix for closed drivers? (y/n): " response
-                        if [[ "$response" =~ ^[Yy]$ ]]; then
-                            echo -e "options nvidia-drm modeset=1 fbdev=1\noptions nvidia NVreg_EnableGpuFirmware=0" | sudo tee -a /etc/modprobe.d/nvidia-modeset.conf
-                            sudo mkinitcpio -P
-                            echo
-                            gum style --foreground 33 "GSP Firmware fix applied."
-                        else
-                            echo
-                            gum style --foreground 33 "No changes made."
-                        fi
+                        read -p "Choose: (1) Apply GSP fix (2) Remove fix (3) Switch to open drivers: " choice
+                        case $choice in
+                            1)
+                                echo -e "options nvidia-drm modeset=1 fbdev=1\noptions nvidia NVreg_EnableGpuFirmware=0" | sudo tee -a /etc/modprobe.d/nvidia-modeset.conf
+                                sudo mkinitcpio -P
+                                echo
+                                gum style --foreground 33 "GSP Firmware fix applied."
+                                ;;
+                            2)
+                                if [ -f "/etc/modprobe.d/nvidia-modeset.conf" ]; then
+                                    sudo rm /etc/modprobe.d/nvidia-modeset.conf
+                                    sudo mkinitcpio -P
+                                    echo
+                                    gum style --foreground 33 "GSP Firmware fix removed, keeping closed drivers."
+                                else
+                                    echo
+                                    gum style --foreground 33 "No GSP Firmware fix found to remove."
+                                fi
+                                ;;
+                            3)
+                                # Remove GSP firmware fix if exists
+                                if [ -f "/etc/modprobe.d/nvidia-modeset.conf" ]; then
+                                    sudo rm /etc/modprobe.d/nvidia-modeset.conf
+                                fi
+                                # Switch to open drivers
+                                sudo pacman -Rdd --noconfirm nvidia-dkms
+                                sudo pacman -S --noconfirm nvidia-open-dkms
+                                sudo mkinitcpio -P
+                                echo
+                                gum style --foreground 33 "Reverted to open drivers and removed GSP Firmware fix."
+                                ;;
+                            *)
+                                echo
+                                gum style --foreground 33 "No changes made."
+                                ;;
+                        esac
                     fi
                     echo
                     read -p "Do you want to reboot now? (y/n): " reboot_response

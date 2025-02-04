@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
-#set -e
+set -e
+
+# Add this at the start of the script, right after the shebang
+trap 'clear && exec "$0"' INT
+
+# Check if being run from xero-cli
+if [ -z "$AUR_HELPER" ]; then
+    echo "Error: This script must be run through xero-cli"
+    echo "Please use: xero-cli -m"
+    exit 1
+fi
 
 ######################################
 # Author   :   DarkXero              #
@@ -8,19 +18,6 @@
 
 # Set window title
 echo -ne "\033]0;Docker & Distrobox\007"
-
-# Function to display header
-display_header() {
-  clear
-  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "System Customization"
-  echo
-  gum style --foreground 141 "Hello $USER, please select an option. Press 'i' for the Wiki."
-  echo
-}
-check_dependency() {
-  local dependency=$1
-  command -v $dependency >/dev/null 2>&1 || { echo >&2 "$dependency is not installed. Installing..."; sudo pacman -S --noconfirm $dependency; }
-}
 
 # Function to display header
 display_header() {
@@ -47,41 +44,26 @@ display_options() {
   gum style --foreground 196 "6. Update all Containers (Might take a while)."
 }
 
-# Function to handle errors and prompt user
-handle_error() {
-  echo
-  gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
-  read -rp "Enter your choice: " choice
-  case $choice in
-    r|R) exec "$0" ;;
-    e|E) exit 0 ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-  esac
-  sleep 3
-  clear && exec "$0"
-}
-
-# Function to handle Ctrl+C
-handle_interrupt() {
-  echo
-  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
-  read -rp "Enter your choice: " choice
-  echo
-  case $choice in
-    e|E) exit 1 ;;
-    r|R) exec "$0" ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-  esac
-  sleep 3
-  clear && exec "$0"
-}
-
-# Trap errors and Ctrl+C
-trap 'handle_error' ERR
-trap 'handle_interrupt' SIGINT
+# Add this before process_choice function
+# Determine AUR helper
+if command -v yay >/dev/null 2>&1; then
+    AUR_HELPER="yay"
+elif command -v paru >/dev/null 2>&1; then
+    AUR_HELPER="paru"
+else
+    gum style --foreground 196 "Error: No supported AUR helper (yay or paru) found"
+    exit 1
+fi
 
 # Function to process user choice
 process_choice() {
+  # Check if AUR_HELPER is set
+  if [ -z "$AUR_HELPER" ]; then
+    gum style --foreground 196 "Error: AUR_HELPER variable is not set"
+    sleep 3
+    exit 1
+  fi
+
   while :; do
     echo
     read -rp "Enter your choice, 'r' to reboot or 'q' for main menu : " CHOICE
@@ -99,7 +81,7 @@ process_choice() {
         sleep 2
         echo
         sudo pacman -S --noconfirm --needed docker docker-compose docker-buildx || handle_error
-        $AUR_HELPER -S --noconfirm --needed lazydocker-bin
+        $AUR_HELPER -S --noconfirm --needed lazydocker-bin || handle_error
         # Prompt the user
         echo
         gum confirm "Do you want to install Podman Desktop ?" && \

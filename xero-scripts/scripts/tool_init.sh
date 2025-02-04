@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-#set -eu
+set -e
 
-######################################
-# Author   :   DarkXero              #
-# Website  :   http://xerolinux.xyz  #
-######################################
+# Add this at the start of the script, right after the shebang
+trap 'clear && exec "$0"' INT
 
-# Set window title
-echo -ne "\033]0;Initial System Setup\007"
+# Check if being run from xero-cli
+if [ -z "$AUR_HELPER" ]; then
+    echo "Error: This script must be run through xero-cli"
+    echo "Please use: xero-cli -m"
+    exit 1
+fi
 
 # Function to display the menu
 display_menu() {
@@ -25,40 +27,6 @@ display_menu() {
   echo
   gum style --foreground 39 "d. Set-up Self-Hosted Ollama with DeepSeek-R1 A.I Tool."
 }
-
-# Function to handle errors and prompt user
-handle_error() {
-  echo
-  gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
-  read -rp "Enter your choice: " choice
-  case $choice in
-    r|R) exec "$0" ;;
-    e|E) exit 0 ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-  esac
-  sleep 3
-  clear && exec "$0"
-}
-
-# Function to handle Ctrl+C
-handle_interrupt() {
-  echo
-  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
-  echo
-  read -rp "Enter your choice: " choice
-  echo
-  case $choice in
-    e|E) exit 1 ;;
-    r|R) exec "$0" ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-  esac
-  sleep 3
-  clear && exec "$0"
-}
-
-# Trap errors and Ctrl+C
-trap 'handle_error' ERR
-trap 'handle_interrupt' SIGINT
 
 # Function to open Wiki
 open_wiki() {
@@ -143,7 +111,9 @@ install_gui_package_managers() {
     "PacSeek" "PacSeek Package Manager" off \
     "BauhGUI" "Bauh GUI Package Manager" off \
     "EasyFlatpak" "Flatpak Package Manager" off 3>&1 1>&2 2>&3)
-  for PACKAGE in $PACKAGES; do
+  IFS='"' read -ra PACKAGE_ARRAY <<< "$PACKAGES"
+  for PACKAGE in "${PACKAGE_ARRAY[@]}"; do
+    [ -z "$PACKAGE" ] && continue
     case $PACKAGE in
       "OctoPi") clear && $AUR_HELPER -S --needed octopi alpm_octopi_utils ;;
       "PacSeek") clear && $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
@@ -157,82 +127,167 @@ install_gui_package_managers() {
 }
 
 install_ollama_ai() {
-  gum style --foreground 7 "Installing Ollama..."
-  sleep 2
-  echo
-  curl -fsSL https://ollama.com/install.sh | sh
-  sleep 3
-  echo
-  gum style --foreground 196 "Grabbing the DeepSeek-R1 32b Model."
-  echo
-  gum style --foreground 196 "Download Size : 20GB, Decent System Recommended !"
-  echo
-  sleep 3
-  ollama pull deepseek-r1:32b
+  # Check if Ollama is already installed
+  if command -v ollama &> /dev/null; then
+    gum style --foreground 46 "Ollama is already installed!"
+    echo
+  else
+    gum style --foreground 7 "Installing Ollama..."
+    sleep 2
+    echo
+    curl -fsSL https://ollama.com/install.sh | sh
+    sleep 3
+  fi
+
+  # Check if deepseek model is already pulled
+  if ollama list | grep -q "deepseek-r1:32b"; then
+    gum style --foreground 46 "DeepSeek-R1 32b model is already installed!"
+    echo
+  else
+    gum style --foreground 196 "Grabbing the DeepSeek-R1 32b Model."
+    echo
+    gum style --foreground 196 "Download Size : 20GB, Decent System Recommended !"
+    echo
+    sleep 3
+    ollama pull deepseek-r1:32b
+  fi
+
   echo
   gum style --foreground 7 "Type the following command to use it :"
   echo
   gum style --foreground 39 "ollama run deepseek-r1:32b"
   echo
-  sleep 10
-  gum style --foreground 39 "Opening pages for more models & OpenWebUI Guide..."
-  xdg-open "https://ollama.com/search" > /dev/null 2>&1
-  xdg-open "https://github.com/open-webui/open-webui" > /dev/null 2>&1
+  sleep 3
+
+  # Prompt for OpenWebUI installation
+  echo
+  gum style --foreground 33 "Would you like to install OpenWebUI (a user-friendly interface for Ollama)?"
+  gum style --foreground 196 "This will also install Docker if not already present."
+  echo
+  if gum confirm "Install OpenWebUI?"; then
+    # Install Docker if not present
+    if ! command -v docker &> /dev/null; then
+      gum style --foreground 7 "Installing Docker..."
+      sudo pacman -S --needed --noconfirm docker
+      sudo systemctl enable --now docker.service
+      sudo usermod -aG docker "$USER"
+      gum style --foreground 46 "Docker installed and enabled!"
+      echo
+      gum style --foreground 196 "Note: You'll need to log out and back in for Docker permissions to take effect."
+      sleep 3
+    fi
+    
+    gum style --foreground 7 "Installing OpenWebUI via Docker..."
+    echo
+    docker run -d -p 3000:8080 \
+      --add-host=host.docker.internal:host-gateway \
+      -v open-webui:/app/backend/data \
+      --name open-webui \
+      --restart always \
+      ghcr.io/open-webui/open-webui:main
+    
+    echo
+    gum style --foreground 46 "OpenWebUI has been installed!"
+    gum style --foreground 46 "You can access it at: http://localhost:3000"
+    
+    # Create the systemd service
+    echo
+    gum style --foreground 33 "Creating systemd service for OpenWebUI..."
+    
+    # Create the systemd service file
+    sudo tee /etc/systemd/system/open-webui.service > /dev/null << 'EOF'
+[Unit]
+Description=Open WebUI Container Service
+After=docker.service ollama.service network-online.target
+Requires=docker.service
+Wants=network-online.target
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker rm -f open-webui
+ExecStart=/usr/bin/docker start -a open-webui
+ExecStop=/usr/bin/docker stop -t 10 open-webui
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    # Enable and start the service
+    sudo systemctl daemon-reload
+    sudo systemctl enable open-webui.service
+    sudo systemctl start open-webui.service
+      
+    gum style --foreground 46 "OpenWebUI service has been created and enabled!"
+    gum style --foreground 46 "It will automatically start on system boot."
+    sleep 3
+  fi
+
+  # Prompt for additional models
+  echo
+  gum style --foreground 33 "Would you like to explore additional AI models for Ollama?"
+  if gum confirm "View more models?"; then
+    gum style --foreground 39 "Opening Ollama models page..."
+    xdg-open "https://ollama.com/search" > /dev/null 2>&1
+  fi
+  
   sleep 3
   exec "$0"
 }
 
 # Function to update system
 update_system() {
-    echo "Select an update option:"
-    echo
-    echo "1) Simple (Arch packages only)"
-    echo "2) Extended (Arch, AUR, Flatpaks)"
-    echo "3) Advanced (All in one updater, Risky!)"
-    echo
-    echo "4) Return to previous menu."
-    echo
-    read -rp "Enter your choice: " choice
+  if ! command -v flatpak &> /dev/null; then
+    gum style --foreground 196 "Warning: flatpak is not installed"
+  fi
+  
+  echo "Select an update option:"
+  echo
+  echo "1) Simple (Arch packages only)"
+  echo "2) Extended (Arch, AUR, Flatpaks)"
+  echo "3) Advanced (All in one updater, Risky!)"
+  echo
+  echo "4) Return to previous menu."
+  echo
+  read -rp "Enter your choice: " choice
 
-    case $choice in
-        1)
-            sudo pacman -Syyu
-            ;;
-        2)
-            $AUR_HELPER -Syyu
-            flatpak update
-            ;;
-        3)
-            echo
-            gum style --foreground 196 "Warning: Using Topgrade can be destructive. Use at OWN RISK!"
-            sleep 6
-            echo
-            install_topgrade_aio_updater
-            ;;
-        4)
-            gum style --foreground 10 "Exiting..."
-            ;;
-        *)
-            gum style --foreground 9 "Invalid option. Please try again."
-            ;;
-    esac
+  case $choice in
+    1)
+      sudo pacman -Syyu
+      ;;
+    2)
+      $AUR_HELPER -Syyu
+      flatpak update
+      ;;
+    3)
+      echo
+      gum style --foreground 196 "Warning: Using Topgrade can be destructive. Use at OWN RISK!"
+      sleep 6
+      echo
+      install_topgrade_aio_updater
+      ;;
+    4)
+      gum style --foreground 10 "Exiting..."
+      ;;
+    *)
+      gum style --foreground 9 "Invalid option. Please try again."
+      ;;
+  esac
 }
 
 restart() {
-    # Notify the user that the system is rebooting
-    gum style --foreground 69 "Rebooting System..."
-    sleep 3
+  # Notify the user that the system is rebooting
+  gum style --foreground 69 "Rebooting System..."
+  sleep 3
 
-    # Countdown from 5 to 1
-    for i in {5..1}; do
-        dialog --infobox "Rebooting in $i seconds..." 3 30
-        sleep 1
-    done
+  # Countdown from 5 to 1
+  for i in {5..1}; do
+    dialog --infobox "Rebooting in $i seconds..." 3 30
+    sleep 1
+  done
 
-    # Execute the reboot command
-    reboot
+  # Execute the reboot command
+  reboot
 }
-
 
 main() {
   while :; do

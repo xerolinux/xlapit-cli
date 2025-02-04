@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-#set -e
+set -e
 
-######################################
-# Author   :   DarkXero              #
-# Website  :   http://xerolinux.xyz  #
-######################################
+# Add this at the start of the script, right after the shebang
+trap 'clear && exec "$0"' INT
 
-# Set window title
-echo -ne "\033]0;Gaming Tools\007"
+# Check if being run from xero-cli
+if [ -z "$AUR_HELPER" ]; then
+    echo "Error: This script must be run through xero-cli"
+    echo "Please use: xero-cli -m"
+    exit 1
+fi
 
 # Function to display header
 display_header() {
@@ -51,39 +53,6 @@ display_options() {
   gum style --foreground 7 "6. Bottles."
   gum style --foreground 7 "7. ProtonUp-QT."
 }
-
-# Function to handle errors and prompt user
-handle_error() {
-  echo
-  gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
-  read -rp "Enter your choice: " choice
-  case $choice in
-    r|R) exec "$0" ;;
-    e|E) exit 0 ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-  esac
-  sleep 3
-  clear && exec "$0"
-}
-
-# Function to handle Ctrl+C
-handle_interrupt() {
-  echo
-  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
-  read -rp "Enter your choice: " choice
-  echo
-  case $choice in
-    e|E) exit 1 ;;
-    r|R) exec "$0" ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-  esac
-  sleep 3
-  clear && exec "$0"
-}
-
-# Trap errors and Ctrl+C
-trap 'handle_error' ERR
-trap 'handle_interrupt' SIGINT
 
 # Function to display package selection dialog
 package_selection_dialog() {

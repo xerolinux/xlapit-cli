@@ -9,4 +9,5 @@ clap = { version = "4.4.17", features = ["derive"] }
 cli_input = "1.0.4"
 colored = "2.1.0"
 fspp = "2.1.0"
+signal-hook = "0.3"
 piglog = { version = "1.4.1", features = ["clap_derive"] }

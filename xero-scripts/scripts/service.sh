@@ -1,18 +1,15 @@
 #!/usr/bin/env bash
-
 set -e
 
-######################################
+# Add this at the start of the script, right after the shebang
+trap 'clear && exec "$0"' INT
 
-# Author : DarkXero #
-
-# Website : http://xerolinux.xyz #
-
-######################################
-
-# Set window title
-
-echo -ne "\033]0;Fixes & Tweaks\007"
+# Check if being run from xero-cli
+if [ -z "$AUR_HELPER" ]; then
+    echo "Error: This script must be run through xero-cli"
+    echo "Please use: xero-cli -m"
+    exit 1
+fi
 
 # Function to display the menu
 
@@ -36,50 +33,22 @@ display_menu() {
     gum style --foreground 111 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
 }
 
-# Function to handle errors and prompt user
-
-handle_error() {
-    echo
-    gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
-
-    read -rp "Enter your choice: " choice
-    case $choice in
-        r|R) main ;;
-        e|E) exit 0 ;;
-        *) gum style --foreground 50 "Invalid choice. Returning to menu." && sleep 2 && main ;;
-    esac
-}
-
-# Function to handle Ctrl+C
-
-handle_interrupt() {
-    echo
-    gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
-
-    read -rp "Enter your choice: " choice
-    case $choice in
-        e|E) exit 1 ;;
-        r|R) main ;;
-        *) gum style --foreground 50 "Invalid choice. Returning to menu." && sleep 2 && main ;;
-    esac
-}
-
-# Trap errors and Ctrl+C
-
-trap 'handle_error' ERR
-trap 'handle_interrupt' SIGINT
-
 # Function for each task
 
 install_firewalld() {
     echo
     gum style --foreground 7 "########## Installing Firewalld ##########"
     echo
-    sudo pacman -S --needed --noconfirm firewalld python-pyqt5 python-capng
-    sudo systemctl enable --now firewalld.service
+    if ! sudo pacman -S --needed --noconfirm firewalld python-pyqt5 python-capng; then
+        gum style --foreground 196 "Failed to install packages"
+        exit 1
+    fi
+    if ! sudo systemctl enable --now firewalld.service; then
+        gum style --foreground 196 "Failed to enable firewalld service"
+        exit 1
+    fi
     echo
     gum style --foreground 7 "########## All Done, Enjoy! ##########"
-
     sleep 3
     main
 }
@@ -93,7 +62,7 @@ clear_pacman_cache() {
 
 unlock_pacman_db() {
     echo
-    sudo rm /var/lib/pacman/db.lck || handle_error
+    sudo rm /var/lib/pacman/db.lck || exit 1
     sleep 2
     main
 }
@@ -102,7 +71,7 @@ activate_v4l2loopback() {
     echo
     gum style --foreground 7 "########## Setting up v4l2loopback ##########"
     echo
-    sudo pacman -S --noconfirm --needed v4l2loopback-dkms v4l2loopback-utils || handle_error
+    sudo pacman -S --noconfirm --needed v4l2loopback-dkms v4l2loopback-utils || exit 1
     echo "v4l2loopback" | sudo tee /etc/modules-load.d/v4l2loopback.conf > /dev/null
     echo 'options v4l2loopback exclusive_caps=1 card_label="OBS Virtual Camera"' | sudo tee /etc/modprobe.d/v4l2loopback.conf > /dev/null
     echo
@@ -155,7 +124,7 @@ build_archiso() {
     mkdir -p ~/ArchWork ~/ArchOut
     sleep 3
     echo
-    sudo mkarchiso -v -w ~/ArchWork -o ~/ArchOut /usr/share/archiso/configs/releng || handle_error
+    sudo mkarchiso -v -w ~/ArchWork -o ~/ArchOut /usr/share/archiso/configs/releng || exit 1
     echo
     echo "Step 3 - Cleaning up...."
     echo
@@ -181,7 +150,7 @@ reset_everything() {
        sleep 1
    done
 
-   reboot || handle_error
+   reboot || exit 1
 }
 
 waydroid_guide() {
@@ -199,17 +168,17 @@ update_mirrorlist() {
 
    if ! command -v rate-mirrors &> /dev/null; then
        echo "rate-mirrors is not installed. Installing..."
-       $AUR_HELPER -S --noconfirm --needed rate-mirrors-bin || handle_error
+       $AUR_HELPER -S --noconfirm --needed rate-mirrors-bin || exit 1
    fi
    echo
    if gum confirm "Do you want to update Chaotic-AUR mirrorlist too?"; then
-       rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist || handle_error
-       rate-mirrors --allow-root --protocol https chaotic-aur | sudo tee /etc/pacman.d/chaotic-mirrorlist || handle_error
+       rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist || exit 1
+       rate-mirrors --allow-root --protocol https chaotic-aur | sudo tee /etc/pacman.d/chaotic-mirrorlist || exit 1
    else
-       rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist || handle_error
+       rate-mirrors --allow-root --protocol https arch | sudo tee /etc/pacman.d/mirrorlist || exit 1
    fi
 
-   sudo pacman -Syy || handle_error
+   sudo pacman -Syy || exit 1
    echo
    gum style --foreground 69 "########## Done! Updating should go faster ##########"
 
@@ -222,13 +191,13 @@ fix_gpg_keyring() {
    gum style --foreground 69 "########## Fixing Pacman Databases.. ##########"
    echo
    sleep 2
-   sudo rm -r /etc/pacman.d/gnupg/* || handle_error
+   sudo rm -r /etc/pacman.d/gnupg/* || exit 1
    sleep 2
-   sudo pacman-key --init && sudo pacman-key --populate || handle_error
+   sudo pacman-key --init && sudo pacman-key --populate || exit 1
    sleep 2
    echo "keyserver hkp://keyserver.ubuntu.com:80" | sudo tee --append /etc/pacman.d/gnupg/gpg.conf
    sleep 2
-   sudo pacman -Syy --noconfirm archlinux-keyring || handle_error
+   sudo pacman -Syy --noconfirm archlinux-keyring || exit 1
    echo
    gum style --foreground 69 "########## Done! Try Update now & Report ##########"
 
@@ -253,41 +222,53 @@ restart() {
 }
 
 disable_debug() {
-    # Disable Debug Flag in /etc/makepkg.conf
     echo
     gum style --foreground 69 "Makepkg Debug disabler..."
     sleep 3
     echo
     echo "This script will disable pkg debug flag"
     echo
-    read -p "Are you sure you want to proceed? (y/n) " response
-    if [[ $response =~ ^[Yy]$ ]]; then
+    read -rp "Are you sure you want to proceed? (y/n) " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        if ! sudo test -w "/etc/makepkg.conf"; then
+            gum style --foreground 196 "Error: Cannot write to /etc/makepkg.conf. Are you root?"
+            exit 1
+        }
 
-            if grep -q "!debug lto" /etc/makepkg.conf; then
-                    echo
-                    echo "Debugging is already off - nothing to do"
-	else
-                    echo
-                    echo "Disabling !debug"
-                    echo
-                    sudo sed -i "s/debug lto/!debug lto/g" /etc/makepkg.conf;
+        if grep -q "!debug lto" /etc/makepkg.conf; then
+            echo
+            gum style --foreground 7 "Debugging is already off - nothing to do"
+        else
+            echo
+            gum style --foreground 7 "Disabling !debug"
+            echo
+            if ! sudo sed -i "s/debug lto/!debug lto/g" /etc/makepkg.conf; then
+                gum style --foreground 196 "Failed to modify makepkg.conf"
+                exit 1
             fi
-
+            gum style --foreground 7 "Successfully disabled debug flag"
+        fi
     else
         echo
-        echo "Operation canceled."
-
+        gum style --foreground 7 "Operation canceled."
     fi
-
+    sleep 2
+    main
 }
 
 main() {
-   while :; do
-       display_menu
-       echo
-       read -rp "Enter your choice, 'r' to reboot or 'q' for main menu : " CHOICE
+    # Check if script is run as root
+    if [[ $EUID -eq 0 ]]; then
+        gum style --foreground 196 "This script should not be run as root"
+        exit 1
+    fi
 
-       case $CHOICE in
+    while :; do
+        display_menu
+        echo
+        read -rp "Enter your choice, 'r' to reboot or 'q' for main menu : " CHOICE
+
+        case $CHOICE in
            1) install_firewalld ;;
            2) clear_pacman_cache ;;
            3) unlock_pacman_db ;;
@@ -302,10 +283,10 @@ main() {
            r) restart ;;
            q) clear && exec xero-cli -m ;;
            *) gum style --foreground 31 "Invalid choice. Please select a valid option." ;;
-       esac
+        esac
 
-       sleep 3
-   done
+        sleep 3
+    done
 }
 
 main

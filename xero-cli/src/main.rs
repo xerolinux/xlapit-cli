@@ -7,6 +7,9 @@ use clap::Parser;
 use colored::Colorize;
 use piglog::prelude::*;
 use fspp::*;
+use signal_hook::{consts::SIGINT, flag};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 
 use script::*;
 use prompt::*;
@@ -49,6 +52,9 @@ fn main() {
 }
 
 fn app() -> ExitCode {
+    let term = Arc::new(AtomicBool::new(false));
+    flag::register(SIGINT, Arc::clone(&term)).expect("Failed to register SIGINT handler");
+
     // Parse CLI arguments.
     let args = cli::Cli::parse();
 
@@ -56,6 +62,11 @@ fn app() -> ExitCode {
         piglog::fatal!("Are you trying to create an explosion or something? (Don't use --verbose and --minimal together!)");
 
         return ExitCode::Fail;
+    }
+
+    // Check for termination signal
+    if term.load(Ordering::Relaxed) {
+        return ExitCode::Success;
     }
 
     std::env::set_var("CLEAR_TERMINAL", match args.do_not_clear { true => "0", false => "1" });

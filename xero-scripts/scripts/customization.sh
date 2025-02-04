@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
-#set -e
+set -e
 
-######################################
-# Author   :   DarkXero              #
-# Website  :   http://xerolinux.xyz  #
-######################################
+# Add this at the start of the script, right after the shebang
+trap 'clear && exec "$0"' INT
+
+# Check if being run from xero-cli
+if [ -z "$AUR_HELPER" ]; then
+    echo "Error: This script must be run through xero-cli"
+    echo "Please use: xero-cli -m"
+    exit 1
+fi
 
 # Set window title
 echo -ne "\033]0;System Customization\007"
@@ -37,11 +42,13 @@ handle_error() {
   read -rp "Enter your choice : " choice
   case $choice in
     r|R) exec "$0" ;;
-    e|E) exit 0 ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
+    e|E) exit 1 ;;
+    *) 
+      gum style --foreground 50 "Invalid choice. Returning to menu."
+      sleep 3
+      clear && exec "$0"
+      ;;
   esac
-  sleep 3
-  clear && exec "$0"
 }
 
 # Function to handle Ctrl+C
@@ -65,6 +72,16 @@ trap 'handle_interrupt' SIGINT
 
 # Function to process user choice
 process_choice() {
+  # Define AUR helper
+  if command -v yay &> /dev/null; then
+    AUR_HELPER="yay"
+  elif command -v paru &> /dev/null; then
+    AUR_HELPER="paru"
+  else
+    gum style --foreground 196 "No AUR helper found. Please install yay or paru first."
+    exit 1
+  fi
+
   while :; do
     echo
     read -rp "Enter your choice, 'r' to reboot or 'q' for main menu : " CHOICE
@@ -81,20 +98,30 @@ process_choice() {
         gum style --foreground 7 "Setting up Fastfetch..."
         sleep 2
         echo
-        sudo pacman -S --noconfirm --needed fastfetch imagemagick ffmpeg ffmpegthumbnailer ffmpegthumbs qt6-multimedia-ffmpeg
-        fastfetch --gen-config
+        if ! command -v fastfetch &> /dev/null; then
+          sudo pacman -S --noconfirm --needed fastfetch imagemagick ffmpeg ffmpegthumbnailer ffmpegthumbs qt6-multimedia-ffmpeg
+        fi
+        
+        # Create config directory if it doesn't exist
+        mkdir -p "$HOME/.config/fastfetch"
+        
+        # Only generate config if it doesn't exist
+        if [ ! -f "$HOME/.config/fastfetch/config.jsonc" ]; then
+          fastfetch --gen-config
+        fi
+        
         # Change to the ~/.config/fastfetch directory
-          cd "$HOME/.config/fastfetch" || exit
+        cd "$HOME/.config/fastfetch"
 
-          # Rename the existing config file by appending .bk to its name
-          mv config.jsonc{,.bk}
+        # Rename the existing config file by appending .bk to its name
+        mv config.jsonc{,.bk}
 
-          # Download the new image and config file
-          wget -qO Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png
-          wget -q https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc
+        # Download the new image and config file
+        wget -qO Arch.png https://raw.githubusercontent.com/xerolinux/xero-fixes/main/xero.png
+        wget -q https://raw.githubusercontent.com/xerolinux/xero-layan-git/main/Configs/Home/.config/fastfetch/config.jsonc
 
-          # Update the config file to use the new image name
-          sed -i 's/xero.png/Arch.png/' $HOME/.config/fastfetch/config.jsonc
+        # Update the config file to use the new image name
+        sed -i 's/xero.png/Arch.png/' $HOME/.config/fastfetch/config.jsonc
         sleep 2
         echo
         add_fastfetch() {
@@ -176,9 +203,16 @@ process_choice() {
         gum style --foreground 7 "Setting up ZSH with OMP & OMZ Plugins..."
         sleep 2
         echo
-        sudo pacman -S --needed --noconfirm zsh grml-zsh-config fastfetch
+        # Check if zsh is already installed
+        if ! command -v zsh &> /dev/null; then
+          sudo pacman -S --needed --noconfirm zsh grml-zsh-config fastfetch
+        fi
+        
+        # Check if oh-my-zsh is already installed
+        if [ ! -d "$HOME/.oh-my-zsh" ]; then
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        fi
         $AUR_HELPER -S --noconfirm --needed ttf-meslo-nerd siji-git ttf-unifont noto-color-emoji-fontconfig xorg-fonts-misc ttf-dejavu ttf-meslo-nerd-font-powerlevel10k noto-fonts-emoji powerline-fonts oh-my-posh
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
         git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
         git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
         git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
@@ -275,7 +309,12 @@ process_choice() {
         sleep 3
         ;;
       q)
-        clear && exec xero-cli -m
+        if command -v xero-cli &> /dev/null; then
+          clear && exec xero-cli -m
+        else
+          gum style --foreground 196 "xero-cli not found. Exiting..."
+          exit 1
+        fi
         ;;
       *)
         gum style --foreground 31 "Invalid choice. Please select a valid option."
