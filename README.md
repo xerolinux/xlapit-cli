@@ -16,4 +16,4 @@ First off let me say that everything this awesome toolkit provides is and will f
 
 ### Credits
 
-Main menu is written in **Rust** thanks to [**OgloTheNerd**](https://github.com/Oglo12). And some contributions were made by a friend of the project [**It-A-Me**](https://github.com/it-a-me). Thanks to them this Toolkit wouldn't have reached this point. Thanks guys!
+Main menu was written in **Rust** thanks to [**OgloTheNerd**](https://github.com/Oglo12). And some contributions were made by other friends of the project. Without them this Toolkit wouldn't have reached this point. Thanks guys!
