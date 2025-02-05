@@ -6,8 +6,11 @@ trap 'clear && exec "$0"' INT
 
 # Check if being run from xero-cli
 if [ -z "$AUR_HELPER" ]; then
-    echo "Error: This script must be run through xero-cli"
-    echo "Please use: xero-cli -m"
+    echo
+    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
+    echo
+    gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
+    echo
     exit 1
 fi
 
@@ -51,7 +54,7 @@ display_options() {
   gum style --foreground 7 "4. Heroic."
   gum style --foreground 7 "5. Lutris."
   gum style --foreground 7 "6. Bottles."
-  gum style --foreground 7 "7. ProtonUp-QT."
+  gum style --foreground 7 "7. ProtonPlus."
 }
 
 # Function to display package selection dialog
@@ -113,8 +116,8 @@ install_gaming_packages() {
     emulators)
       flatpak install -y org.libretro.RetroArch org.ppsspp.PPSSPP org.DolphinEmu.dolphin-emu org.flycast.Flycast org.pcsx2.PCSX2 flathub net.rpcs3.RPCS3
       ;;
-    protonupQT)
-      flatpak install -y net.davidotek.pupgui2
+    ProtonPlus)
+      flatpak install -y com.vysp3r.ProtonPlus
       ;;
     *)
       echo "Unknown package: $1"

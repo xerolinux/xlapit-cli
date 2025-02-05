@@ -6,8 +6,11 @@ trap 'clear && exec "$0"' INT
 
 # Check if being run from xero-cli
 if [ -z "$AUR_HELPER" ]; then
-    echo "Error: This script must be run through xero-cli"
-    echo "Please use: xero-cli -m"
+    echo
+    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
+    echo
+    gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
+    echo
     exit 1
 fi
 
@@ -128,12 +131,13 @@ install_gui_package_managers() {
 
 install_alpaca_ai() {
   if flatpak list | grep -q "com.jeffser.Alpaca"; then
-    echo
     gum style --foreground 46 "Alpaca is already installed!"
+    sleep 3
   else
     gum style --foreground 7 "Installing Alpaca (~4.5gb)..."
     echo
-    flatpak install flathub com.jeffser.Alpaca -y
+    sleep 3
+    flatpak install com.jeffser.Alpaca -y
     echo
     gum style --foreground 46 "Alpaca has been installed!"
     sleep 4
