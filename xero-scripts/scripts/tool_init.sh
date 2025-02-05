@@ -25,7 +25,7 @@ display_menu() {
   gum style --foreground 7 "3. Enable Multithreaded Compilation (Vanilla Arch)."
   gum style --foreground 7 "4. Install 3rd-Party GUI or TUI Package Manager(s)."
   echo
-  gum style --foreground 39 "d. Set-up Self-Hosted Ollama with DeepSeek-R1 A.I Tool."
+  gum style --foreground 39 "a. Install Multi-A.I Model Chat G.U.I (Local/Offline)."
 }
 
 # Function to open Wiki
@@ -126,145 +126,19 @@ install_gui_package_managers() {
   exec "$0"
 }
 
-install_ollama_ai() {
-  read -rp "(I)nstall or (R)emove Ollama, with DeepSeek-R1 ?" choice
-  case $choice in
-    r|R)
-      gum style --foreground 196 "Warning: This will remove Ollama, DeepSeek, and OpenWebUI!" choice
-      if gum confirm "Are you sure you want to proceed ?"; then
-        # Remove OpenWebUI if installed
-        if pacman -Qs open-webui > /dev/null; then
-          gum style --foreground 7 "Removing OpenWebUI..."
-          "$AUR_HELPER" -Rns --noconfirm open-webui
-          
-          # Remove OpenWebUI container image from Docker if present
-          if command -v docker &> /dev/null && docker images | grep -q "open-webui"; then
-            gum style --foreground 7 "Removing OpenWebUI Docker image..."
-            docker rmi ghcr.io/open-webui/open-webui:main
-            
-            echo
-            gum style --foreground 33 "Would you like to remove Docker as well?"
-            if gum confirm "Remove Docker?"; then
-              gum style --foreground 7 "Stopping Docker service..."
-              sudo systemctl stop docker.service
-              sudo systemctl disable docker.service
-              gum style --foreground 7 "Removing Docker..."
-              "$AUR_HELPER" -Rns --noconfirm docker
-              sudo gpasswd -d "$USER" docker
-            fi
-          fi
-          
-          # Remove OpenWebUI container image from Podman if present
-          if command -v podman &> /dev/null && podman images | grep -q "open-webui"; then
-            gum style --foreground 7 "Removing OpenWebUI Podman image..."
-            podman rmi ghcr.io/open-webui/open-webui:main
-            
-            echo
-            gum style --foreground 33 "Would you like to remove Podman as well?"
-            if gum confirm "Remove Podman?"; then
-              gum style --foreground 7 "Stopping Podman socket..."
-              systemctl --user stop podman.socket
-              systemctl --user disable podman.socket
-              gum style --foreground 7 "Removing Podman..."
-              "$AUR_HELPER" -Rns --noconfirm podman
-            fi
-          fi
-        fi
-        
-        # Remove Ollama and models if installed
-        if command -v ollama &> /dev/null; then
-          gum style --foreground 7 "Removing Ollama and AI models..."
-          sudo systemctl stop ollama
-          sudo rm -rf ~/.ollama
-          sudo rm -f /usr/local/bin/ollama
-        fi
-        
-        gum style --foreground 46 "Uninstallation complete!"
-        sleep 3
-      fi
-      exec "$0"
-      ;;
-    i|I)
-      # Rest of installation proceeds as normal
-      if command -v ollama &> /dev/null; then
-        gum style --foreground 46 "Ollama is already installed!"
-        echo
-      else
-        gum style --foreground 7 "Installing Ollama..."
-        echo
-        sleep 2
-        curl -fsSL https://ollama.com/install.sh | sh
-        sleep 3
-      fi
-
-      # Check if deepseek model is already pulled
-      if ollama list | grep -q "deepseek-r1:32b"; then
-        gum style --foreground 46 "DeepSeek-R1 32b model is already installed!"
-        echo
-      else
-        gum style --foreground 196 "Downloading DeepSeek-R1 (20GB/Good PC required)..."
-        echo
-        sleep 3
-        ollama pull deepseek-r1:32b
-      fi
-
-      # Prompt for additional models
-      echo
-      gum style --foreground 33 "Would you like to explore additional AI models for Ollama?"
-      if gum confirm "View more models?"; then
-        gum style --foreground 39 "Opening Ollama models page..."
-        xdg-open "https://ollama.com/search" > /dev/null 2>&1
-      fi
-
-      # Prompt for OpenWebUI installation
-      echo
-      gum style --foreground 33 "Would you like to install OpenWebUI ?"
-      if gum confirm "Install OpenWebUI?"; then
-        echo
-        gum style --foreground 7 "Installing OpenWebUI from AUR..."
-        $AUR_HELPER -S --needed open-webui
-
-        echo
-        gum style --foreground 33 "Would you like to use Docker or Podman for OpenWebUI?"
-        container_engine=$(gum choose "Docker" "Podman")
-        
-        case $container_engine in
-          "Docker")
-            if ! command -v docker &> /dev/null; then
-              gum style --foreground 7 "Docker not found. Installing Docker..."
-              $AUR_HELPER -S --needed docker
-              sudo systemctl enable --now docker.service
-              sudo usermod -aG docker "$USER"
-              gum style --foreground 46 "Docker installed! Please log out and back in for group changes to take effect."
-              sleep 2
-            fi
-            gum style --foreground 7 "Pulling OpenWebUI Docker image..."
-            docker pull ghcr.io/open-webui/open-webui:main
-            ;;
-          "Podman")
-            if ! command -v podman &> /dev/null; then
-              gum style --foreground 7 "Podman not found. Installing Podman..."
-              $AUR_HELPER -S --needed podman
-              # Start and enable podman socket for rootless containers
-              systemctl --user enable --now podman.socket
-              sleep 2
-            fi
-            gum style --foreground 7 "Pulling OpenWebUI Podman image..."
-            podman pull ghcr.io/open-webui/open-webui:main
-            ;;
-        esac
-
-        gum style --foreground 46 "OpenWebUI has been installed!"
-        gum style --foreground 46 "You can access it at: http://localhost:3000"
-        sleep 3
-      fi
-      ;;
-    *)
-      gum style --foreground 196 "Invalid choice. Please try again."
-      sleep 2
-      exec "$0"
-      ;;
-  esac
+install_alpaca_ai() {
+  if flatpak list | grep -q "com.jeffser.Alpaca"; then
+    echo
+    gum style --foreground 46 "Alpaca is already installed!"
+  else
+    gum style --foreground 7 "Installing Alpaca (~4.5gb)..."
+    echo
+    flatpak install flathub com.jeffser.Alpaca -y
+    echo
+    gum style --foreground 46 "Alpaca has been installed!"
+    sleep 4
+  fi
+  exec "$0"
 }
 
 # Function to update system
@@ -335,7 +209,7 @@ main() {
       2) activate_flathub_repositories ;;
       3) enable_multithreaded_compilation ;;
       4) install_gui_package_managers ;;
-      d) install_ollama_ai ;;
+      a) install_alpaca_ai ;;
       u) update_system ;;
       r) restart ;;
       q) clear && exec xero-cli -m ;;
