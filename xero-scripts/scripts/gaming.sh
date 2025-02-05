@@ -209,12 +209,12 @@ process_choice() {
         clear && exec "$0"
         ;;
       7)
-        gum style --foreground 7 "Installing ProtonUp-QT..."
+        gum style --foreground 7 "Installing ProtonPlus..."
         sleep 2
         echo
-        install_gaming_packages protonupQT
+        install_gaming_packages ProtonPlus
         echo
-        gum style --foreground 7 "ProtonUp-QT installation complete!"
+        gum style --foreground 7 "ProtonPlus installation complete!"
         sleep 3
         clear && exec "$0"
         ;;
