@@ -127,12 +127,10 @@ install_gui_package_managers() {
 }
 
 install_ollama_ai() {
-  echo
-  gum style --foreground 33 "Install (i) or remove (r) Ollama, DeepSeek and OpenWebUI?"
-  read -rp "Enter choice (i/r): " choice
+  read -rp "(I)nstall or (R)emove Ollama, with DeepSeek-R1 ?" choice
   case $choice in
     r|R)
-      gum style --foreground 196 "Warning: This will remove Ollama, DeepSeek, and OpenWebUI!"
+      gum style --foreground 196 "Warning: This will remove Ollama, DeepSeek, and OpenWebUI!" choice
       if gum confirm "Are you sure you want to proceed ?"; then
         # Remove OpenWebUI if installed
         if pacman -Qs open-webui > /dev/null; then
