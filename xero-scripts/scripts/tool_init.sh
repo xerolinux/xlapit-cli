@@ -138,6 +138,39 @@ install_ollama_ai() {
         if pacman -Qs open-webui > /dev/null; then
           gum style --foreground 7 "Removing OpenWebUI..."
           "$AUR_HELPER" -Rns --noconfirm open-webui
+          
+          # Remove OpenWebUI container image from Docker if present
+          if command -v docker &> /dev/null && docker images | grep -q "open-webui"; then
+            gum style --foreground 7 "Removing OpenWebUI Docker image..."
+            docker rmi ghcr.io/open-webui/open-webui:main
+            
+            echo
+            gum style --foreground 33 "Would you like to remove Docker as well?"
+            if gum confirm "Remove Docker?"; then
+              gum style --foreground 7 "Stopping Docker service..."
+              sudo systemctl stop docker.service
+              sudo systemctl disable docker.service
+              gum style --foreground 7 "Removing Docker..."
+              "$AUR_HELPER" -Rns --noconfirm docker
+              sudo gpasswd -d "$USER" docker
+            fi
+          fi
+          
+          # Remove OpenWebUI container image from Podman if present
+          if command -v podman &> /dev/null && podman images | grep -q "open-webui"; then
+            gum style --foreground 7 "Removing OpenWebUI Podman image..."
+            podman rmi ghcr.io/open-webui/open-webui:main
+            
+            echo
+            gum style --foreground 33 "Would you like to remove Podman as well?"
+            if gum confirm "Remove Podman?"; then
+              gum style --foreground 7 "Stopping Podman socket..."
+              systemctl --user stop podman.socket
+              systemctl --user disable podman.socket
+              gum style --foreground 7 "Removing Podman..."
+              "$AUR_HELPER" -Rns --noconfirm podman
+            fi
+          fi
         fi
         
         # Remove Ollama and models if installed
@@ -192,6 +225,36 @@ install_ollama_ai() {
         echo
         gum style --foreground 7 "Installing OpenWebUI from AUR..."
         $AUR_HELPER -S --needed open-webui
+
+        echo
+        gum style --foreground 33 "Would you like to use Docker or Podman for OpenWebUI?"
+        container_engine=$(gum choose "Docker" "Podman")
+        
+        case $container_engine in
+          "Docker")
+            if ! command -v docker &> /dev/null; then
+              gum style --foreground 7 "Docker not found. Installing Docker..."
+              $AUR_HELPER -S --needed docker
+              sudo systemctl enable --now docker.service
+              sudo usermod -aG docker "$USER"
+              gum style --foreground 46 "Docker installed! Please log out and back in for group changes to take effect."
+              sleep 2
+            fi
+            gum style --foreground 7 "Pulling OpenWebUI Docker image..."
+            docker pull ghcr.io/open-webui/open-webui:main
+            ;;
+          "Podman")
+            if ! command -v podman &> /dev/null; then
+              gum style --foreground 7 "Podman not found. Installing Podman..."
+              $AUR_HELPER -S --needed podman
+              # Start and enable podman socket for rootless containers
+              systemctl --user enable --now podman.socket
+              sleep 2
+            fi
+            gum style --foreground 7 "Pulling OpenWebUI Podman image..."
+            podman pull ghcr.io/open-webui/open-webui:main
+            ;;
+        esac
 
         gum style --foreground 46 "OpenWebUI has been installed!"
         gum style --foreground 46 "You can access it at: http://localhost:3000"
