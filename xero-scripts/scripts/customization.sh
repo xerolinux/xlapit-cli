@@ -14,9 +14,6 @@ if [ -z "$AUR_HELPER" ]; then
     exit 1
 fi
 
-# Set window title
-echo -ne "\033]0;System Customization\007"
-
 # Function to display header
 display_header() {
   clear
@@ -33,45 +30,11 @@ display_options() {
   gum style --foreground 7 "3. Setup Oh-My-Posh prompt (Vanilla Arch)."
   gum style --foreground 7 "4. Setup ZSH All in one with Oh-My-Posh/Plugs."
   echo
+  gum style --foreground 190 "a. Apply Adwaita GTK2 Patch/Fix."
   gum style --foreground 178 "g. Change Grub Theme (Xero Script)."
   gum style --foreground 200 "x. XeroLinux's Layan Rice (Vanilla KDE)."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro Only)."
 }
-
-# Function to handle errors and prompt user
-handle_error() {
-  echo
-  gum style --foreground 196 "An error occurred. Would you like to retry or exit? (r/e)"
-  read -rp "Enter your choice : " choice
-  case $choice in
-    r|R) exec "$0" ;;
-    e|E) exit 1 ;;
-    *) 
-      gum style --foreground 50 "Invalid choice. Returning to menu."
-      sleep 3
-      clear && exec "$0"
-      ;;
-  esac
-}
-
-# Function to handle Ctrl+C
-handle_interrupt() {
-  echo
-  gum style --foreground 190 "Script interrupted. Do you want to exit or restart the script? (e/r)"
-  read -rp "Enter your choice: " choice
-  echo
-  case $choice in
-    e|E) exit 1 ;;
-    r|R) exec "$0" ;;
-    *) gum style --foreground 50 "Invalid choice. Returning to menu." ;;
-  esac
-  sleep 3
-  clear && exec "$0"
-}
-
-# Trap errors and Ctrl+C
-trap 'handle_error' ERR
-trap 'handle_interrupt' SIGINT
 
 # Function to process user choice
 process_choice() {
@@ -249,6 +212,16 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
+      a)
+        gum style --foreground 7 "Applying Adwaita GTK2 Patch..."
+        sleep 2
+        echo
+        $AUR_HELPER -S --noconfirm --needed adwaita-dark
+        echo
+        gum style --foreground 7 "GTK2 Patch applied..."
+        sleep 3
+        clear && exec "$0"
+        ;;      
       g)
         gum style --foreground 7 "XeroLinug Grub Themes..."
         sleep 2

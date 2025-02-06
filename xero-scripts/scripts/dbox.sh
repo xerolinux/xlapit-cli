@@ -14,14 +14,6 @@ if [ -z "$AUR_HELPER" ]; then
     exit 1
 fi
 
-######################################
-# Author   :   DarkXero              #
-# Website  :   http://xerolinux.xyz  #
-######################################
-
-# Set window title
-echo -ne "\033]0;Docker & Distrobox\007"
-
 # Function to display header
 display_header() {
   clear
