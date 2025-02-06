@@ -236,7 +236,7 @@ disable_debug() {
         if ! sudo test -w "/etc/makepkg.conf"; then
             gum style --foreground 196 "Error: Cannot write to /etc/makepkg.conf. Are you root?"
             exit 1
-        }
+        fi
 
         if grep -q "!debug lto" /etc/makepkg.conf; then
             echo
