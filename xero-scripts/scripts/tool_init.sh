@@ -28,6 +28,7 @@ display_menu() {
   gum style --foreground 7 "3. Enable Multithreaded Compilation (Vanilla Arch)."
   gum style --foreground 7 "4. Install 3rd-Party GUI or TUI Package Manager(s)."
   echo
+  gum style --foreground 208 "n. Apply latest XeroLinux specific changes/updates."
   gum style --foreground 39 "a. Install Multi-A.I Model Chat G.U.I (Local/Offline)."
 }
 
@@ -200,6 +201,80 @@ restart() {
   reboot
 }
 
+apply_latest_fixes() {
+    # Ask user to choose between GNOME and Plasma
+    local DE
+    if gum confirm --default=false --affirmative "GNOME" --negative "Plasma" "Please select Version:"; then
+        DE="GNOME"
+    else
+        DE="Plasma"
+    fi
+    
+    gum style \
+        --border normal \
+        --margin "1" \
+        --padding "1" \
+        --border-foreground 212 \
+        "Applying latest fixes for $DE..."
+
+    echo
+    sleep 3  # Initial pause
+
+    if [ "$DE" = "Plasma" ]; then
+        # Install/update desktop-config
+        gum style --foreground 212 "Updating Desktop Config package..."
+        echo
+        sudo pacman -Syy --needed desktop-config
+        sleep 3
+        echo
+        # Copy apdatifier config
+        gum style --foreground 212 "Updating configuration files..."
+        echo
+        gum spin --spinner dot --title "Copying files..." -- \
+            cp -rf /etc/skel/.config/apdatifier/* "$HOME/.config/apdatifier/"
+        sleep 3
+
+        # Install additional packages
+        gum style --foreground 212 "Installing additional packages..."
+        echo
+        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop
+        sleep 3
+
+    elif [ "$DE" = "GNOME" ]; then
+        # Install/update desktop-config-gnome
+        gum style --foreground 212 "Updating desktop-config-gnome package..."
+        sudo pacman -Syy --needed desktop-config-gnome
+        sleep 3
+
+        echo
+
+        # Remove vim packages
+        gum style --foreground 212 "Removing old vim packages..."
+        sudo pacman -Rns --noconfirm vim vim-csound vim-runtime vim-nerdtree vim-supertab vim-syntastic vim-gitgutter vim-bufexplorer vim-nerdcommenter
+        sleep 3
+        echo
+        # Install new packages
+        gum style --foreground 212 "Installing new packages with neovide..."
+        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop neovide neovim-plug python-pynvim neovim-remote neovim-lspconfig
+        sleep 3
+        echo
+        # Copy nvim config
+        gum style --foreground 212 "Updating neovim configuration..."
+        gum spin --spinner dot --title "Copying files..." -- \
+            cp -r /etc/skel/.config/nvim/ "$HOME/.config/"
+        sleep 3
+    fi
+
+    gum style \
+        --border normal \
+        --margin "1" \
+        --padding "1" \
+        --border-foreground 212 \
+        "✅ All fixes and tweaks have been applied successfully!"
+    
+    sleep 6  # Final pause
+}
+
 main() {
   while :; do
     display_menu
@@ -215,6 +290,7 @@ main() {
       4) install_gui_package_managers ;;
       a) install_alpaca_ai ;;
       u) update_system ;;
+      n) apply_latest_fixes ;;
       r) restart ;;
       q) clear && exec xero-cli -m ;;
       *)

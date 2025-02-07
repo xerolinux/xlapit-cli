@@ -100,9 +100,50 @@ package_selection_dialog() {
                     clear
                     install_flatpak_packages com.google.AndroidStudio
                     ;;
-                neoVim)
+                neoVide)
                     clear
-                    install_pacman_packages neovim tmux neovim-lsp_signature neovim-lspconfig neovim-nvim-treesitter
+                    install_pacman_packages tmux neovide neovim-plug python-pynvim neovim-remote neovim-lspconfig
+                    sleep 3
+                    echo
+                    if [ -d "$HOME/.config/nvim" ]; then
+                        gum style --foreground 196 --bold "Warning: NeoVim configuration folder already exists!"
+                        echo
+                        read -rp "Would you like to Backup & Replace it with Xero/Drew's config ? (y/n): " replace_config
+                        if [[ $replace_config =~ ^[Yy]$ ]]; then
+                            backup_date=$(date '+%Y-%m-%d-%H')
+                            echo
+                            echo "Backing up existing nVim config..."
+                            
+                            # Backup existing folders with date suffix
+                            [ -d "$HOME/.config/nvim" ] && mv "$HOME/.config/nvim" "$HOME/.config/nvim.bk-$backup_date"
+                            [ -d "$HOME/.local/share/nvim" ] && mv "$HOME/.local/share/nvim" "$HOME/.local/share/nvim.bk-$backup_date"
+                            [ -d "$HOME/.local/state/nvim" ] && mv "$HOME/.local/state/nvim" "$HOME/.local/state/nvim.bk-$backup_date"
+                            [ -d "$HOME/.cache/nvim" ] && mv "$HOME/.cache/nvim" "$HOME/.cache/nvim.bk-$backup_date"
+                            
+                            echo
+                            gum style --foreground 212 ".:: Importing Xero/Drew Custom nVim Config ::."
+                            echo
+                            cd ~/.config/ && git clone https://github.com/drewgrif/nvim.git && \
+                            rm ~/.config/nvim/nvim-linux64.deb ~/.config/nvim/README.md && \
+                            rm -rf ~/.config/nvim/.git
+                            echo
+                            gum style --foreground 196 --bold "Backups created under ~/.config/nvim.bk-date & ~/.local/share/nvim.bk-date"
+                            sleep 6
+                        else
+                            echo
+                            echo "Keeping your custom configuration. Returning to menu..."
+                            sleep 3
+                            continue
+                        fi
+                    else
+                        echo
+                        gum style --foreground 212 ".:: Importing Xero/Drew Custom nVim Config ::."
+                        echo
+                        cd ~/.config/ && git clone https://github.com/drewgrif/nvim.git && \
+                        rm ~/.config/nvim/nvim-linux64.deb ~/.config/nvim/README.md && \
+                        rm -rf ~/.config/nvim/.git
+                    fi
+                    sleep 6
                     ;;
                 Hugo)
                     clear
@@ -336,7 +377,7 @@ process_choice() {
       3)
         package_selection_dialog "Select Development Apps to install :" \
         "AndroidStudio" "IDE for Android app development" OFF \
-        "neoVim" "Vim Terminal based text editor" OFF \
+        "neoVide" "No Nonsense Neovim Client in Rust" OFF \
         "Emacs" "An extensible & customizable text editor" OFF \
         "LazyGit" "Powerful terminal UI for git commands" OFF \
         "Hugo" "The fastest Static Site Generator" OFF \
