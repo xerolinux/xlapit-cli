@@ -175,14 +175,7 @@ update_system() {
       gum style --foreground 196 "Warning: Using Topgrade can be destructive. Use at OWN RISK!"
       sleep 6
       echo
-      install_topgrade_aio_if [ -z "$AUR_HELPER" ]; then
-    echo
-    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
-    echo
-    gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
-    echo
-    exit 1
-fiupdater
+      install_topgrade_aio_updater
       ;;
     4)
       gum style --foreground 10 "Exiting..."
