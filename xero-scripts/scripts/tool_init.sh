@@ -241,30 +241,45 @@ apply_latest_fixes() {
         sleep 3
 
     elif [ "$DE" = "GNOME" ]; then
-        # Warn user about vim replacement
-        if ! gum confirm --default=false "$(gum style --foreground 196 --bold 'Vim will be replaced with neoVide/nVim. Continue?')"; then
-            gum style \
-                --border normal \
-                --margin "1" \
-                --padding "1" \
-                --border-foreground 212 \
-                "⚠️ Operation cancelled. Returning to main menu..."
-            sleep 2
-            return
+        # Check for installed vim packages
+        VIM_PACKAGES="vim vim-csound vim-runtime vim-nerdtree vim-supertab vim-syntastic vim-gitgutter vim-bufexplorer vim-nerdcommenter"
+        INSTALLED_PACKAGES=""
+        
+        for pkg in $VIM_PACKAGES; do
+            if pacman -Qi "$pkg" &>/dev/null; then
+                INSTALLED_PACKAGES="$INSTALLED_PACKAGES $pkg"
+            fi
+        done
+
+        # If vim packages are installed, require confirmation to proceed
+        if [ -n "$INSTALLED_PACKAGES" ]; then
+            if ! gum confirm --default=false "$(gum style --foreground 196 --bold 'Vim will be replaced with neoVide/nVim. Continue?')"; then
+                gum style \
+                    --border normal \
+                    --margin "1" \
+                    --padding "1" \
+                    --border-foreground 212 \
+                    "⚠️ Operation cancelled. Returning to main menu..."
+                sleep 2
+                return
+            fi
+            
+            gum style --foreground 212 "Removing installed vim packages..."
+            sudo pacman -Rns --noconfirm $INSTALLED_PACKAGES
+            
+            # Install/update desktop-config-gnome
+            gum style --foreground 212 "Updating desktop-config-gnome package..."
+            sudo pacman -Syy --needed desktop-config-gnome
+            sleep 3
+        else
+            # No vim packages found, proceed with GNOME setup
+            gum style --foreground 212 "Updating desktop-config-gnome package..."
+            sudo pacman -Syy --needed desktop-config-gnome
+            sleep 3
         fi
 
-        # Install/update desktop-config-gnome
-        gum style --foreground 212 "Updating desktop-config-gnome package..."
-        sudo pacman -Syy --needed desktop-config-gnome
-        sleep 3
-
         echo
 
-        # Remove vim packages
-        gum style --foreground 212 "Removing old vim packages..."
-        sudo pacman -Rns --noconfirm vim vim-csound vim-runtime vim-nerdtree vim-supertab vim-syntastic vim-gitgutter vim-bufexplorer vim-nerdcommenter
-        sleep 3
-        echo
         # Install new packages
         gum style --foreground 212 "Installing new packages with neovide..."
         sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop neovide neovim-plug python-pynvim neovim-remote neovim-lspconfig
@@ -282,7 +297,7 @@ apply_latest_fixes() {
         --margin "1" \
         --padding "1" \
         --border-foreground 212 \
-        "✅ All fixes and tweaks have been applied successfully!"
+        "✅ All updates have been applied successfully!"
     
     sleep 6  # Final pause
 }
