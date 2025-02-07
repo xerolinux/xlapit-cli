@@ -152,7 +152,7 @@ update_system() {
     gum style --foreground 196 "Warning: flatpak is not installed"
   fi
   
-  echo "Select an update option:"
+  echo "Select an update option:"Neovide
   echo
   echo "1) Simple (Arch packages only)"
   echo "2) Extended (Arch, AUR, Flatpaks)"
@@ -175,7 +175,14 @@ update_system() {
       gum style --foreground 196 "Warning: Using Topgrade can be destructive. Use at OWN RISK!"
       sleep 6
       echo
-      install_topgrade_aio_updater
+      install_topgrade_aio_if [ -z "$AUR_HELPER" ]; then
+    echo
+    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
+    echo
+    gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
+    echo
+    exit 1
+fiupdater
       ;;
     4)
       gum style --foreground 10 "Exiting..."
@@ -241,6 +248,18 @@ apply_latest_fixes() {
         sleep 3
 
     elif [ "$DE" = "GNOME" ]; then
+        # Warn user about vim replacement
+        if ! gum confirm --default=false "$(gum style --foreground 196 --bold 'Vim will be replaced with neoVide/nVim. Continue?')"; then
+            gum style \
+                --border normal \
+                --margin "1" \
+                --padding "1" \
+                --border-foreground 212 \
+                "⚠️ Operation cancelled. Returning to main menu..."
+            sleep 2
+            return
+        fi
+
         # Install/update desktop-config-gnome
         gum style --foreground 212 "Updating desktop-config-gnome package..."
         sudo pacman -Syy --needed desktop-config-gnome
