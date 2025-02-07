@@ -202,12 +202,12 @@ restart() {
 }
 
 apply_latest_fixes() {
-    # Ask user to choose between GNOME and Plasma
+    # Ask user to choose between Plasma and GNOME
     local DE
-    if gum confirm --default=false --affirmative "GNOME" --negative "Plasma" "Please select Version:"; then
-        DE="GNOME"
-    else
+    if gum confirm --default=true --affirmative "Plasma" --negative "GNOME" "Please select Version:"; then
         DE="Plasma"
+    else
+        DE="GNOME"
     fi
     
     gum style \
@@ -241,6 +241,12 @@ apply_latest_fixes() {
         sleep 3
 
     elif [ "$DE" = "GNOME" ]; then
+        # Update desktop-config-gnome first
+        gum style --foreground 212 "Updating desktop-config-gnome package..."
+        sudo pacman -Syy --needed desktop-config-gnome
+        sleep 3
+        echo
+
         # Check for installed vim packages
         VIM_PACKAGES="vim vim-csound vim-runtime vim-nerdtree vim-supertab vim-syntastic vim-gitgutter vim-bufexplorer vim-nerdcommenter"
         INSTALLED_PACKAGES=""
@@ -266,16 +272,6 @@ apply_latest_fixes() {
             
             gum style --foreground 212 "Removing installed vim packages..."
             sudo pacman -Rns --noconfirm $INSTALLED_PACKAGES
-            
-            # Install/update desktop-config-gnome
-            gum style --foreground 212 "Updating desktop-config-gnome package..."
-            sudo pacman -Syy --needed desktop-config-gnome
-            sleep 3
-        else
-            # No vim packages found, proceed with GNOME setup
-            gum style --foreground 212 "Updating desktop-config-gnome package..."
-            sudo pacman -Syy --needed desktop-config-gnome
-            sleep 3
         fi
 
         echo
