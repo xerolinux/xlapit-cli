@@ -90,10 +90,17 @@ prompt_user() {
                     if ! grep -q "^MODULES=(" /etc/mkinitcpio.conf; then
                         sudo sed -i '1i\MODULES=()' /etc/mkinitcpio.conf
                     fi
-                    # Add missing modules
+                    # Add missing modules with proper spacing
                     for module in nvidia nvidia_modeset nvidia_uvm nvidia_drm; do
                         if ! grep -q "^MODULES=(.*${module}.*)" /etc/mkinitcpio.conf; then
-                            sudo sed -i "/^MODULES=(/s/)$/${module} &/" /etc/mkinitcpio.conf
+                            # Check if MODULES=() is empty
+                            if grep -q "^MODULES=()" /etc/mkinitcpio.conf; then
+                                # If empty, add without leading space
+                                sudo sed -i "/^MODULES=(/s/)$/${module}&/" /etc/mkinitcpio.conf
+                            else
+                                # If not empty, add with leading space
+                                sudo sed -i "/^MODULES=(/s/)$/ ${module}&/" /etc/mkinitcpio.conf
+                            fi
                         fi
                     done
                 fi
