@@ -246,39 +246,9 @@ apply_latest_fixes() {
         sudo pacman -Syy --needed desktop-config-gnome
         sleep 3
         echo
-
-        # Check for installed vim packages
-        VIM_PACKAGES="vim vim-csound vim-runtime vim-nerdtree vim-supertab vim-syntastic vim-gitgutter vim-bufexplorer vim-nerdcommenter"
-        INSTALLED_PACKAGES=""
-        
-        for pkg in $VIM_PACKAGES; do
-            if pacman -Qi "$pkg" &>/dev/null; then
-                INSTALLED_PACKAGES="$INSTALLED_PACKAGES $pkg"
-            fi
-        done
-
-        # If vim packages are installed, require confirmation to proceed
-        if [ -n "$INSTALLED_PACKAGES" ]; then
-            if ! gum confirm --default=false "$(gum style --foreground 196 --bold 'Vim will be replaced with neoVide/nVim. Continue?')"; then
-                gum style \
-                    --border normal \
-                    --margin "1" \
-                    --padding "1" \
-                    --border-foreground 212 \
-                    "⚠️ Operation cancelled. Returning to main menu..."
-                sleep 2
-                return
-            fi
-            
-            gum style --foreground 212 "Removing installed vim packages..."
-            sudo pacman -Rns --noconfirm $INSTALLED_PACKAGES
-        fi
-
-        echo
-
         # Install new packages
         gum style --foreground 212 "Installing new packages with neovide..."
-        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop neovide neovim-plug python-pynvim neovim-remote neovim-lspconfig
+        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop
         sleep 3
         echo
         # Copy nvim config
