@@ -4,6 +4,9 @@
 trap 'clear && exec "$0"' INT
 
 # Check if being run from xero-cli
+trap 'clear && exec "$0"' INT
+
+# Check if being run from xero-cli
 if [ -z "$AUR_HELPER" ]; then
     echo
     gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
@@ -123,8 +126,16 @@ prompt_user() {
         return
     fi
     echo
-    gum style --foreground 196 "Time to reboot for everything to work."
-    sleep 3
+    gum style --foreground 83 "Time to reboot for everything to work."
+    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 129 \
+        "$(gum style --foreground 196 --bold '⚠️ IMPORTANT GAMING NOTICE ⚠️')" \
+        "" \
+        "$(gum style --foreground 15 'If you use Lutris, Heroic, or Bottles as Flatpaks,')" \
+        "" \
+        "$(gum style --foreground 15 'Please run this command after reboot:')" \
+        "" \
+        "$(gum style --foreground 226 --bold 'flatpak update -y')"
+    sleep 6
 }
 
 # Function to install AUR packages
