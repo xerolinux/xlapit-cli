@@ -243,18 +243,14 @@ apply_latest_fixes() {
     elif [ "$DE" = "GNOME" ]; then
         # Update desktop-config-gnome first
         gum style --foreground 212 "Updating desktop-config-gnome package..."
+        echo
         sudo pacman -Syy --needed desktop-config-gnome
         sleep 3
         echo
         # Install new packages
-        gum style --foreground 212 "Installing new packages with neovide..."
-        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop
-        sleep 3
+        gum style --foreground 212 "Installing additional packages..."
         echo
-        # Copy nvim config
-        gum style --foreground 212 "Updating neovim configuration..."
-        gum spin --spinner dot --title "Copying files..." -- \
-            cp -r /etc/skel/.config/nvim/ "$HOME/.config/"
+        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop
         sleep 3
     fi
 
@@ -265,7 +261,7 @@ apply_latest_fixes() {
         --border-foreground 212 \
         "✅ All updates have been applied successfully!"
     
-    sleep 6  # Final pause
+    sleep 4  # Final pause
 }
 
 main() {
