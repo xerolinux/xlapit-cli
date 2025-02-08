@@ -123,8 +123,8 @@ package_selection_dialog() {
                             echo
                             gum style --foreground 212 ".:: Importing Xero/Drew Custom nVim Config ::."
                             echo
-                            cd ~/.config/ && git clone https://github.com/drewgrif/nvim.git && \
-                            rm ~/.config/nvim/nvim-linux64.deb ~/.config/nvim/README.md && \
+                            cd ~/.config/ && git clone https://github.com/xerolinux/nvim.git && \
+                            rm ~/.config/nvim/LICENSE ~/.config/nvim/README.md ~/.config/nvim/.gitignore && \
                             rm -rf ~/.config/nvim/.git
                             echo
                             gum style --foreground 196 --bold "Backups created under ~/.config/nvim.bk-date & ~/.local/share/nvim.bk-date"

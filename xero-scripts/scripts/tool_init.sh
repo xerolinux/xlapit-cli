@@ -237,7 +237,7 @@ apply_latest_fixes() {
         # Install additional packages
         gum style --foreground 212 "Installing additional packages..."
         echo
-        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop
+        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop pwgen
         sleep 3
 
     elif [ "$DE" = "GNOME" ]; then
@@ -278,7 +278,7 @@ apply_latest_fixes() {
 
         # Install new packages
         gum style --foreground 212 "Installing new packages with neovide..."
-        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop neovide neovim-plug python-pynvim neovim-remote neovim-lspconfig
+        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop neovide neovim-plug python-pynvim neovim-remote neovim-lspconfig
         sleep 3
         echo
         # Copy nvim config
