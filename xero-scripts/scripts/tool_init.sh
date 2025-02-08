@@ -250,7 +250,7 @@ apply_latest_fixes() {
         # Install new packages
         gum style --foreground 212 "Installing additional packages..."
         echo
-        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop
+        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop evolution-data-server gsound libgdata
         sleep 3
     fi
 
