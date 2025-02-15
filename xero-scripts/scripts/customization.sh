@@ -63,7 +63,7 @@ process_choice() {
       1)
         # Check if running on XeroLinux
         if grep -q "XeroLinux" /etc/os-release; then
-          gum style --foreground 49 "Fastfetch is already pre-configured on XeroLinux!"
+          gum style --foreground 49 "Fastfetch is already pre-configured on XeroLinux !"
           sleep 5
           clear && exec "$0"
         fi
@@ -250,7 +250,7 @@ process_choice() {
       x)
         # Check if running on XeroLinux
         if grep -q "XeroLinux" /etc/os-release; then
-          gum style --foreground 49 "XeroLinux KDE Rice is already pre-configured!"
+          gum style --foreground 49 "XeroLinux KDE Rice is already being used !"
           sleep 5
           clear && exec "$0"
         fi

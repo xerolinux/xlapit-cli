@@ -182,7 +182,7 @@ process_choice() {
                 ;;
             2)
                 if grep -q "XeroLinux" /etc/os-release; then
-                    gum style --foreground 49 "Printer Drivers are already pre-installed on XeroLinux!"
+                    gum style --foreground 49 "Printer Drivers are already pre-installed on XeroLinux !"
                     sleep 5
                 else
                     gum style --foreground 7 "Installing Printer Drivers and Tools..."
@@ -199,7 +199,7 @@ process_choice() {
                 ;;
             3)
                 if grep -q "XeroLinux" /etc/os-release; then
-                    gum style --foreground 49 "Samba Tools are already pre-installed on XeroLinux!"
+                    gum style --foreground 49 "Samba Tools are already pre-installed on XeroLinux !"
                     sleep 5
                 else
                     gum style --foreground 7 "Installing Samba Tools..."
@@ -214,7 +214,7 @@ process_choice() {
                 ;;
             4)
                 if grep -q "XeroLinux" /etc/os-release; then
-                    gum style --foreground 49 "Scanner Drivers are already pre-installed on XeroLinux!"
+                    gum style --foreground 49 "Scanner Drivers are already pre-installed on XeroLinux !"
                     sleep 5
                 else
                     gum style --foreground 7 "Installing Scanner Drivers..."

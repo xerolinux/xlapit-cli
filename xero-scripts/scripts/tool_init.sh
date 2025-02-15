@@ -44,9 +44,7 @@ open_wiki() {
 install_pipewire_bluetooth() {
     # Check if running on XeroLinux
     if grep -q "XeroLinux" /etc/os-release; then
-        gum style --foreground 213 "You are running XeroLinux!"
-        echo
-        gum style --foreground 49 "This option is already pre-configured on XeroLinux."
+        gum style --foreground 49 "This option is already pre-configured."
         echo
         sleep 3
         exec "$0"
@@ -54,7 +52,7 @@ install_pipewire_bluetooth() {
     fi
 
     # Proceed with installation for Vanilla Arch
-    gum style --foreground 213 "Running on Vanilla Arch - Proceeding with installation..."
+    gum style --foreground 213 "Vanilla Arch Detected - Proceeding..."
     echo
     
     gum style --foreground 35 "Installing PipeWire/Bluetooth Packages..."
@@ -103,7 +101,7 @@ install_topgrade_aio_updater() {
 activate_flathub_repositories() {
     # Check if running on XeroLinux
     if grep -q "XeroLinux" /etc/os-release; then
-        gum style --foreground 213 "Running on XeroLinux - Installing Warehouse..."
+        gum style --foreground 213 "XeroLinux Detected, Installing Warehouse..."
         echo
         flatpak install io.github.flattool.Warehouse -y
         echo
@@ -134,7 +132,7 @@ activate_flathub_repositories() {
 enable_multithreaded_compilation() {
     # Check if running on XeroLinux
     if grep -q "XeroLinux" /etc/os-release; then
-        gum style --foreground 49 "This option is already pre-configured on XeroLinux."
+        gum style --foreground 49 "This option is already pre-configured."
         echo
         sleep 5
         exec "$0"
@@ -142,7 +140,7 @@ enable_multithreaded_compilation() {
     fi
 
     # Proceed with installation for Vanilla Arch
-    gum style --foreground 213 "Running on Vanilla Arch - Proceeding..."
+    gum style --foreground 213 "Vanilla Arch Detected, Proceeding..."
     sleep 2
     echo
     numberofcores=$(grep -c ^processor /proc/cpuinfo)
