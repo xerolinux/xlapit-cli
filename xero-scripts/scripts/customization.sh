@@ -61,6 +61,13 @@ process_choice() {
         clear && exec "$0"
         ;;
       1)
+        # Check if running on XeroLinux
+        if grep -q "XeroLinux" /etc/os-release; then
+          gum style --foreground 49 "Fastfetch is already pre-configured on XeroLinux!"
+          sleep 5
+          clear && exec "$0"
+        fi
+
         gum style --foreground 7 "Setting up Fastfetch..."
         sleep 2
         echo
@@ -131,6 +138,13 @@ process_choice() {
         clear && exec "$0"
         ;;
       3)
+        # Check if running on XeroLinux
+        if grep -q "XeroLinux" /etc/os-release; then
+          gum style --foreground 49 "Oh-My-Posh is already pre-configured on XeroLinux!"
+          sleep 5
+          clear && exec "$0"
+        fi
+
         gum style --foreground 7 "Setting up Oh-My-Posh..."
         sleep 2
         echo
@@ -234,6 +248,13 @@ process_choice() {
         clear && exec "$0"
         ;;
       x)
+        # Check if running on XeroLinux
+        if grep -q "XeroLinux" /etc/os-release; then
+          gum style --foreground 49 "XeroLinux KDE Rice is already pre-configured!"
+          sleep 5
+          clear && exec "$0"
+        fi
+
         gum style --foreground 200 "Setting up XeroLinux KDE Rice..."
         sleep 2
         echo

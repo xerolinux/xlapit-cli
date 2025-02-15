@@ -181,35 +181,50 @@ process_choice() {
                 clear && exec "$0"
                 ;;
             2)
-                gum style --foreground 7 "Installing Printer Drivers and Tools..."
-                sleep 2
-                echo
-                sudo pacman -S --needed --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
-                sudo systemctl enable --now avahi-daemon cups.socket
-                sudo groupadd lp && sudo groupadd cups && sudo usermod -aG sys,lp,cups "$(whoami)"
-                echo
-                gum style --foreground 7 "Printer Drivers and Tools installation complete!"
-                sleep 3
+                if grep -q "XeroLinux" /etc/os-release; then
+                    gum style --foreground 49 "Printer Drivers are already pre-installed on XeroLinux!"
+                    sleep 5
+                else
+                    gum style --foreground 7 "Installing Printer Drivers and Tools..."
+                    sleep 2
+                    echo
+                    sudo pacman -S --needed --noconfirm ghostscript gsfonts cups cups-filters cups-pdf system-config-printer avahi system-config-printer foomatic-db-engine foomatic-db foomatic-db-ppds foomatic-db-nonfree foomatic-db-nonfree-ppds gutenprint foomatic-db-gutenprint-ppds python-pyqt5
+                    sudo systemctl enable --now avahi-daemon cups.socket
+                    sudo groupadd lp && sudo groupadd cups && sudo usermod -aG sys,lp,cups "$(whoami)"
+                    echo
+                    gum style --foreground 7 "Printer Drivers and Tools installation complete!"
+                    sleep 3
+                fi
                 clear && exec "$0"
                 ;;
             3)
-                gum style --foreground 7 "Installing Samba Tools..."
-                sleep 2
-                echo
-                sudo pacman -S --needed samba-support
-                echo
-                gum style --foreground 7 "Samba Tools installation complete!"
-                sleep 3
+                if grep -q "XeroLinux" /etc/os-release; then
+                    gum style --foreground 49 "Samba Tools are already pre-installed on XeroLinux!"
+                    sleep 5
+                else
+                    gum style --foreground 7 "Installing Samba Tools..."
+                    sleep 2
+                    echo
+                    sudo pacman -S --needed samba-support
+                    echo
+                    gum style --foreground 7 "Samba Tools installation complete!"
+                    sleep 3
+                fi
                 clear && exec "$0"
                 ;;
             4)
-                gum style --foreground 7 "Installing Scanner Drivers..."
-                sleep 2
-                echo
-                sudo pacman -S --noconfirm --needed scanner-support
-                echo
-                gum style --foreground 7 "Scanner Drivers installation complete!"
-                sleep 3
+                if grep -q "XeroLinux" /etc/os-release; then
+                    gum style --foreground 49 "Scanner Drivers are already pre-installed on XeroLinux!"
+                    sleep 5
+                else
+                    gum style --foreground 7 "Installing Scanner Drivers..."
+                    sleep 2
+                    echo
+                    sudo pacman -S --noconfirm --needed scanner-support
+                    echo
+                    gum style --foreground 7 "Scanner Drivers installation complete!"
+                    sleep 3
+                fi
                 clear && exec "$0"
                 ;;
             5)

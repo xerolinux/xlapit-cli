@@ -42,16 +42,47 @@ open_wiki() {
 
 # Function for each task
 install_pipewire_bluetooth() {
-  gum style --foreground 7 "Installing PipeWire/Bluetooth Packages..."
-  sleep 2
-  echo
-  sudo pacman -Rdd --noconfirm jack2
-  sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol pipewire-jack lib32-pipewire-jack pipewire-support ffmpeg ffmpegthumbs ffnvcodec-headers
-  sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci bluez-cups bluez-libs bluez-tools
-  sudo systemctl enable --now bluetooth.service
-  gum style --foreground 7 "PipeWire/Bluetooth Packages installation complete!"
-  sleep 3
-  exec "$0"
+    # Check if running on XeroLinux
+    if grep -q "XeroLinux" /etc/os-release; then
+        gum style --foreground 213 "You are running XeroLinux!"
+        echo
+        gum style --foreground 49 "This option is already pre-configured on XeroLinux."
+        echo
+        sleep 3
+        exec "$0"
+        return
+    fi
+
+    # Proceed with installation for Vanilla Arch
+    gum style --foreground 213 "Running on Vanilla Arch - Proceeding with installation..."
+    echo
+    
+    gum style --foreground 35 "Installing PipeWire/Bluetooth Packages..."
+    echo
+    sleep 2
+
+    sudo pacman -Rdd --noconfirm jack2
+    echo
+    
+    gum style --foreground 6 "Installing audio packages..."
+    sudo pacman -S --needed --noconfirm gstreamer gst-libav gst-plugins-bad gst-plugins-base \
+        gst-plugins-ugly gst-plugins-good libdvdcss alsa-utils alsa-firmware pavucontrol \
+        pipewire-jack lib32-pipewire-jack pipewire-support ffmpeg ffmpegthumbs ffnvcodec-headers
+    echo
+
+    gum style --foreground 6 "Installing Bluetooth packages..."
+    sudo pacman -S --needed --noconfirm bluez bluez-utils bluez-plugins bluez-hid2hci \
+        bluez-cups bluez-libs bluez-tools
+    echo
+
+    gum style --foreground 6 "Enabling Bluetooth service..."
+    sudo systemctl enable --now bluetooth.service
+    echo
+
+    gum style --foreground 2 "PipeWire/Bluetooth Packages installation complete!"
+    echo
+    sleep 3
+    exec "$0"
 }
 
 install_topgrade_aio_updater() {
@@ -70,40 +101,60 @@ install_topgrade_aio_updater() {
 }
 
 activate_flathub_repositories() {
-  gum style --foreground 7 "Activating Flathub Repositories..."
-  sleep 2
-  echo
-  sudo pacman -S --noconfirm --needed flatpak
-  sudo flatpak remote-modify --default-branch=23.08 flathub system
-  echo
-  flatpak install io.github.flattool.Warehouse -y
-  echo
-  gum style --foreground 7 "##########    Activating Flatpak Theming.    ##########"
-  sudo flatpak override --filesystem="$HOME/.themes"
-  sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
-  sudo flatpak override --filesystem=xdg-config/gtk-4.0:ro
-  echo
-  gum style --foreground 7 "##########     Flatpak Theming Activated     ##########"
-  echo
-  gum style --foreground 7 "Flathub Repositories activated! Please reboot."
-  sleep 3
-  exec "$0"
+    # Check if running on XeroLinux
+    if grep -q "XeroLinux" /etc/os-release; then
+        gum style --foreground 213 "Running on XeroLinux - Installing Warehouse..."
+        echo
+        flatpak install io.github.flattool.Warehouse -y
+        echo
+        gum style --foreground 7 "Warehouse installation complete!"
+    else
+        # Vanilla Arch installation
+        gum style --foreground 7 "Activating Flathub Repositories..."
+        sleep 2
+        echo
+        sudo pacman -S --noconfirm --needed flatpak
+        sudo flatpak remote-modify --default-branch=23.08 flathub system
+        echo
+        gum style --foreground 7 "##########    Activating Flatpak Theming.    ##########"
+        sudo flatpak override --filesystem="$HOME/.themes"
+        sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
+        sudo flatpak override --filesystem=xdg-config/gtk-4.0:ro
+        echo
+        gum style --foreground 7 "##########     Flatpak Theming Activated     ##########"
+        echo
+        flatpak install io.github.flattool.Warehouse -y
+        echo
+        gum style --foreground 7 "Flathub Repositories activated! Please reboot."
+    fi
+    sleep 3
+    exec "$0"
 }
 
 enable_multithreaded_compilation() {
-  gum style --foreground 7 "Enabling Multithreaded Compilation..."
-  sleep 2
-  echo
-  numberofcores=$(grep -c ^processor /proc/cpuinfo)
-  if [ "$numberofcores" -gt 1 ]; then
-    sudo sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$((numberofcores+1))\"/" /etc/makepkg.conf
-    sudo sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -z - --threads=0)/" /etc/makepkg.conf
-    sudo sed -i "s/COMPRESSZST=(zstd -c -z -q -)/COMPRESSZST=(zstd -c -z -q - --threads=0)/" /etc/makepkg.conf
-    sudo sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
-  fi
-  gum style --foreground 7 "Multithreaded Compilation enabled!"
-  sleep 3
-  exec "$0"
+    # Check if running on XeroLinux
+    if grep -q "XeroLinux" /etc/os-release; then
+        gum style --foreground 49 "This option is already pre-configured on XeroLinux."
+        echo
+        sleep 5
+        exec "$0"
+        return
+    fi
+
+    # Proceed with installation for Vanilla Arch
+    gum style --foreground 213 "Running on Vanilla Arch - Proceeding..."
+    sleep 2
+    echo
+    numberofcores=$(grep -c ^processor /proc/cpuinfo)
+    if [ "$numberofcores" -gt 1 ]; then
+        sudo sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$((numberofcores+1))\"/" /etc/makepkg.conf
+        sudo sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -z - --threads=0)/" /etc/makepkg.conf
+        sudo sed -i "s/COMPRESSZST=(zstd -c -z -q -)/COMPRESSZST=(zstd -c -z -q - --threads=0)/" /etc/makepkg.conf
+        sudo sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
+    fi
+    gum style --foreground 7 "Multithreaded Compilation enabled!"
+    sleep 3
+    exec "$0"
 }
 
 install_gui_package_managers() {
