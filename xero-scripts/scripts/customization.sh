@@ -250,7 +250,7 @@ process_choice() {
       x)
         # Check if running on XeroLinux
         if grep -q "XeroLinux" /etc/os-release; then
-          gum style --foreground 49 "XeroLinux KDE Rice is already being used !"
+          gum style --foreground 49 "Rice already installed or not on KDE !"
           sleep 5
           clear && exec "$0"
         fi
