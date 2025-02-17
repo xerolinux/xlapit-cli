@@ -33,7 +33,8 @@ display_options() {
   gum style --foreground 190 "a. Apply Adwaita GTK2 Patch/Fix."
   gum style --foreground 178 "g. Change Grub Theme (Xero Script)."
   gum style --foreground 200 "x. XeroLinux's Layan Rice (Vanilla KDE)."
-  gum style --foreground 153 "u. Layan GTK4 Patch & Update (Distro Only)."
+  gum style --foreground 225 "w. Install more Plasma Wallpapers (~1.2gb)."
+  gum style --foreground 153 "u. Layan GTK4 Patch & Update (Xero-KDE Only)."
 }
 
 # Function to process user choice
@@ -272,6 +273,16 @@ process_choice() {
         # Reboot after the countdown
         reboot
         sleep 3
+        ;;
+      w)
+        gum style --foreground 7 "Downloading Extra KDE Wallpapers..."
+        sleep 2
+        echo
+        sudo pacman -S --noconfirm --needed kde-wallpapers-extra
+        echo
+        gum style --foreground 7 "All done, enjoy !"
+        sleep 3
+        clear && exec "$0"
         ;;
       u)
         gum style --foreground 200 "Applying Layan GTK4 Patch/Updating..."
