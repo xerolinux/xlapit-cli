@@ -17,7 +17,7 @@ fi
 # Function to display header
 display_header() {
   clear
-  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "XeroLinux Distrobox/Docker Tool"
+  gum style --foreground 212 --border double --padding "1 1" --margin "1 1" --align center "XeroLinux Distrobox/Docker/Podman Tool"
   echo
   gum style --foreground 33 "Hello $USER, what would you like to do? Press 'i' for the Wiki."
   echo
@@ -28,15 +28,16 @@ display_options() {
   gum style --foreground 215 "====== Docker/DistroBox ======"
   echo
   gum style --foreground 7 "1. Install Docker."
-  gum style --foreground 7 "2. Install Distrobox."
+  gum style --foreground 7 "2. Install Podman."
+  gum style --foreground 7 "3. Install Distrobox."
   echo
   gum style --foreground 200 "====== DistroBox Images ======"
   echo
-  gum style --foreground 7 "3. Pull Latest Debian Image."
-  gum style --foreground 7 "4. Pull Latest Fedora Image."
-  gum style --foreground 7 "5. Pull Latest Tumbleweed Image."
+  gum style --foreground 7 "4. Pull Latest Debian Image."
+  gum style --foreground 7 "5. Pull Latest Fedora Image."
+  gum style --foreground 7 "6. Pull Latest Tumbleweed Image."
   echo
-  gum style --foreground 196 "6. Update all Containers (Might take a while)."
+  gum style --foreground 196 "u. Update all Containers (Might take a while)."
 }
 
 # Add this before process_choice function
@@ -92,6 +93,30 @@ process_choice() {
         clear && exec "$0"
         ;;
       2)
+        gum style --foreground 7 "Installing & Setting up Podman..."
+        sleep 2
+        echo
+        # Install Podman and related packages
+        sudo pacman -S --noconfirm --needed podman podman-docker || handle_error
+        
+        # Enable and start required services
+        sudo systemctl enable --now podman.socket || handle_error
+        
+        # Add user to necessary group
+        sudo usermod -aG podman "$USER" || handle_error
+        
+        # Install Podman Desktop from Flathub
+        echo
+        gum confirm "Do you want to install Podman Desktop?" && \
+            flatpak install flathub io.podman_desktop.PodmanDesktop -y || \
+            echo "Podman Desktop installation skipped."
+        
+        sleep 2
+        gum style --foreground 7 "Podman setup complete!"
+        sleep 3
+        clear && exec "$0"
+        ;;
+      3)
         gum style --foreground 7 "Installing Distrobox..."
         sleep 2
         echo
@@ -102,7 +127,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      3)
+      4)
         gum style --foreground 7 "Pulling Latest Debian Image with label 'Debian'..."
         sleep 2
         echo
@@ -112,7 +137,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      4)
+      5)
         gum style --foreground 7 "Pulling Latest Fedora Image with label 'Fedora'..."
         sleep 2
         echo
@@ -122,7 +147,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      5)
+      6)
         gum style --foreground 7 "Pulling Latest Tumbleweed Image with label 'OpenSuse'..."
         sleep 2
         echo
@@ -132,7 +157,7 @@ process_choice() {
         sleep 3
         clear && exec "$0"
         ;;
-      6)
+      u)
         gum style --foreground 7 "Upgrading all Containers..."
         sleep 2
         echo

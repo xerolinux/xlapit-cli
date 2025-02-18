@@ -271,9 +271,9 @@ apply_latest_fixes() {
 
     if [ "$DE" = "Plasma" ]; then
         # Install/update desktop-config
-        gum style --foreground 212 "Updating Desktop Config package..."
+        gum style --foreground 212 "Updating XeroLinux specific packages..."
         echo
-        sudo pacman -Syy --needed desktop-config
+        sudo pacman -Syy --needed --noconfirm desktop-config && sudo pacman -Rdd --noconfirm xwaylandvideobridge
         sleep 3
         echo
         # Copy apdatifier config
@@ -293,7 +293,7 @@ apply_latest_fixes() {
         # Update desktop-config-gnome first
         gum style --foreground 212 "Updating desktop-config-gnome package..."
         echo
-        sudo pacman -Syy --needed desktop-config-gnome
+        sudo pacman -Syy --needed --noconfirm desktop-config-gnome
         sleep 3
         echo
         # Install new packages
