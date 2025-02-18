@@ -25,7 +25,7 @@ display_header() {
 
 # Function to display options
 display_options() {
-  gum style --foreground 215 "====== Docker/DistroBox ======"
+  gum style --foreground 215 "=== Docker/DistroBox/Podman ==="
   echo
   gum style --foreground 7 "1. Install Docker."
   gum style --foreground 7 "2. Install Podman."
