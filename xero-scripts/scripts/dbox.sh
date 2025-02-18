@@ -93,6 +93,12 @@ process_choice() {
         clear && exec "$0"
         ;;
       2)
+        # Define error handling function
+        handle_error() {
+            echo "An error occurred. Exiting..."
+            exit 1
+        }
+
         gum style --foreground 7 "Installing & Setting up Podman..."
         sleep 2
         echo
@@ -102,8 +108,8 @@ process_choice() {
         # Enable and start required services
         sudo systemctl enable --now podman.socket || handle_error
         
-        # Add user to necessary group
-        sudo usermod -aG podman "$USER" || handle_error
+        # Note: Removed usermod command as Podman doesn't require a special group
+        # on most systems for rootless containers
         
         # Install Podman Desktop from Flathub
         echo
