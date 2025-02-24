@@ -240,9 +240,9 @@ package_selection_dialog() {
                     clear
                     install_flatpak_packages org.strawberrymusicplayer.strawberry
                     ;;
-                Spotube)
+                JamesDSP)
                     clear
-                    install_flatpak_packages com.github.KRTirtho.Spotube
+                    install_flatpak_packages me.timschneeberger.jdsp4linux
                     ;;
                 Cider)
                     clear
@@ -410,7 +410,7 @@ process_choice() {
         "Spotify" "Online music streaming service" OFF \
         "Tenacity" "Telemetry-less Audio editing" OFF \
         "Strawberry" "A music player for collectors" OFF \
-        "Spotube" " An Open source Spotify client" OFF \
+        "JamesDSP" "FOSS audio effect processor for Pipewire" OFF \
         "Cider" "An open source Apple Music client" OFF
         echo
         gum style --foreground 7 "##########  Done ! ##########"
