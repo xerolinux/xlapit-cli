@@ -43,7 +43,6 @@ open_wiki() {
 
 # Function to open Wiki
 parallel_downloads() {
-  sleep 3
   sudo pmpd
   clear && exec "$0"
 }
