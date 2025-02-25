@@ -30,6 +30,7 @@ display_menu() {
   echo
   gum style --foreground 208 "n. Apply latest XeroLinux specific changes/updates."
   gum style --foreground 39 "a. Install Multi-A.I Model Chat G.U.I (Local/Offline)."
+  gum style --foreground 212 "p. Change ParallelDownloads value for faster installs."
 }
 
 # Function to open Wiki
@@ -37,6 +38,13 @@ open_wiki() {
   gum style --foreground 33 "Opening Wiki..."
   sleep 3
   xdg-open "https://wiki.xerolinux.xyz/xlapit/#system-setup" > /dev/null 2>&1
+  clear && exec "$0"
+}
+
+# Function to open Wiki
+parallel_downloads() {
+  sleep 3
+  sudo pmpd
   clear && exec "$0"
 }
 
@@ -329,6 +337,7 @@ main() {
       a) install_alpaca_ai ;;
       u) update_system ;;
       n) apply_latest_fixes ;;
+      p) parallel_downloads ;;
       r) restart ;;
       q) clear && exec xero-cli -m ;;
       *)
