@@ -10,6 +10,8 @@ use fspp::*;
 use signal_hook::{consts::SIGINT, flag};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use terminal_size::{Width, Height, terminal_size};
+use std::io::Write;
 
 use script::*;
 use prompt::*;
@@ -28,6 +30,7 @@ enum Script {
     Customization,
     Service,
     Gaming,
+    Exit,
 }
 
 impl Script {
@@ -40,6 +43,7 @@ impl Script {
             Self::Gaming => "gaming",
             Self::RecommendedPackages => "pkgs",
             Self::Service => "service",
+            Self::Exit => "exit",
         }.to_string();
     }
 }
@@ -142,13 +146,15 @@ fn app() -> ExitCode {
 
     // Options.
     let options = vec![
-        ("System Setup", Script::SystemSetup),
-        ("System Drivers", Script::Drivers),
-        ("Distrobox & Docker", Script::Distrobox),
-        ("System Customization", Script::Customization),
-        ("Game Launchers/Tweaks", Script::Gaming),
-        ("Recommended System Packages", Script::RecommendedPackages),
-        ("System Troubleshooting & Tweaks", Script::Service),
+        ("System Setup.", Script::SystemSetup),
+        ("System Drivers.", Script::Drivers),
+        ("Distrobox & Docker.", Script::Distrobox),
+        ("System Customization.", Script::Customization),
+        ("Game Launchers/Tweaks.", Script::Gaming),
+        ("Recommended System Packages.", Script::RecommendedPackages),
+        ("System Troubleshooting & Tweaks.", Script::Service),
+        
+        ("Exit the toolkit back to the prompt.", Script::Exit),
     ];
 
     // ASCII logo.
@@ -179,7 +185,10 @@ fn app() -> ExitCode {
 
     // Main program loop.
     loop {
-        // Print the logo.
+        // Clear the screen first
+        clear_terminal();
+
+        // Print the logo
         for i in 0..logo1.len() {
             print!("{}", logo1[i].magenta());
             println!("{}", logo2[i].blue());
@@ -197,18 +206,38 @@ fn app() -> ExitCode {
             println!("");
         }
 
-        // Print out all the options.
+        // Print options
         println!("Welcome, {username}! What would you like to do today?\n");
         for (i, j) in options.iter().enumerate() {
-            piglog::generic!("{} {} {}", (i + 1).to_string().bright_cyan().bold(), ":".bright_black().bold(), j.0.bright_green().bold());
+            let prefix = if i == options.len() - 1 { "X" } else { &(i + 1).to_string() };
+            piglog::generic!("{} {} {}", prefix.bright_cyan().bold(), ":".bright_black().bold(), j.0.bright_green().bold());
+            if i == options.len() - 2 {  // Add empty line before last option
+                println!("");
+            }
         }
         println!("");
 
-        // Select option.
+        // Print version at bottom right
+        if let Some(version) = get_package_version() {
+            if let Some((Width(w), Height(h))) = terminal_size() {
+                // Move cursor to bottom right
+                print!("\x1B[{};{}H", h, w.saturating_sub(version.len() as u16));
+                print!("{}", version.bright_yellow());
+                // Move cursor back to where it should be for input
+                print!("\x1B[{};0H", h.saturating_sub(2));
+                let _ = std::io::stdout().flush();
+            }
+        }
+
+        // Modified selection handling
         let mut selected: Option<usize> = None;
         while selected == None {
-            let answer = prompt("Please select option (by number). Close window to quit");
+            let answer = prompt("Please select option (by number or X to exit).");
             let answer = answer.trim();
+
+            if answer.eq_ignore_ascii_case("x") {
+                return ExitCode::Success;
+            }
 
             match answer.parse::<usize>() {
                 Ok(o) => selected = Some(o),
@@ -218,28 +247,26 @@ fn app() -> ExitCode {
             if let Some(sel) = selected {
                 if sel == 0 {
                     piglog::error!("Number must be above 0!");
-
                     selected = None;
                 }
-
-                else if sel > options.len() {
+                else if sel > options.len() - 1 {  // Subtract 1 to exclude Exit option from number selection
                     piglog::error!("Number must not exceed the amount of options!");
-
                     selected = None;
                 }
             }
         }
 
-        // Converting selected to the index of the options array.
+        // Converting selected to the index of the options array
         let selected: usize = selected.unwrap() - 1;
-
-        // Run option.
         let option = options.get(selected).unwrap();
 
+        // Don't try to run a script for the Exit option
+        if matches!(option.1, Script::Exit) {
+            return ExitCode::Success;
+        }
+
         user_run_script(&option.1.script_name());
-
         clear_terminal();
-
         first_iteration = false;
     }
 }
@@ -365,4 +392,17 @@ fn binary_exists(binary: &str) -> bool {
     }
 
     return false;
+}
+
+fn get_package_version() -> Option<String> {
+    if let Ok(output) = std::process::Command::new("pacman")
+        .args(["-Q", "xlapit-cli"])
+        .output() {
+        if output.status.success() {
+            if let Ok(version) = String::from_utf8(output.stdout) {
+                return Some(version.trim().to_string());
+            }
+        }
+    }
+    None
 }
