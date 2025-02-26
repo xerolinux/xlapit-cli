@@ -302,6 +302,7 @@ apply_latest_fixes() {
         echo
         gum spin --spinner dot --title "Copying files..." -- \
             cp -rf /etc/skel/.config/apdatifier/* "$HOME/.config/apdatifier/"
+            cp -rf /etc/skel/.local/share/plasma/plasmoids/com.github.exequtic.apdatifier/* "$HOME/.local/share/plasma/plasmoids/com.github.exequtic.apdatifier/"
         sleep 3
 
         # Install additional packages
