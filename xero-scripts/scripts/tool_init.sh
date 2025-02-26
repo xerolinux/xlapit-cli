@@ -280,7 +280,21 @@ apply_latest_fixes() {
         # Install/update desktop-config
         gum style --foreground 212 "Updating XeroLinux specific packages..."
         echo
-        sudo pacman -Syy --needed --noconfirm desktop-config && sudo pacman -Rdd --noconfirm file-roller xwaylandvideobridge
+        # Check and install desktop-config if available
+        if pacman -Ss desktop-config > /dev/null 2>&1; then
+            sudo pacman -Syy --needed --noconfirm desktop-config || echo "Warning: Could not install desktop-config"
+        else
+            echo "Package desktop-config not found in repositories"
+        fi
+
+        # Try to remove packages if they exist
+        for pkg in file-roller xwaylandvideobridge; do
+            if pacman -Qi "$pkg" > /dev/null 2>&1; then
+                sudo pacman -Rdd --noconfirm "$pkg" || echo "Warning: Could not remove $pkg"
+            else
+                echo "Package $pkg is not installed"
+            fi
+        done
         sleep 3
         echo
         # Copy apdatifier config
@@ -293,7 +307,7 @@ apply_latest_fixes() {
         # Install additional packages
         gum style --foreground 212 "Installing additional packages..."
         echo
-        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop pwgen amarok-qt6
+        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop amarok-qt6
         sleep 3
 
     elif [ "$DE" = "GNOME" ]; then
