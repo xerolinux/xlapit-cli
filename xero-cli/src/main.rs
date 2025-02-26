@@ -154,7 +154,7 @@ fn app() -> ExitCode {
         ("Recommended System Packages.", Script::RecommendedPackages),
         ("System Troubleshooting & Tweaks.", Script::Service),
         
-        ("Exit the toolkit back to the prompt.", Script::Exit),
+        ("Exit the toolkit. (Will close the Window).", Script::Exit),
     ];
 
     // ASCII logo.
