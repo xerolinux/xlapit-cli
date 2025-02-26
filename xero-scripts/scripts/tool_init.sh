@@ -280,7 +280,7 @@ apply_latest_fixes() {
         # Install/update desktop-config
         gum style --foreground 212 "Updating XeroLinux specific packages..."
         echo
-        sudo pacman -Syy --needed --noconfirm desktop-config && sudo pacman -Rdd --noconfirm xwaylandvideobridge
+        sudo pacman -Syy --needed --noconfirm desktop-config && sudo pacman -Rdd --noconfirm file-roller xwaylandvideobridge
         sleep 3
         echo
         # Copy apdatifier config
@@ -293,7 +293,7 @@ apply_latest_fixes() {
         # Install additional packages
         gum style --foreground 212 "Installing additional packages..."
         echo
-        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop pwgen
+        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop pwgen amarok-qt6
         sleep 3
 
     elif [ "$DE" = "GNOME" ]; then
