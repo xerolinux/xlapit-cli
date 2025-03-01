@@ -5,14 +5,7 @@ set -e
 trap 'clear && exec "$0"' INT
 
 # Check if being run from xero-cli
-if [ -z "$AUR_HELPER" ]; then
-    echo
-    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
-    echo
-    gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
-    echo
-    exit 1
-fi
+
 
 # Function to display header
 display_header() {
@@ -55,7 +48,7 @@ package_selection_dialog() {
     local title=$1
     shift
     local options=("$@")
-    PACKAGES=$(dialog --checklist "$title" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3)
+    PACKAGES=$(dialog --checklist "$title" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3) || true
 
     if [ -n "$PACKAGES" ]; then
         for PACKAGE in $PACKAGES; do
@@ -196,9 +189,9 @@ package_selection_dialog() {
                     clear
                     install_pacman_packages lazygit
                     ;;
-                Eclipse)
+                Warp)
                     clear
-                    install_flatpak_packages org.eclipse.Java
+                    install_aur_packages warp-terminal-bin
                     ;;
                 IntelliJ)
                     clear
@@ -385,7 +378,7 @@ process_choice() {
         "VSCodium" "Telemetry-less code editing" OFF \
         "Meld" "Visual diff and merge tool" OFF \
         "Cursor" "The AI Code Editor" OFF \
-        "Eclipse" "Java bytecode compiler" OFF \
+        "Warp" "The intelligent terminal with AI" OFF \
         "IntelliJ" "IntelliJ IDEA IDE for Java" OFF
         echo
         gum style --foreground 7 "##########  Done ! ##########"
@@ -433,9 +426,33 @@ process_choice() {
         clear && exec "$0"
         ;;
       7)
-        package_selection_dialog "Select Virtualization System to install:" \
-        "VirtManager" "Manage QEMU virtual machines" OFF \
-        "VirtualBox" "Powerful x86 virtualization" OFF
+        PACKAGES=$(dialog --checklist "Select Virtualization System:" 10 50 2 \
+            "VirtManager" "QEMU virtual machines" OFF \
+            "VirtualBox" "x86 virtualization" OFF \
+            3>&1 1>&2 2>&3) || true
+
+        if [ -n "$PACKAGES" ]; then
+            for PACKAGE in $PACKAGES; do
+                case $PACKAGE in
+                    VirtManager)
+                        clear
+                        for pkg in iptables gnu-netcat; do
+                            if pacman -Q $pkg &>/dev/null; then
+                                sudo pacman -Rdd --noconfirm $pkg
+                            fi
+                        done;
+                        install_pacman_packages virt-manager-meta openbsd-netcat
+                        echo -e "options kvm-intel nested=1" | sudo tee -a /etc/modprobe.d/kvm-intel.conf
+                        sudo systemctl restart libvirtd.service
+                        echo
+                        ;;
+                    VirtualBox)
+                        clear
+                        install_pacman_packages virtualbox-meta
+                        ;;
+                esac
+            done
+        fi
         echo
         gum style --foreground 7 "########## Done! Please Reboot. ##########"
         sleep 3

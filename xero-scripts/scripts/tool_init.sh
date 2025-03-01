@@ -186,17 +186,17 @@ install_gui_package_managers() {
   exec "$0"
 }
 
-install_alpaca_ai() {
-  if flatpak list | grep -q "com.jeffser.Alpaca"; then
-    gum style --foreground 46 "Alpaca is already installed!"
+install_lmstudio() {
+  if pacman -Qs lmstudio > /dev/null; then
+    gum style --foreground 46 "LMStudio is already installed!"
     sleep 3
   else
-    gum style --foreground 7 "Installing Alpaca (~4.5gb)..."
+    gum style --foreground 7 "Installing LMStudio from AUR..."
     echo
     sleep 3
-    flatpak install com.jeffser.Alpaca -y
+    $AUR_HELPER -S lmstudio --noconfirm
     echo
-    gum style --foreground 46 "Alpaca has been installed!"
+    gum style --foreground 46 "LMStudio has been installed!"
     sleep 4
   fi
   exec "$0"
@@ -321,7 +321,10 @@ apply_latest_fixes() {
         # Install new packages
         gum style --foreground 212 "Installing additional packages..."
         echo
-        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop evolution-data-server gsound libgdata
+        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop evolution-data-server gsound libgdata guake
+        mkdir -p "$HOME/.config/guake/"
+        cp -rf /etc/skel/.config/guake/* "$HOME/.config/guake/"
+        cp -rf /etc/skel/.config/autostart/guake.desktop "$HOME/.config/autostart/"
         sleep 3
     fi
 
@@ -348,7 +351,7 @@ main() {
       2) activate_flathub_repositories ;;
       3) enable_multithreaded_compilation ;;
       4) install_gui_package_managers ;;
-      a) install_alpaca_ai ;;
+      a) install_lmstudio ;;
       u) update_system ;;
       n) apply_latest_fixes ;;
       p) parallel_downloads ;;

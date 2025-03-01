@@ -153,7 +153,7 @@ fn app() -> ExitCode {
         ("Game Launchers/Tweaks.", Script::Gaming),
         ("Recommended System Packages.", Script::RecommendedPackages),
         ("System Troubleshooting & Tweaks.", Script::Service),
-        
+
         ("Exit the toolkit. (Will close the Window).", Script::Exit),
     ];
 
@@ -215,7 +215,6 @@ fn app() -> ExitCode {
                 println!("");
             }
         }
-        println!("");
 
         // Print version at bottom right
         if let Some(version) = get_package_version() {
@@ -398,11 +397,11 @@ fn get_package_version() -> Option<String> {
     if let Ok(output) = std::process::Command::new("pacman")
         .args(["-Q", "xlapit-cli"])
         .output() {
-        if output.status.success() {
-            if let Ok(version) = String::from_utf8(output.stdout) {
-                return Some(version.trim().to_string());
+            if output.status.success() {
+                if let Ok(version) = String::from_utf8(output.stdout) {
+                    return Some(version.trim().to_string());
+                }
             }
         }
-    }
-    None
+        None
 }
