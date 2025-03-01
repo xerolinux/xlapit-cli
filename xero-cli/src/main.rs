@@ -235,7 +235,8 @@ fn app() -> ExitCode {
             let answer = answer.trim();
 
             if answer.eq_ignore_ascii_case("x") {
-                return ExitCode::Success;
+                // Exit immediately when X is pressed
+                std::process::exit(0);
             }
 
             match answer.parse::<usize>() {
