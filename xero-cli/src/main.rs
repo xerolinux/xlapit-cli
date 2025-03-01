@@ -194,25 +194,22 @@ fn app() -> ExitCode {
             println!("{}", logo2[i].blue());
         }
 
-        println!("");
-
+        // Remove extra newline and only print one if needed for AUR helper check
         if first_iteration {
             // Make sure there is an AUR helper on the system.
             match detect_aur_helper() {
-                Some(_) => (),
+                Some(_) => println!(""),  // Single newline after AUR helper check
                 None => return ExitCode::Fail,
             };
-
-            println!("");
         }
 
-        // Print options
-        println!("Welcome, {username}! What would you like to do today?\n");
+        // Print options with controlled spacing
+        println!("Welcome, {username}! What would you like to do today?");  // Removed extra newline
         for (i, j) in options.iter().enumerate() {
             let prefix = if i == options.len() - 1 { "X" } else { &(i + 1).to_string() };
             piglog::generic!("{} {} {}", prefix.bright_cyan().bold(), ":".bright_black().bold(), j.0.bright_green().bold());
-            if i == options.len() - 2 {  // Add empty line before last option
-                println!("");
+            if i == options.len() - 2 {
+                println!("");  // Single newline before exit option
             }
         }
 
