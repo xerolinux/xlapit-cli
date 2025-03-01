@@ -203,13 +203,13 @@ fn app() -> ExitCode {
             };
         }
 
-        // Print options with controlled spacing
-        println!("Welcome, {username}! What would you like to do today?");  // Removed extra newline
+        // Print options
+        println!("Welcome, {username}! What would you like to do today?\n");
         for (i, j) in options.iter().enumerate() {
             let prefix = if i == options.len() - 1 { "X" } else { &(i + 1).to_string() };
             piglog::generic!("{} {} {}", prefix.bright_cyan().bold(), ":".bright_black().bold(), j.0.bright_green().bold());
-            if i == options.len() - 2 {
-                println!("");  // Single newline before exit option
+            if i == options.len() - 2 {  // Add empty line before last option
+                println!("\n");  // Add extra newline to increase spacing before prompt
             }
         }
 
