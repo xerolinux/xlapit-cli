@@ -322,8 +322,6 @@ apply_latest_fixes() {
         gum style --foreground 212 "Installing additional packages..."
         echo
         sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop evolution-data-server gsound libgdata guake
-        mkdir -p "$HOME/.config/guake/"
-        cp -rf /etc/skel/.config/guake/* "$HOME/.config/guake/"
         cp -rf /etc/skel/.config/autostart/guake.desktop "$HOME/.config/autostart/"
         sleep 3
     fi

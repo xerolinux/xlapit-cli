@@ -10,8 +10,6 @@ use fspp::*;
 use signal_hook::{consts::SIGINT, flag};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
-use terminal_size::{Width, Height, terminal_size};
-use std::io::Write;
 
 use script::*;
 use prompt::*;
@@ -181,8 +179,6 @@ fn app() -> ExitCode {
         Err(_) => "<< FAILED TO GET USERNAME >>".to_string(),
     };
 
-    let mut first_iteration = true;
-
     // Main program loop.
     loop {
         // Clear the screen first
@@ -194,36 +190,29 @@ fn app() -> ExitCode {
             println!("{}", logo2[i].blue());
         }
 
-        // Remove extra newline and only print one if needed for AUR helper check
-        if first_iteration {
-            // Make sure there is an AUR helper on the system.
-            match detect_aur_helper() {
-                Some(_) => println!(""),  // Single newline after AUR helper check
-                None => return ExitCode::Fail,
-            };
-        }
+        println!("");  // Restore spacing after logo
 
-        // Print options
+        // Make sure there is an AUR helper on the system and show version
+        let version_str = get_package_version().unwrap_or_default();
+        match detect_aur_helper() {
+            Some(helper) => {
+                piglog::info!("AUR helper selected: {}", helper.bright_yellow().bold());
+                println!("         App Version: {}", version_str.split_whitespace().last().unwrap_or("").bright_yellow());
+                println!("");
+            },
+            None => return ExitCode::Fail,
+        };
+
         println!("Welcome, {username}! What would you like to do today?\n");
+
         for (i, j) in options.iter().enumerate() {
             let prefix = if i == options.len() - 1 { "X" } else { &(i + 1).to_string() };
             piglog::generic!("{} {} {}", prefix.bright_cyan().bold(), ":".bright_black().bold(), j.0.bright_green().bold());
             if i == options.len() - 2 {  // Add empty line before last option
-                println!("\n");  // Add extra newline to increase spacing before prompt
+                println!("");  // Single newline before exit option
             }
         }
-
-        // Print version at bottom right
-        if let Some(version) = get_package_version() {
-            if let Some((Width(w), Height(h))) = terminal_size() {
-                // Move cursor to bottom right
-                print!("\x1B[{};{}H", h, w.saturating_sub(version.len() as u16));
-                print!("{}", version.bright_yellow());
-                // Move cursor back to where it should be for input
-                print!("\x1B[{};0H", h.saturating_sub(2));
-                let _ = std::io::stdout().flush();
-            }
-        }
+        println!("");  // Single newline before prompt
 
         // Modified selection handling
         let mut selected: Option<usize> = None;
@@ -264,7 +253,6 @@ fn app() -> ExitCode {
 
         user_run_script(&option.1.script_name());
         clear_terminal();
-        first_iteration = false;
     }
 }
 
@@ -286,9 +274,20 @@ fn clear_terminal() -> bool {
     }
 }
 
-fn select_aur_helper(aur_helper: &str) {
-    piglog::info!("AUR helper selected: {}", aur_helper.bright_yellow().bold());
+fn get_package_version() -> Option<String> {
+    if let Ok(output) = std::process::Command::new("pacman")
+        .args(["-Q", "xlapit-cli"])
+        .output() {
+            if output.status.success() {
+                if let Ok(version) = String::from_utf8(output.stdout) {
+                    return Some(version.trim().to_string());
+                }
+            }
+        }
+        None
+}
 
+fn select_aur_helper(aur_helper: &str) {
     std::env::set_var("AUR_HELPER", aur_helper);
 }
 
@@ -298,10 +297,8 @@ fn detect_aur_helper() -> Option<String> {
     if let Some(aur_helper) = args.aur_helper {
         if binary_exists(&aur_helper) {
             select_aur_helper(&aur_helper);
-
             return Some(aur_helper);
         }
-
         else {
             return None;
         }
@@ -317,28 +314,23 @@ fn detect_aur_helper() -> Option<String> {
     for i in aur_helpers.iter() {
         if binary_exists(i) {
             aur_helper_detected = Some(i);
-
             break;
         }
     }
 
     if aur_helper_detected == None {
         piglog::fatal!("Failed to detect an AUR helper! (From pre-made list):");
-
         for i in aur_helpers.iter() {
             piglog::generic!("{i}");
         }
-
         piglog::note!("If your AUR helper of choice is not listed here, you can manually specify it with the '--aur-helper <insert binary name>' flag!");
         piglog::note!("Example: xero-cli --aur-helper paru");
         piglog::note!("This flag also forces the use of the AUR helper, so you can skip the detection phase completely!");
-
         return None;
     }
 
     if let Some(aur_helper) = aur_helper_detected {
         select_aur_helper(aur_helper);
-
         return Some(aur_helper.to_string());
     }
 
@@ -366,7 +358,6 @@ fn binary_exists(binary: &str) -> bool {
                 if args.minimal == false {
                     piglog::success!("Found '{}' in: {}", binary.bright_yellow().bold(), i.to_string().bright_green());
                 }
-
                 return true;
             }
         }
@@ -380,7 +371,6 @@ fn binary_exists(binary: &str) -> bool {
         if args.verbose {
             piglog::success!("Binary: {}", binary.bright_green());
         }
-
         return true;
     }
 
@@ -389,17 +379,4 @@ fn binary_exists(binary: &str) -> bool {
     }
 
     return false;
-}
-
-fn get_package_version() -> Option<String> {
-    if let Ok(output) = std::process::Command::new("pacman")
-        .args(["-Q", "xlapit-cli"])
-        .output() {
-            if output.status.success() {
-                if let Ok(version) = String::from_utf8(output.stdout) {
-                    return Some(version.trim().to_string());
-                }
-            }
-        }
-        None
 }
