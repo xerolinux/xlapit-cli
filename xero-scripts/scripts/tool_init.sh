@@ -324,6 +324,8 @@ apply_latest_fixes() {
         sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop evolution-data-server gsound libgdata guake
         guake --restore-preferences=/etc/skel/.config/guake-prefs.cfg
         cp -rf /etc/skel/.config/autostart/guake.desktop "$HOME/.config/autostart/"
+        echo
+        echo "Done ! Please set keyboard shortcuts for guake-toggle."
         sleep 3
     fi
 
