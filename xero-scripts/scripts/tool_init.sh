@@ -175,7 +175,7 @@ install_gui_package_managers() {
   for PACKAGE in "${PACKAGE_ARRAY[@]}"; do
     [ -z "$PACKAGE" ] && continue
     case $PACKAGE in
-      "OctoPi") clear && $AUR_HELPER -S --needed octopi alpm_octopi_utils ;;
+      "OctoPi") clear && $AUR_HELPER -S --needed octopi ;;
       "PacSeek") clear && $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
       "BauhGUI") clear && $AUR_HELPER -S --needed bauh ;;
       "EasyFlatpak") clear && flatpak install org.dupot.easyflatpak -y ;;
