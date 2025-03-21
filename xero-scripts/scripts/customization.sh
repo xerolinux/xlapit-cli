@@ -31,7 +31,8 @@ display_options() {
   gum style --foreground 7 "4. Setup ZSH All in one with Oh-My-Posh/Plugs."
   echo
   gum style --foreground 190 "a. Apply Adwaita GTK2 Patch/Fix."
-  gum style --foreground 178 "g. Change Grub Theme (Xero Script)."
+  gum style --foreground 110 "d. Apply XeroLinux Gnome Settings."
+  gum style --foreground 175 "g. Change Grub Theme (Xero Script)."
   gum style --foreground 200 "x. XeroLinux's Layan Rice (Vanilla KDE)."
   gum style --foreground 225 "w. Install more Plasma Wallpapers (~1.2gb)."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Xero-KDE Only)."
@@ -236,7 +237,51 @@ process_choice() {
         gum style --foreground 7 "GTK2 Patch applied..."
         sleep 3
         clear && exec "$0"
-        ;;      
+        ;;
+      d)
+        gum style --foreground 7 "Grabbing Packages..."
+        sleep 2
+        echo
+        # List of terminal apps to check and remove
+        terminal_apps=("gnome-terminal" "xterm" "sakura" "gnome-terminal-transparency" "tilix")
+
+        # Loop through each terminal app
+        for app in "${terminal_apps[@]}"; do
+            # Check if the app is installed
+            if pacman -Q | grep -q "$app"; then
+                echo "Removing $app..."
+                sudo pacman -Rs "$app"
+            else
+                echo "$app is not installed."
+            fi
+        done
+        echo
+        $AUR_HELPER -S --noconfirm --needed ptyxix btop gparted flatseal awesome-terminal-fonts extension-manager gnome-shell-extension-arc-menu gnome-shell-extension-caffeine gnome-shell-extension-gsconnect gnome-shell-extension-arch-update gnome-shell-extension-blur-my-shell gnome-shell-extension-appindicator gnome-shell-extension-dash-to-dock gnome-shell-extension-weather-oclock chafa nautilus-share nautilus-compare nautilus-admin-gtk4 nautilus-image-converter nautilus-open-any-terminal libappindicator-gtk3 tela-circle-icon-theme-purple kvantum-theme-libadwaita-git qt5ct qt6ct kvantum fastfetch adw-gtk-theme oh-my-posh-bin ttf-fira-code guake desktop-config-gnome
+        sleep 3
+        echo
+        gum style --foreground 7 "Applying Gnome Settings..."
+        echo
+        cp -Rf /etc/skel/. ~
+        sleep 2
+        dconf load /org/gnome/ < /etc/skel/.config/xero-dconf.conf
+        sleep 1.5
+        dconf load /com/github/stunkymonkey/nautilus-open-any-terminal/ < /etc/skel/.config/term.conf
+        sleep 1.5
+        guake --restore-preferences=$HOME/.config/guake-prefs.cfg
+        sleep 1.5
+        dconf load /org/gnome/Ptyxis/ < /etc/skel/.config/Ptyxis.conf
+        sleep 1.5
+        dconf write /org/gnome/Ptyxis/Profiles/a8419c1b5f17fef263add7d367cd68cf/opacity 0.85
+        rm ~/.config/autostart/dconf-load.desktop
+        sleep 3
+        sudo mkdir -p /usr/share/defaultbg && sudo cp /home/xero/.local/share/backgrounds/Xero-G69.png /usr/share/defaultbg/XeroG.png
+        sleep 2
+        cd ~ && cp .bashrc .bashrc.bk && wget https://raw.githubusercontent.com/XeroLinuxDev/xero-build/refs/heads/main/XeroG/airootfs/etc/skel/.bashrc
+        echo
+        gum style --foreground 7 "Settings applied, please reboot..."
+        sleep 3
+        clear && exec "$0"
+        ;;
       g)
         gum style --foreground 7 "XeroLinug Grub Themes..."
         sleep 2
