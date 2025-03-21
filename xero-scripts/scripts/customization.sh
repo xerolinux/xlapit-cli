@@ -35,7 +35,7 @@ display_options() {
   gum style --foreground 200 "x. XeroLinux's Layan Rice (Vanilla KDE)."
   gum style --foreground 225 "w. Install more Plasma Wallpapers (~1.2gb)."
   gum style --foreground 153 "u. Layan GTK4 Patch & Update (Xero-KDE Only)."
-  gum style --foreground 110 "z. Apply XeroLinux Gnome Settings (Vanilla Gnome)."
+  gum style --foreground 120 "z. Apply XeroLinux Gnome Settings (Vanilla Gnome)."
 }
 
 # Function to process user choice
