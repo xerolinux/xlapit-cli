@@ -249,6 +249,8 @@ process_choice() {
         echo
         cp -Rf /etc/skel/. ~
         sleep 2
+        sudo mkdir -p /usr/share/defaultbg && sudo cp /home/xero/.local/share/backgrounds/Xero-G69.png /usr/share/defaultbg/XeroG.png
+        sleep 2
         dconf load /org/gnome/ < /etc/skel/.config/xero-dconf.conf
         sleep 1.5
         dconf load /com/github/stunkymonkey/nautilus-open-any-terminal/ < /etc/skel/.config/term.conf
@@ -259,10 +261,8 @@ process_choice() {
         sleep 1.5
         dconf write /org/gnome/Ptyxis/Profiles/a8419c1b5f17fef263add7d367cd68cf/opacity 0.85
         rm ~/.config/autostart/dconf-load.desktop
-        sleep 3
-        sudo mkdir -p /usr/share/defaultbg && sudo cp /home/xero/.local/share/backgrounds/Xero-G69.png /usr/share/defaultbg/XeroG.png
         sleep 2
-        cd ~ && cp .bashrc .bashrc.bk && wget https://raw.githubusercontent.com/XeroLinuxDev/xero-build/refs/heads/main/XeroG/airootfs/etc/skel/.bashrc
+        cd ~ && mv .bashrc .bashrc.bk && wget https://raw.githubusercontent.com/XeroLinuxDev/xero-build/refs/heads/main/XeroG/airootfs/etc/skel/.bashrc
         echo
         gum style --foreground 7 "Settings applied, please reboot..."
         sleep 3
