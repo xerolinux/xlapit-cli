@@ -242,21 +242,7 @@ process_choice() {
         gum style --foreground 7 "Grabbing Packages..."
         sleep 2
         echo
-        # List of terminal apps to check and remove
-        terminal_apps=("gnome-terminal" "xterm" "sakura" "gnome-terminal-transparency" "tilix")
-
-        # Loop through each terminal app
-        for app in "${terminal_apps[@]}"; do
-            # Check if the app is installed
-            if pacman -Q | grep -q "$app"; then
-                echo "Removing $app..."
-                sudo pacman -Rs "$app"
-            else
-                echo "$app is not installed."
-            fi
-        done
-        echo
-        $AUR_HELPER -S --noconfirm --needed ptyxix btop gparted flatseal awesome-terminal-fonts extension-manager gnome-shell-extension-arc-menu gnome-shell-extension-caffeine gnome-shell-extension-gsconnect gnome-shell-extension-arch-update gnome-shell-extension-blur-my-shell gnome-shell-extension-appindicator gnome-shell-extension-dash-to-dock gnome-shell-extension-weather-oclock chafa nautilus-share nautilus-compare nautilus-admin-gtk4 nautilus-image-converter nautilus-open-any-terminal libappindicator-gtk3 tela-circle-icon-theme-purple kvantum-theme-libadwaita-git qt5ct qt6ct kvantum fastfetch adw-gtk-theme oh-my-posh-bin ttf-fira-code guake desktop-config-gnome
+        $AUR_HELPER -S --noconfirm --needed ptyxis btop gparted flatseal awesome-terminal-fonts extension-manager gnome-shell-extension-arc-menu gnome-shell-extension-caffeine gnome-shell-extension-gsconnect gnome-shell-extension-arch-update gnome-shell-extension-blur-my-shell gnome-shell-extension-appindicator gnome-shell-extension-dash-to-dock gnome-shell-extension-weather-oclock chafa nautilus-share nautilus-compare nautilus-admin-gtk4 nautilus-image-converter libappindicator-gtk3 tela-circle-icon-theme-purple kvantum-theme-libadwaita-git qt5ct qt6ct kvantum fastfetch adw-gtk-theme oh-my-posh-bin ttf-fira-code guake desktop-config-gnome
         sleep 3
         echo
         gum style --foreground 7 "Applying Gnome Settings..."
