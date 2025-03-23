@@ -5,14 +5,14 @@ set -e
 trap 'clear && exec "$0"' INT
 
 # Check if being run from xero-cli
-if [ -z "$AUR_HELPER" ]; then
-    echo
-    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
-    echo
-    gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
-    echo
-    exit 1
-fi
+# if [ -z "$AUR_HELPER" ]; then
+#     echo
+#     gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
+#     echo
+#     gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
+#     echo
+#     exit 1
+# fi
 
 # Function to display the menu
 
@@ -32,6 +32,7 @@ display_menu() {
     gum style --foreground 39 "a. Build Updated Arch ISO."
     gum style --foreground 196 "s. Reset KDE/Xero Layout back to Stock."
     gum style --foreground 40 "w. WayDroid Installation Guide (Website Link)."
+    gum style --foreground 51 "v. Install VM Guest utils/angent (All/Vanilla Arch)."
     gum style --foreground 172 "m. Update Arch Mirrorlist, for faster download speeds."
     gum style --foreground 111 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
 }
@@ -59,6 +60,35 @@ install_firewalld() {
 clear_pacman_cache() {
     echo
     sudo pacman -Scc
+    sleep 2
+    main
+}
+
+vm_guest() {
+    echo
+    echo "Detecting if you are using a VM"
+    result=$(systemd-detect-virt)
+    case $result in
+      oracle)
+        echo "Installing Virtualbox Guest tools..."
+        echo
+        sudo pacman -S --noconfirm --needed virtualbox-guest-utils && reboot
+        ;;
+      kvm)
+        echo "Installing QEmu Guest tools..."
+        echo
+        sudo pacman -S --noconfirm --needed qemu-guest-agent spice-vdagent && reboot
+        ;;
+      vmware)
+        echo "Installing VMWare Guest Tools..."
+        echo
+        sudo pacman -S --noconfirm --needed xf86-video-vmware open-vm-tools xf86-input-vmmouse
+        sudo systemctl enable --now vmtoolsd.service && reboot
+        ;;
+      *)
+        echo "You are not running in a VM."
+        ;;
+     esac
     sleep 2
     main
 }
@@ -281,6 +311,7 @@ main() {
            a) build_archiso ;;
            s) reset_everything ;;
            w) waydroid_guide ;;
+           v) vm_guest ;;
            m) update_mirrorlist ;;
            g) fix_gpg_keyring ;;
            r) restart ;;
