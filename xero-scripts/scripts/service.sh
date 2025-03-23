@@ -32,7 +32,7 @@ display_menu() {
     gum style --foreground 39 "a. Build Updated Arch ISO."
     gum style --foreground 196 "s. Reset KDE/Xero Layout back to Stock."
     gum style --foreground 40 "w. WayDroid Installation Guide (Website Link)."
-    gum style --foreground 51 "v. Install VM Guest utils/angent (All/Vanilla Arch)."
+    gum style --foreground 51 "v. Install VM Guest utils/agent (All/Vanilla Arch)."
     gum style --foreground 172 "m. Update Arch Mirrorlist, for faster download speeds."
     gum style --foreground 111 "g. Fix Arch GnuPG Keyring in case of pkg signature issues."
 }
