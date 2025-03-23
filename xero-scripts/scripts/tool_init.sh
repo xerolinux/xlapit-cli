@@ -302,13 +302,12 @@ apply_latest_fixes() {
         echo
         gum spin --spinner dot --title "Copying files..." -- \
             cp -rf /etc/skel/.config/apdatifier/* "$HOME/.config/apdatifier/"
-            cp -rf /etc/skel/.local/share/plasma/plasmoids/com.github.exequtic.apdatifier/* "$HOME/.local/share/plasma/plasmoids/com.github.exequtic.apdatifier/"
         sleep 3
 
         # Install additional packages
         gum style --foreground 212 "Installing additional packages..."
         echo
-        sudo pacman -S --noconfirm --needed ncdu nvtop ventoy-bin iftop amarok-qt6
+        sudo pacman -S --noconfirm --needed pacseek ncdu nvtop ventoy-bin iftop amarok-qt6
         sleep 3
 
     elif [ "$DE" = "GNOME" ]; then
@@ -321,7 +320,7 @@ apply_latest_fixes() {
         # Install new packages
         gum style --foreground 212 "Installing additional packages..."
         echo
-        sudo pacman -S --noconfirm --needed pwgen ncdu nvtop ventoy-bin iftop evolution-data-server gsound libgdata guake
+        sudo pacman -S --noconfirm --needed pacseek pwgen ncdu nvtop ventoy-bin iftop evolution-data-server gsound libgdata guake
         guake --restore-preferences=/etc/skel/.config/guake-prefs.cfg
         cp -rf /etc/skel/.config/autostart/guake.desktop "$HOME/.config/autostart/"
         echo
