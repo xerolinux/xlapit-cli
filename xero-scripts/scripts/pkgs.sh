@@ -263,7 +263,7 @@ package_selection_dialog() {
                     ;;
                 Chatterino)
                     clear
-                    install_aur_packages chatterino2-git
+                    install_flatpak_packages com.chatterino.chatterino
                     ;;
                 Element)
                     clear
