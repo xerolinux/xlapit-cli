@@ -5,6 +5,14 @@ set -e
 trap 'clear && exec "$0"' INT
 
 # Check if being run from xero-cli
+if [ -z "$AUR_HELPER" ]; then
+    echo
+    gum style --border double --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 196 "$(gum style --foreground 196 'ERROR: This script must be run through the toolkit.')"
+    echo
+    gum style --border normal --align center --width 70 --margin "1 2" --padding "1 2" --border-foreground 33 "$(gum style --foreground 33 'Or use this command instead:') $(gum style --bold --foreground 47 'clear && xero-cli -m')"
+    echo
+    exit 1
+fi
 
 
 # Function to display header
@@ -48,7 +56,7 @@ package_selection_dialog() {
     local title=$1
     shift
     local options=("$@")
-    PACKAGES=$(dialog --checklist "$title" 20 80 10 "${options[@]}" 3>&1 1>&2 2>&3) || true
+    PACKAGES=$(dialog --checklist "$title" 18 80 10 "${options[@]}" 3>&1 1>&2 2>&3) || true
 
     if [ -n "$PACKAGES" ]; then
         for PACKAGE in $PACKAGES; do
@@ -120,7 +128,7 @@ package_selection_dialog() {
                             rm ~/.config/nvim/LICENSE ~/.config/nvim/README.md ~/.config/nvim/.gitignore && \
                             rm -rf ~/.config/nvim/.git
                             echo
-                            gum style --foreground 196 --bold "Backups created under ~/.config/nvim.bk-date & ~/.local/share/nvim.bk-date"
+                            gum style --foreground 196 --bold "Backups crea20ted under ~/.config/nvim.bk-date & ~/.local/share/nvim.bk-date"
                             sleep 6
                         else
                             echo

@@ -107,31 +107,19 @@ install_topgrade_aio_updater() {
 
 activate_flathub_repositories() {
     # Check if running on XeroLinux
-    if grep -q "XeroLinux" /etc/os-release; then
-        gum style --foreground 213 "XeroLinux Detected, Installing Warehouse..."
-        echo
-        flatpak install io.github.flattool.Warehouse -y
-        echo
-        gum style --foreground 7 "Warehouse installation complete!"
-    else
-        # Vanilla Arch installation
         gum style --foreground 7 "Activating Flathub Repositories..."
         sleep 2
         echo
         sudo pacman -S --noconfirm --needed flatpak
-        sudo flatpak remote-modify --default-branch=23.08 flathub system
         echo
-        gum style --foreground 7 "##########    Activating Flatpak Theming.    ##########"
+        gum style --foreground 7 "##########    Activating Flatpak Overrides.    ##########"
         sudo flatpak override --filesystem="$HOME/.themes"
         sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
         sudo flatpak override --filesystem=xdg-config/gtk-4.0:ro
         echo
-        gum style --foreground 7 "##########     Flatpak Theming Activated     ##########"
-        echo
-        flatpak install io.github.flattool.Warehouse -y
+        gum style --foreground 7 "##########     Flatpak Overrides Activated     ##########"
         echo
         gum style --foreground 7 "Flathub Repositories activated! Please reboot."
-    fi
     sleep 3
     exec "$0"
 }
@@ -166,10 +154,12 @@ install_gui_package_managers() {
   gum style --foreground 7 "Installing 3rd-Party GUI Package Managers..."
   sleep 2
   echo
-  PACKAGES=$(dialog --checklist "Select GUI Package Managers to install:" 20 60 10 \
+  PACKAGES=$(dialog --checklist "Select GUI Package Managers to install:" 13 60 10 \
     "OctoPi" "Octopi Package Manager" off \
     "PacSeek" "PacSeek Package Manager" off \
     "BauhGUI" "Bauh GUI Package Manager" off \
+    "Warehouse" "Flatpak management tool" off \
+    "Flatseal" "Flatpak Permissions tool" off \
     "EasyFlatpak" "Flatpak Package Manager" off 3>&1 1>&2 2>&3)
   IFS='"' read -ra PACKAGE_ARRAY <<< "$PACKAGES"
   for PACKAGE in "${PACKAGE_ARRAY[@]}"; do
@@ -178,6 +168,8 @@ install_gui_package_managers() {
       "OctoPi") clear && $AUR_HELPER -S --needed octopi ;;
       "PacSeek") clear && $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
       "BauhGUI") clear && $AUR_HELPER -S --needed bauh ;;
+      "Warehouse") clear && flatpak install -y io.github.flattool.Warehouse ;;
+      "Warehouse") clear && flatpak install -y com.github.tchx84.Flatseal ;;
       "EasyFlatpak") clear && flatpak install org.dupot.easyflatpak -y ;;
     esac
   done
