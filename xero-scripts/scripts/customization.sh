@@ -207,7 +207,7 @@ process_choice() {
         if [ ! -d "$HOME/.config/ohmyposh" ]; then
           mkdir -p "$HOME/.config/ohmyposh"
         fi
-        curl -o "$HOME/.config/ohmyposh/xero.omp.json" https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/pararussel.omp.json
+        curl -o "$HOME/.config/ohmyposh/xero.omp.json" https://raw.githubusercontent.com/XeroLinuxDev/desktop-config/refs/heads/main/etc/skel/.config/ohmyposh/xero.omp.json
 
         # Check if the line exists in ~/.zshrc, if not add it
         if ! grep -Fxq 'eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/xero.omp.json)"' "$HOME/.zshrc"; then
