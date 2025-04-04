@@ -201,7 +201,7 @@ update_mirrorlist() {
 
    if ! command -v rate-mirrors &> /dev/null; then
        echo "rate-mirrors is not installed. Installing..."
-       $AUR_HELPER -S --noconfirm --needed rate-mirrors-bin || exit 1
+       $AUR_HELPER -S --noconfirm --needed rate-mirrors || exit 1
    fi
    echo
    if gum confirm "Do you want to update Chaotic-AUR mirrorlist too?"; then
