@@ -154,28 +154,42 @@ install_gui_package_managers() {
   gum style --foreground 7 "Installing 3rd-Party GUI Package Managers..."
   sleep 2
   echo
+
   PACKAGES=$(dialog --checklist "Select GUI Package Managers to install:" 13 60 10 \
     "OctoPi" "Octopi Package Manager" off \
     "PacSeek" "PacSeek Package Manager" off \
     "BauhGUI" "Bauh GUI Package Manager" off \
     "Warehouse" "Flatpak management tool" off \
     "Flatseal" "Flatpak Permissions tool" off \
-    "EasyFlatpak" "Flatpak Package Manager" off 3>&1 1>&2 2>&3)
-  IFS='"' read -ra PACKAGE_ARRAY <<< "$PACKAGES"
-  for PACKAGE in "${PACKAGE_ARRAY[@]}"; do
-    [ -z "$PACKAGE" ] && continue
-    case $PACKAGE in
-      "OctoPi") clear && $AUR_HELPER -S --needed octopi ;;
-      "PacSeek") clear && $AUR_HELPER -S --needed pacseek-bin pacfinder ;;
-      "BauhGUI") clear && $AUR_HELPER -S --needed bauh ;;
-      "Warehouse") clear && flatpak install -y io.github.flattool.Warehouse ;;
-      "Warehouse") clear && flatpak install -y com.github.tchx84.Flatseal ;;
-      "EasyFlatpak") clear && flatpak install org.dupot.easyflatpak -y ;;
-    esac
-  done
+    "EasyFlatpak" "Flatpak Package Manager" off 6>&1 1>&2 2>&6)
+
+  if [[ $? -ne 0 ]]; then
+    echo "Error: Dialog exited with non-zero status. Aborting."
+    return 1
+  fi
+
+  # Process each package individually
+  if [[ "$PACKAGES" == *"OctoPi"* ]]; then
+    clear && $AUR_HELPER -S --noconfirm --needed octopi || echo "Error installing OctoPi"
+  fi
+  if [[ "$PACKAGES" == *"PacSeek"* ]]; then
+    clear && $AUR_HELPER -S --noconfirm --needed pacseek pacfinder || echo "Error installing PacSeek"
+  fi
+  if [[ "$PACKAGES" == *"BauhGUI"* ]]; then
+    clear && $AUR_HELPER -S --noconfirm --needed bauh || echo "Error installing BauhGUI"
+  fi
+  if [[ "$PACKAGES" == *"Warehouse"* ]]; then
+    clear && flatpak install -y io.github.flattool.Warehouse || echo "Error installing Warehouse"
+  fi
+  if [[ "$PACKAGES" == *"Flatseal"* ]]; then
+    clear && flatpak install -y com.github.tchx84.Flatseal || echo "Error installing Flatseal"
+  fi
+  if [[ "$PACKAGES" == *"EasyFlatpak"* ]]; then
+    clear && flatpak install -y org.dupot.easyflatpak || echo "Error installing EasyFlatpak"
+  fi
+
   gum style --foreground 7 "3rd-Party GUI Package Managers installation complete!"
   sleep 3
-  exec "$0"
 }
 
 install_lmstudio() {
